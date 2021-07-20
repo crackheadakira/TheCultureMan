@@ -1,0 +1,13 @@
+{
+  "name": "thecultureman",
+  "description": "I fetch the cultured shit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "reddit-fetch": "^1.5.1",
+  }
+}
