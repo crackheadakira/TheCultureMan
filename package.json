@@ -10,10 +10,6 @@
     "reddit-fetch": "^1.5.1",
     "snekfetch": "^4.0.4"
   },
-  "devDependencies": {},
-  "scripts": {
-    "start": "node index.js"
-  },
   "author": "crackheadakira",
   "license": "ISC"
 }
