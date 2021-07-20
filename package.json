@@ -9,6 +9,8 @@
     "reddit-scrapper": "^1.0.0",
     "reddit-fetch": "^1.5.1",
     "snekfetch": "^4.0.4"
+    "engines": {
+       "node": "14.17.3"
   },
   "author": "crackheadakira",
   "license": "ISC"
