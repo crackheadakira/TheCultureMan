@@ -27,8 +27,12 @@ module.exports = {
                         let pages = ("https://i.nhentai.net/galleries/" + hPID + "/" + pn + ".jpg"); // Combies the extracted digits with the url and then the page it's on to make an Image URL that is acceptable
                         let hTitle = data.title;
 
+                        const wEmbed = new Discord.MessageEmbed()
+                        .setTitle("This doujin goes against the Discord TOS")
+                        .setDescription("Because it has the tags " + hTags)
+
                         if (hTags.toLowerCase().includes("loli") || hTags.toLowerCase().includes("beastiality") || hTags.toLowerCase().includes("torture") || hTags.toLowerCase().includes("minigirl") || hTags.toLowerCase().includes("lolicon") || hTags.toLowerCase().includes("blood") || hTags.toLowerCase().includes("shotacon") || hTags.toLowerCase().includes("shota") || hTags.toLowerCase().includes("guro") || hTags.toLowerCase().includes("cannibalism")) {
-                            return message.channel.send("this doujin goes against Discord TOS");
+                            return message.channel.send(wEmbed);
                         }
 
                         const embed = new Discord.MessageEmbed()
