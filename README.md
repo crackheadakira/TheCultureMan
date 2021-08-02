@@ -33,6 +33,4 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 
 ## Want to Do
 
-- Anilist commands
-- osu! commands
 - n.random by tag
