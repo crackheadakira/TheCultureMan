@@ -30,3 +30,9 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 ### n.tags
 
 ```This will show you all tags with an explanation of what it is.```
+
+## Plan to Do
+
+- Anilist commands
+- osu! commands
+- n.random by tag
