@@ -34,8 +34,20 @@ client.on('message', message => {
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const command = args.shift().toLowerCase();
 
-	if (client.commands.has(command)) {
-		client.commands.get(command).execute(message, args);
+	if (command === 'culture') {
+		client.commands.get('culture').execute(message, args);
+	} else if (command == 'search') {
+		client.commands.get('search').execute(message, args);
+	} else if (command == 'help') {
+		client.commands.get('help').execute(message, args);
+	} else if (command == 'read') {
+		client.commands.get('read').execute(message, args);
+	} else if (command == 'random') {
+		client.commands.get('random').execute(message, args);
+	} else if (command == 'tags') {
+		client.commands.get('tags').execute(message, args);
+	} else if (command == 'anime') {
+		client.commands.get('anime').execute(message, args);
 	}
 })
 
