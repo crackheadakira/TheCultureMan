@@ -17,7 +17,7 @@ module.exports = {
                     message.reply("Usage: n.search <ID> where <ID> is the nHentai.net ID");
                 } else {
                     try{
-                        api.getID(number).list(data => {
+                        api.getID(number, true).list(data => {
     
     
                             let hURL = data.url;
