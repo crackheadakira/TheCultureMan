@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
 const paginationEmbed = require('discord.js-pagination');
 
 module.exports = {
@@ -65,8 +64,8 @@ module.exports = {
         ];
 
         emojiList = [
-             '⬅️',
-             '➡️'
+            '⬅️',
+            '➡️'
         ];
 
         paginationEmbed(message, pages, emojiList);
