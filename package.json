@@ -2,10 +2,10 @@
   "name": "thecultureman",
   "version": "1.0.0",
   "description": "Gives you the cultured shit",
-  "main": "index.js",
+  "main": "bot.js",
   "devDependencies": {},
   "scripts": {
-    "start": "node index.js"
+    "start": "node bot.js"
   },
   "author": "crackheadakira",
   "license": "ISC",
