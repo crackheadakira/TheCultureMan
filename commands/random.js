@@ -16,7 +16,9 @@ module.exports = {
             return
         }
 
-        api.pRandSpecificTags("english", data => { // The "english" exists to make sure that the doujin can't be in japanese. You can remove this if you want it to recommend all possible languages
+        let string = message.content.replace("n.random ", "");
+
+        api.pRandSpecificTags("english "+string, data => { // The "english" exists to make sure that the doujin can't be in japanese. You can remove this if you want it to recommend all possible languages
 
             let hID = data.id;
             let hURL = data.url;
