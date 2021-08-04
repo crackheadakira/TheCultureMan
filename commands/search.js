@@ -21,7 +21,7 @@ module.exports = {
             message.reply("Usage: n.search <ID> where <ID> is the nHentai.net ID");
             return;
         }
-        
+
         api.getID(number).list(data => {
 
 
@@ -33,8 +33,12 @@ module.exports = {
             let hLanguage = data.language;
             let hPages = data.pages;
 
+            const wEmbed = new Discord.MessageEmbed()
+                .setTitle("This doujin goes against the Discord TOS")
+                .setDescription("Because it has the tags " + hTags)
+
             if (hTags.toLowerCase().includes("loli") || hTags.toLowerCase().includes("beastiality") || hTags.toLowerCase().includes("torture") || hTags.toLowerCase().includes("minigirl") || hTags.toLowerCase().includes("lolicon") || hTags.toLowerCase().includes("blood") || hTags.toLowerCase().includes("shotacon") || hTags.toLowerCase().includes("shota") || hTags.toLowerCase().includes("guro") || hTags.toLowerCase().includes("cannibalism")) {
-                return message.channel.send("this doujin goes against Discord TOS");
+                return message.channel.send(wEmbed);
             }
 
             const embed = new Discord.MessageEmbed()
