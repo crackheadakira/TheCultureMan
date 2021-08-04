@@ -16,39 +16,40 @@ module.exports = {
                 if (isNaN(number)) {
                     message.reply("Usage: n.search <ID> where <ID> is the nHentai.net ID");
                 } else {
-                    api.getID(number).list(data => {
-
-
-                        let hURL = data.url;
-                        let hTitle = data.title;
-                        let hCover = data.cover;
-                        let hTags = data.tags;
-                        let hArtist = data.artist;
-                        let hLanguage = data.language;
-                        let hPages = data.pages;
-
+                    try{
+                        api.getID(number).list(data => {
+    
+    
+                            let hURL = data.url;
+                            let hTitle = data.title;
+                            let hCover = data.cover;
+                            let hTags = data.tags;
+                            let hArtist = data.artist;
+                            let hLanguage = data.language;
+                            let hPages = data.pages;
+    
+                            const embed = new Discord.MessageEmbed()
+                                .setTitle(hTitle)
+                                .setURL(hURL)
+                                .setThumbnail(hCover)
+                                .setColor('RANDOM')
+                                .addFields(
+                                    { name: 'Tags', value: hTags },
+                                    { name: 'Artists', value: hArtist },
+                                    { name: 'Page Count', value: hPages },
+                                    { name: 'Language', value: hLanguage },
+                                )
+    
+                            message.channel.send(embed)
+                        });
+                        
+                    }catch(e){
                         const wEmbed = new Discord.MessageEmbed()
                         .setTitle("This doujin goes against the Discord TOS")
-                        .setDescription("Because it has the tags " + hTags)
+                        .setDescription("Please read https://discord.com/guidelines at rule number 7")
 
-                        if (hTags.toLowerCase().includes("loli") || hTags.toLowerCase().includes("beastiality") || hTags.toLowerCase().includes("torture") || hTags.toLowerCase().includes("minigirl") || hTags.toLowerCase().includes("lolicon") || hTags.toLowerCase().includes("blood") || hTags.toLowerCase().includes("shotacon") || hTags.toLowerCase().includes("shota") || hTags.toLowerCase().includes("guro") || hTags.toLowerCase().includes("cannibalism")) {
-                            return message.channel.send(wEmbed);
-                        }
-
-                        const embed = new Discord.MessageEmbed()
-                            .setTitle(hTitle)
-                            .setURL(hURL)
-                            .setThumbnail(hCover)
-                            .setColor('RANDOM')
-                            .addFields(
-                                { name: 'Tags', value: hTags },
-                                { name: 'Artists', value: hArtist },
-                                { name: 'Page Count', value: hPages },
-                                { name: 'Language', value: hLanguage },
-                            )
-
-                        message.channel.send(embed)
-                    });
+                        return message.channel.send(wEmbed);
+                    }
                 }
             }
         }
