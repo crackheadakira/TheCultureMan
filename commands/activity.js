@@ -41,8 +41,6 @@ module.exports = {
 
                 var hType = type.toString()
 
-                console.log(hType)
-
                 if (hType.toLowerCase().includes("anime_list") || hType.toLowerCase().includes("message") || hType.toLowerCase().includes("manga_list")) {
                     return message.channel.send("The recent activity by the user is unsupported")
                 }
