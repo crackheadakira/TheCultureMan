@@ -48,6 +48,8 @@ client.on('message', message => {
 		client.commands.get('tags').execute(message, args);
 	} else if (command == 'anime') {
 		client.commands.get('anime').execute(message, args);
+	} else if (command == 'manga') {
+		client.commands.get('manga').execute(message, args);
 	}
 })
 
