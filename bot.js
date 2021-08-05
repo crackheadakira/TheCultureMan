@@ -50,6 +50,10 @@ client.on('message', message => {
 		client.commands.get('anime').execute(message, args);
 	} else if (command == 'manga') {
 		client.commands.get('manga').execute(message, args);
+	} else if (command == 'user') {
+		client.commands.get('user').execute(message, args);
+	} else if (command == 'activity') {
+		client.commands.get('activity').execute(message, args);
 	}
 })
 
