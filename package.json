@@ -10,12 +10,13 @@
   "author": "crackheadakira",
   "license": "ISC",
   "dependencies": {
-    "culture69": "^1.0.1",
+    "anilist-node": "^1.9.1",
+    "culture69": "^1.0.3",
     "discord.js": "^12.5.3",
     "discord.js-pagination": "^1.0.3",
     "djs-reaction-collector": "^2.9.3",
     "hanime": "^1.2.1",
-    "kasu.nhentaiapi.js": "^2.7.6",
+    "kasu.nhentaiapi.js": "^2.8.1",
     "nodemon": "^2.0.12"
   }
 }
