@@ -26,14 +26,14 @@ module.exports = class ReadCommand extends BaseCommand {
       return;
     }
 
-    api.getID(number).list(data => {
+    api.getID(number).json(data => {
 
-      let hTags = data.tags;
+      let hTags = data.tag_table.tag;
       let hURL = data.url;
-      let hPageCount = data.pages;
-      let hPID = data.cover.match(/\d+/)[0]; // Extracts the digits from nHentai's image gallery for a doujin
+      let hPageCount = data.number_pages;
+      let hPID = data.images.cover.match(/\d+/)[0]; // Extracts the digits from nHentai's image gallery for a doujin
       let pages = ("https://i.nhentai.net/galleries/" + hPID + "/" + pn + ".jpg"); // Combies the extracted digits with the url and then the page it's on to make an Image URL that is acceptable
-      let hTitle = data.title;
+      let hTitle = data.title.translated;
 
       const wEmbed = new Discord.MessageEmbed()
         .setTitle("This doujin goes against the Discord TOS")
