@@ -14,8 +14,8 @@ module.exports = class MangaCommand extends BaseCommand {
       return;
     }
 
-    function shorten(s,l) {
-      return (s.match(new RegExp(".{"+l+"}\\S*"))||[s])[0];
+    function shorten(s, l) {
+      return (s.match(new RegExp(".{" + l + "}\\S*")) || [s])[0];
     }
 
     let string = message.content.replace("n.manga ", "");
@@ -40,6 +40,32 @@ module.exports = class MangaCommand extends BaseCommand {
         let description = mData.description;
         let URL = mData.siteUrl;
 
+        let startDate = mData.startDate;
+        let endDate = mData.endDate;
+
+        let sYear = startDate.year;
+        let sMonth = startDate.month;
+        let sDay = startDate.day;
+
+        let eYear = endDate.year;
+        let eMonth = endDate.month;
+        let eDay = endDate.day;
+
+        var sDate = sYear + "-" + sMonth + "-" + sDay;
+        var eDate = eYear + "-" + eMonth + "-" + eDay;
+
+        if (sYear == null) {
+          sDate = "Hasn't Released Yet"
+        }
+
+        if (eYear == null) {
+          eDate = "Hasn't Ended Yet"
+        }
+
+        if (description == null) {
+          description = "No description exists as of now."
+        }
+
         let ffDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
 
         let format = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
@@ -61,6 +87,8 @@ module.exports = class MangaCommand extends BaseCommand {
             { name: 'Status', value: status, inline: true },
             { name: 'Format', value: format, inline: true },
             { name: 'Genres', value: genres, },
+            { name: 'Start Date', value: sDate, inline: true },
+            { name: 'End Date', value: eDate, inline: true },
             { name: 'Description', value: trimmedString }
           )
 

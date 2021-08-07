@@ -40,10 +40,32 @@ module.exports = class AnimeCommand extends BaseCommand {
         let description = mData.description;
         let URL = mData.siteUrl;
 
+        let startDate = mData.startDate;
+        let endDate = mData.endDate;
+
+        let sYear = startDate.year;
+        let sMonth = startDate.month;
+        let sDay = startDate.day;
+
+        let eYear = endDate.year;
+        let eMonth = endDate.month;
+        let eDay = endDate.day;
+
+        var sDate = sYear + "-" + sMonth + "-" + sDay;
+        var eDate = eYear + "-" + eMonth + "-" + eDay;
+
+        if (sYear == null) {
+          sDate = "Hasn't Released Yet"
+        }
+
+        if (eYear == null) {
+          eDate = "Hasn't Ended Yet"
+        }
+
         let ffDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
 
-        let source = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter capitalized, even if there is a space
-        let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter capitalized, even if there is a space
+        let source = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter of each word capitalized, even if there is a space
+        let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter of each word capitalized, even if there is a space
 
         let genres = hGenres.replace(/,/g, ", ");
 
@@ -61,6 +83,8 @@ module.exports = class AnimeCommand extends BaseCommand {
             { name: 'Status', value: status, inline: true },
             { name: 'Source', value: source, inline: true },
             { name: 'Genres', value: genres, },
+            { name: 'Start Date', value: sDate, inline: true },
+            { name: 'End Date', value: eDate, inline: true },
             { name: 'Description', value: trimmedString }
           )
 

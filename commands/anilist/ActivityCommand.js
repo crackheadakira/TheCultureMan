@@ -35,18 +35,47 @@ module.exports = class ActivityCommand extends BaseCommand {
         var likeCount = data.map(function (item) {
           return item['likeCount'];
         });
+        var progress = data.map(function (item) {
+          return item['progress'];
+        });
+
+        var hStatus = data.map(function (item) {
+          return item['status'];
+        });
 
         let URL = "https://anilist.co/activity/" + ID;
 
-        var type = data.map(function (item) {
+        var Media = data.map(function (item) {
+          return item['media'];
+        });
+
+        var MediaTitle = Media.map(function (item) {
+          return item['title'];
+        });
+
+        let romajiTitle = MediaTitle.map(({ romaji }) => romaji);
+
+        let type = data.map(function (item) {
           return item['type'];
         });
 
-        var hType = type.toString()
+        let hType = type.toString();
+        
 
-        if (hType.toLowerCase().includes("anime_list") || hType.toLowerCase().includes("message") || hType.toLowerCase().includes("manga_list")) {
-          return message.channel.send("The recent activity by the user is unsupported")
-        }
+        hStatus = hStatus.toString();
+
+
+        let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+
+        const activityList = new Discord.MessageEmbed()
+          .setURL(URL)
+          .setTitle("Here's " + userName + "'s most recent activity!")
+          .setThumbnail(userAvatar)
+          .setFooter(likeCount + " Likes")
+          .addFields(
+            { name: status + " " + progress + " of", value: romajiTitle }
+          )
+
 
         var fText = text.toString();
         fText = fText.replace(/~/gi, ''); // Removes the centering marks
@@ -58,7 +87,15 @@ module.exports = class ActivityCommand extends BaseCommand {
           .setFooter(likeCount + " Likes")
           .setThumbnail(userAvatar)
 
-        message.channel.send(embed)
+        if (hType.toLowerCase().includes("anime_list") || hType.toLowerCase().includes("manga_list")) {
+          return message.channel.send(activityList);
+        } else
+
+        if (hType.toLowerCase().includes("message")) {
+          return message.channel.send("This user's most recent activity is unsupported.");
+        } else
+
+          message.channel.send(embed)
       });
     });
   }
