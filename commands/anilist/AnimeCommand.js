@@ -37,8 +37,7 @@ module.exports = class AnimeCommand extends BaseCommand {
         let description = mData.description;
         let URL = mData.siteUrl;
 
-        let fDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
-        let ffDesc = fDesc.replace(/\r?\n?[^\r\n]*$/, ""); // Removes the last line aka (Source: X)
+        let ffDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
 
         let source = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter capitalized, even if there is a space
         let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter capitalized, even if there is a space
