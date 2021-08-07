@@ -28,27 +28,41 @@ module.exports = class AnimeCommand extends BaseCommand {
 
       Anilist.media.anime(nID).then(mData => {
 
-        let source = mData.source;
+        let hSource = mData.source.toLowerCase();
         let Title = mData.title.romaji;
         let cover = mData.coverImage.large;
-        let genres = mData.genres;
+        let hGenres = mData.genres.toString();
         let averageScore = mData.averageScore;
-        let status = mData.status;
+        let hStatus = mData.status.toLowerCase();
         let description = mData.description;
-
+        let URL = mData.siteUrl;
 
         let fDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
         let ffDesc = fDesc.replace(/\r?\n?[^\r\n]*$/, ""); // Removes the last line aka (Source: X)
 
+        let source = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter capitalized, even if there is a space
+        let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter capitalized, even if there is a space
+
+        let genres = hGenres.replace(/,/g, ", ");
+
+        // This part here limits the amount of letter's it displays. It does not cut off words
+
+        var maxLength = 500 // maximum number of characters to extract
+        var trimmedString = ffDesc.substr(0, maxLength);
+        trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")))
 
         const embed = new Discord.MessageEmbed()
           .setColor('RANDOM')
+
           .setTitle(Title)
-          .setURL("https://anilist.co/anime/" + ID)
+          .setURL(URL)
           .setThumbnail(cover)
-          .setDescription("**Average Score:** " + averageScore + "%" + "** Status:** " + status + "** Source:** " + source + "** Genres: **" + genres)
           .addFields(
-            { name: 'Description', value: ffDesc },
+            { name: 'Average Score', value: averageScore + "%", inline: true },
+            { name: 'Status', value: status, inline: true },
+            { name: 'Source', value: source, inline: true },
+            { name: 'Genres', value: genres, },
+            { name: 'Description', value: trimmedString + "..." },
           )
 
         message.channel.send(embed)
