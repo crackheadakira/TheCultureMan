@@ -43,6 +43,9 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 
 ```This will search the specified Anilist user and give you info about them.```
 
+### n.character
+```This will search the specified character and give you info about them.```
+
 ## Want to Do
 
 - ~~n.random by tag~~ __DONE__
