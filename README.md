@@ -25,10 +25,6 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 
 ```This will give you a random doujin from nHentai```
 
-### n.tags
-
-```This will show you all tags with an explanation of what it is.```
-
 ## Anilist Commands
 
 ### n.anime
