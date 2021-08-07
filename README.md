@@ -7,9 +7,7 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 
 ## Existing Commands and Prefixes (Taken from the Help Command)
 
-### n.
-
-```n. is the bot's prefix```
+## Hentai Commands
 
 ### n.search
 
@@ -30,6 +28,8 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 ### n.tags
 
 ```This will show you all tags with an explanation of what it is.```
+
+## Anilist Commands
 
 ### n.anime
 
