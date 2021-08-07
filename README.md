@@ -34,4 +34,4 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 ## Want to Do
 
 - ~~n.random by tag~~ __DONE__
-- Anilist Support
+- ~~Anilist Support~~ __DONE__
