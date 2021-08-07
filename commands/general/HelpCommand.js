@@ -27,6 +27,7 @@ module.exports = class HelpCommand extends BaseCommand {
         { name: 'n.manga', value: 'This will search Anilist for the specified Manga and give you info about it.' },
         { name: 'n.activity', value: 'This will fetch the one recent activity of the specified person.' },
         { name: 'n.user', value: 'This will search the specified Anilist user and give you info about them.' },
+        { name: 'n.character', value: 'This will search the specified character and give you info about them.' },
       )
 
     const pages = [
