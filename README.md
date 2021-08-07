@@ -31,6 +31,22 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 
 ```This will show you all tags with an explanation of what it is.```
 
+### n.anime
+
+```This will search Anilist for the specified Anime and give you info about it.```
+
+### n.manga
+
+```This will search Anilist for the specified Manga and give you info about it.```
+
+### n.activity
+
+```This will fetch the one recent activity of the specified person.```
+
+### n.user
+
+```This will search the specified Anilist user and give you info about them.```
+
 ## Want to Do
 
 - ~~n.random by tag~~ __DONE__
