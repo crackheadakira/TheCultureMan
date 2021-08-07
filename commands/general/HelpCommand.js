@@ -16,7 +16,6 @@ module.exports = class HelpCommand extends BaseCommand {
         { name: 'n.culture', value: 'This gets you a random image from the database' },
         { name: 'n.read', value: "This allows you to read a doujin inside of Discord with the homies" },
         { name: 'n.random', value: 'This will give you a random doujin from nHentai' },
-        { name: 'n.tags', value: 'This will show you all tags with an explanation of what it is.' },
         { name: 'n.anime', value: 'This will search Anilist for the specified Anime and give you info about it' },
         { name: 'n.manga', value: 'This will search Anilist for the specified Manga and give you info about it' },
         { name: 'n.activity', value: 'This will fetch the one recent activity of the specified person' },
