@@ -39,6 +39,7 @@ module.exports = class ActivityCommand extends BaseCommand {
                 let URL = data.siteUrl;
 
                 let fDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
+                fDesc = fDesc.replace(/[~!]/gi, '|'); // Makes spoiler tag's work in Discord
                 let fDescription = shorten(fDesc, 350);
 
                 const embed = new Discord.MessageEmbed()

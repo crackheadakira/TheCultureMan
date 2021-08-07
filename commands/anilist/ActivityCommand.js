@@ -45,6 +45,14 @@ module.exports = class ActivityCommand extends BaseCommand {
 
         let URL = "https://anilist.co/activity/" + ID;
 
+        let type = data.map(function (item) {
+          return item['type'];
+        });
+
+        let hType = type.toString();
+
+        if (hType.toLowerCase().includes("anime_list") || hType.toLowerCase().includes("manga_list")) {
+
         var Media = data.map(function (item) {
           return item['media'];
         });
@@ -55,17 +63,10 @@ module.exports = class ActivityCommand extends BaseCommand {
 
         let romajiTitle = MediaTitle.map(({ romaji }) => romaji);
 
-        let type = data.map(function (item) {
-          return item['type'];
-        });
-
-        let hType = type.toString();
-        
-
         hStatus = hStatus.toString();
 
-
         let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+        
 
         const activityList = new Discord.MessageEmbed()
           .setURL(URL)
@@ -76,8 +77,14 @@ module.exports = class ActivityCommand extends BaseCommand {
             { name: status + " " + progress + " of", value: romajiTitle }
           )
 
+          message.channel.send(activityList);
+      } else
+
+
+
 
         var fText = text.toString();
+        fText = fText.replace(/[~!]/gi, '|'); // Makes spoiler tag's work in Discord
         fText = fText.replace(/~/gi, ''); // Removes the centering marks
 
         const embed = new Discord.MessageEmbed()
