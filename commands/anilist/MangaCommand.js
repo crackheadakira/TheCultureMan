@@ -14,6 +14,9 @@ module.exports = class MangaCommand extends BaseCommand {
       return;
     }
 
+    function shorten(s,l) {
+      return (s.match(new RegExp(".{"+l+"}\\S*"))||[s])[0];
+    }
 
     let string = message.content.replace("n.manga ", "");
 
@@ -45,10 +48,7 @@ module.exports = class MangaCommand extends BaseCommand {
         let genres = hGenres.replace(/,/g, ", ");
 
         // This part here limits the amount of letter's it displays. It does not cut off words
-
-        var maxLength = 500 // maximum number of characters to extract
-        var trimmedString = ffDesc.substr(0, maxLength);
-        trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")))
+        let trimmedString = shorten(ffDesc, 500);
 
         const embed = new Discord.MessageEmbed()
           .setColor('RANDOM')
@@ -61,7 +61,7 @@ module.exports = class MangaCommand extends BaseCommand {
             { name: 'Status', value: status, inline: true },
             { name: 'Format', value: format, inline: true },
             { name: 'Genres', value: genres, },
-            { name: 'Description', value: trimmedString + "..."},
+            { name: 'Description', value: trimmedString }
           )
 
         message.channel.send(embed)
