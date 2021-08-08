@@ -3,6 +3,8 @@ const Discord = require("discord.js");
 const settings = require('./anitoken.json');
 const anilist = require('anilist-node');
 const Anilist = new anilist(settings.token);
+const paginationEmbed = require('discord.js-pagination');
+
 
 module.exports = class MangaCommand extends BaseCommand {
   constructor() {
@@ -21,15 +23,19 @@ module.exports = class MangaCommand extends BaseCommand {
     let string = message.content.replace("n.manga ", "");
 
 
-    Anilist.searchEntry.manga(string).then(Data => {
+    Anilist.searchEntry.manga(string, null, 1, 2).then(Data => {
 
 
-      let nData = Data.media;
-      let ID = nData.map(({ id }) => id);
+      let Series1 = Data.media.splice(0, 1);
+      let Series2 = Data.media.splice(0, 2);
 
-      var nID = parseInt(ID);
+      let S1FID = Series1.map(({ id }) => id);
+      var S1ID = parseInt(S1FID);
 
-      Anilist.media.manga(nID).then(mData => {
+      let S2FID = Series2.map(({ id }) => id);
+      var S2ID = parseInt(S2FID);
+
+      Anilist.media.manga(S1ID).then(mData => {
 
         let hSource = mData.format.toLowerCase();
         let Title = mData.title.romaji;
@@ -76,7 +82,7 @@ module.exports = class MangaCommand extends BaseCommand {
         // This part here limits the amount of letter's it displays. It does not cut off words
         let trimmedString = shorten(ffDesc, 500);
 
-        const embed = new Discord.MessageEmbed()
+        const Series1Embed = new Discord.MessageEmbed()
           .setColor('RANDOM')
           .setTitle(Title)
           .setURL(URL)
@@ -92,7 +98,81 @@ module.exports = class MangaCommand extends BaseCommand {
             { name: 'Description', value: trimmedString }
           )
 
-        message.channel.send(embed)
+        Anilist.media.manga(S2ID).then(S2Data => {
+
+          let hSource2 = S2Data.format.toLowerCase();
+          let Title2 = S2Data.title.romaji;
+          let cover2 = S2Data.coverImage.large;
+          let hGenres2 = S2Data.genres.toString();
+          let averageScore2 = S2Data.averageScore;
+          let hStatus2 = S2Data.status.toLowerCase();
+          let description2 = S2Data.description;
+          let URL2 = S2Data.siteUrl;
+
+          let startDate2 = S2Data.startDate;
+          let endDate2 = S2Data.endDate;
+
+          let sYear2 = startDate2.year;
+          let sMonth2 = startDate2.month;
+          let sDay2 = startDate2.day;
+
+          let eYear2 = endDate.year;
+          let eMonth2 = endDate.month;
+          let eDay2 = endDate.day;
+
+          var sDate2 = sYear2 + "-" + sMonth2 + "-" + sDay2;
+          var eDate2 = eYear2 + "-" + eMonth2 + "-" + eDay2;
+
+          if (sYear2 == null) {
+            sDate2 = "Hasn't Released Yet"
+          }
+
+          if (eYear2 == null) {
+            eDate2 = "Hasn't Ended Yet"
+          }
+
+          if (description2 == null) {
+            description2 = "No description exists as of now."
+          }
+
+          let ffDesc2 = description2.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
+
+          let format2 = hSource2.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+          let status2 = hStatus2.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+
+          let genres2 = hGenres2.replace(/,/g, ", ");
+
+          // This part here limits the amount of letter's it displays. It does not cut off words
+          let trimmedString2 = shorten(ffDesc2, 500);
+
+          const Series2Embed = new Discord.MessageEmbed()
+            .setColor('RANDOM')
+            .setTitle(Title2)
+            .setURL(URL2)
+            .setThumbnail(cover2)
+            .setDescription('**Genres: **' + genres2)
+            .addFields(
+              { name: 'Average Score', value: averageScore2 + "%", inline: true },
+              { name: 'Status', value: status2, inline: true },
+              { name: 'Format', value: format2, inline: true },
+              { name: 'Genres', value: genres2, },
+              { name: 'Start Date', value: sDate2, inline: true },
+              { name: 'End Date', value: eDate2, inline: true },
+              { name: 'Description', value: trimmedString2 }
+            )
+
+          const pages = [
+            Series1Embed,
+            Series2Embed
+          ]
+          const emojiList = [
+            "⬅️",
+            "➡️"
+          ];
+
+          paginationEmbed(message, pages, emojiList);
+
+        });
       });
     });
   }
