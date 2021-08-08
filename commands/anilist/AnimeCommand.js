@@ -2,7 +2,9 @@ const BaseCommand = require('../../utils/structures/BaseCommand');
 const Discord = require("discord.js");
 const settings = require('./anitoken.json');
 const anilist = require('anilist-node');
+const nodemon = require('nodemon');
 const Anilist = new anilist(settings.token);
+const paginationEmbed = require('discord.js-pagination');
 
 module.exports = class AnimeCommand extends BaseCommand {
   constructor() {
@@ -20,28 +22,30 @@ module.exports = class AnimeCommand extends BaseCommand {
 
     let string = message.content.replace("n.anime ", "");
 
+    Anilist.searchEntry.anime(string, null, 1, 2).then(Data => {
 
-    Anilist.searchEntry.anime(string).then(Data => {
+      let Series1 = Data.media.splice(0, 1);
+      let Series2 = Data.media.splice(0, 2);
 
+      let S1FID = Series1.map(({ id }) => id);
+      var S1ID = parseInt(S1FID);
 
-      let nData = Data.media;
-      let ID = nData.map(({ id }) => id);
+      let S2FID = Series2.map(({ id }) => id);
+      var S2ID = parseInt(S2FID);
 
-      var nID = parseInt(ID);
+      Anilist.media.anime(S1ID).then(S1Data => {
 
-      Anilist.media.anime(nID).then(mData => {
+        let hSource = S1Data.source.toLowerCase();
+        let Title = S1Data.title.romaji;
+        let cover = S1Data.coverImage.large;
+        let hGenres = S1Data.genres.toString();
+        let averageScore = S1Data.averageScore;
+        let hStatus = S1Data.status.toLowerCase();
+        let description = S1Data.description;
+        let URL = S1Data.siteUrl;
 
-        let hSource = mData.source.toLowerCase();
-        let Title = mData.title.romaji;
-        let cover = mData.coverImage.large;
-        let hGenres = mData.genres.toString();
-        let averageScore = mData.averageScore;
-        let hStatus = mData.status.toLowerCase();
-        let description = mData.description;
-        let URL = mData.siteUrl;
-
-        let startDate = mData.startDate;
-        let endDate = mData.endDate;
+        let startDate = S1Data.startDate;
+        let endDate = S1Data.endDate;
 
         let sYear = startDate.year;
         let sMonth = startDate.month;
@@ -70,11 +74,10 @@ module.exports = class AnimeCommand extends BaseCommand {
         let genres = hGenres.replace(/,/g, ", ");
 
         // This part here limits the amount of letter's it displays. It does not cut off words
-        let trimmedString = shorten(ffDesc, 500);
+        let trimmedString = shorten(ffDesc, 350);
 
-        const embed = new Discord.MessageEmbed()
+        const Series1Embed = new Discord.MessageEmbed()
           .setColor('RANDOM')
-
           .setTitle(Title)
           .setURL(URL)
           .setThumbnail(cover)
@@ -88,7 +91,76 @@ module.exports = class AnimeCommand extends BaseCommand {
             { name: 'Description', value: trimmedString }
           )
 
-        message.channel.send(embed)
+        Anilist.media.anime(S2ID).then(S2Data => {
+
+          let hSource2 = S2Data.source.toLowerCase();
+          let Title2 = S2Data.title.romaji;
+          let cover2 = S2Data.coverImage.large;
+          let hGenres2 = S2Data.genres.toString();
+          let averageScore2 = S2Data.averageScore;
+          let hStatus2 = S2Data.status.toLowerCase();
+          let description2 = S2Data.description;
+          let URL2 = S2Data.siteUrl;
+
+          let startDate2 = S2Data.startDate;
+          let endDate2 = S2Data.endDate;
+
+          let sYear2 = startDate2.year;
+          let sMonth2 = startDate2.month;
+          let sDay2 = startDate2.day;
+
+          let eYear2 = endDate2.year;
+          let eMonth2 = endDate2.month;
+          let eDay2 = endDate2.day;
+
+          var sDate2 = sYear2 + "-" + sMonth2 + "-" + sDay2;
+          var eDate2 = eYear2 + "-" + eMonth2 + "-" + eDay2;
+
+          if (sYear2 == null) {
+            sDate2 = "Hasn't Released Yet"
+          }
+
+          if (eYear2 == null) {
+            eDate2 = "Hasn't Ended Yet"
+          }
+
+          let ffDesc2 = description2.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
+
+          let source2 = hSource2.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter of each word capitalized, even if there is a space
+          let status2 = hStatus2.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter of each word capitalized, even if there is a space
+
+          let genres2 = hGenres2.replace(/,/g, ", ");
+
+          // This part here limits the amount of letter's it displays. It does not cut off words
+          let trimmedString2 = shorten(ffDesc2, 350);
+
+          const Series2Embed = new Discord.MessageEmbed()
+            .setColor('RANDOM')
+            .setTitle(Title2)
+            .setURL(URL2)
+            .setThumbnail(cover2)
+            .addFields(
+              { name: 'Average Score', value: averageScore2 + "%", inline: true },
+              { name: 'Status', value: status2, inline: true },
+              { name: 'Source', value: source2, inline: true },
+              { name: 'Genres', value: genres2, },
+              { name: 'Start Date', value: sDate2, inline: true },
+              { name: 'End Date', value: eDate2, inline: true },
+              { name: 'Description', value: trimmedString2 }
+            )
+
+          const pages = [
+            Series1Embed,
+            Series2Embed
+          ]
+          const emojiList = [
+            "⬅️",
+            "➡️"
+          ];
+
+          paginationEmbed(message, pages, emojiList);
+
+        });
       });
     });
   }
