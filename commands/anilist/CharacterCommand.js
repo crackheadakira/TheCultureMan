@@ -22,6 +22,7 @@ module.exports = class ActivityCommand extends BaseCommand {
 
 
         Anilist.searchEntry.character(string, 1, 1).then(cData => {
+           try { // Badly formatted as I wrote this part here on phone
 
             let Ch = cData.characters;
             let ID = Ch.map(({ id }) => id);
@@ -50,6 +51,9 @@ module.exports = class ActivityCommand extends BaseCommand {
 
                 message.channel.send(embed)
             });
+      } catch (error) {
+        message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
+      }
         });
     }
 }
