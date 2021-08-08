@@ -96,6 +96,10 @@ module.exports = class MangaCommand extends BaseCommand {
               { name: 'Description', value: trimmedString }
             )
 
+          if (Data.pageInfo.hasNextPage == false) {
+            return message.channel.send(Series1Embed);
+          }
+
           Anilist.media.manga(S2ID).then(S2Data => {
 
             let hSource2 = S2Data.format.toLowerCase();

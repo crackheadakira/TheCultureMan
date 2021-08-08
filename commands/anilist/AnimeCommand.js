@@ -34,7 +34,7 @@ module.exports = class AnimeCommand extends BaseCommand {
 
         Anilist.media.anime(S1ID).then(S1Data => {
 
-          let hSource = S1Data.source.toLowerCase();
+          let hSource = S1Data.source;
           let Title = S1Data.title.romaji;
           let cover = S1Data.coverImage.large;
           let hGenres = S1Data.genres.toString();
@@ -89,6 +89,10 @@ module.exports = class AnimeCommand extends BaseCommand {
               { name: 'End Date', value: eDate, inline: true },
               { name: 'Description', value: trimmedString }
             )
+
+          if(Data.pageInfo.hasNextPage == false ) {
+          return message.channel.send(Series1Embed);
+          }
 
           Anilist.media.anime(S2ID).then(S2Data => {
 
@@ -162,7 +166,7 @@ module.exports = class AnimeCommand extends BaseCommand {
           });
         });
       } catch (error) {
-        message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
+        message.channel.send("Bot received an error. Maybe there was a grammatical mistake?" + error)
       }
     });
   }
