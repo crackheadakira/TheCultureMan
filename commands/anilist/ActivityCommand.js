@@ -85,8 +85,10 @@ module.exports = class ActivityCommand extends BaseCommand {
 
 
             var fText = text.toString();
-          fText = fText.replace(/[~!]/gi, '|'); // Makes spoiler tag's work in Discord
+          fText = fText.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
+          fText = fText.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
           fText = fText.replace(/~/gi, ''); // Removes the centering marks
+
 
           const embed = new Discord.MessageEmbed()
             .setURL(URL)
