@@ -19,22 +19,26 @@ module.exports = class UserCommand extends BaseCommand {
 
 
     Anilist.user.profile(string).then(data => {
+      try {
 
-      let userID = data.id;
-      let userName = data.name;
-      let userAvatar = data.avatar.large;
-      let userURL = data.siteUrl;
+        let userID = data.id;
+        let userName = data.name;
+        let userAvatar = data.avatar.large;
+        let userURL = data.siteUrl;
 
-      const embed = new Discord.MessageEmbed()
-        .setColor('RANDOM')
-        .setThumbnail(userAvatar)
-        .setTitle(userName)
-        .setURL(userURL)
-        .addFields(
-          { name: 'User ID', value: "This is the user's ID: " + userID },
-        )
+        const embed = new Discord.MessageEmbed()
+          .setColor('RANDOM')
+          .setThumbnail(userAvatar)
+          .setTitle(userName)
+          .setURL(userURL)
+          .addFields(
+            { name: 'User ID', value: "This is the user's ID: " + userID },
+          )
 
-      message.channel.send(embed)
+        message.channel.send(embed)
+      } catch (error) {
+        message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
+      }
     });
   }
 }

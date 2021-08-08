@@ -22,38 +22,42 @@ module.exports = class ActivityCommand extends BaseCommand {
 
 
         Anilist.searchEntry.staff(string, 1, 1).then(cData => {
+            try {
 
-            let Ch = cData.staff;
-            let ID = Ch.map(({ id }) => id);
-            let cID = parseInt(ID)
+                let Ch = cData.staff;
+                let ID = Ch.map(({ id }) => id);
+                let cID = parseInt(ID)
 
-            var staff = Ch.map(function (item) {
-                return item['name'];
-              });
-              let sName = staff.map(({ english }) => english);
+                var staff = Ch.map(function (item) {
+                    return item['name'];
+                });
+                let sName = staff.map(({ english }) => english);
 
-            Anilist.people.staff(cID).then(data => {
+                Anilist.people.staff(cID).then(data => {
 
-                let image = data.image.large;
-                let description = data.description;
-                let URL = data.siteUrl;
-                let favourites = data.favourites;
+                    let image = data.image.large;
+                    let description = data.description;
+                    let URL = data.siteUrl;
+                    let favourites = data.favourites;
 
-                favourites = parseInt(favourites);
+                    favourites = parseInt(favourites);
 
-                let fDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
-                fDesc = fDesc.replace(/[~!]/gi, '|'); // Makes spoiler tag's work in Discord
-                let fDescription = shorten(fDesc, 350);
+                    let fDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
+                    fDesc = fDesc.replace(/[~!]/gi, '|'); // Makes spoiler tag's work in Discord
+                    let fDescription = shorten(fDesc, 350);
 
-                const embed = new Discord.MessageEmbed()
-                    .setTitle(sName)
-                    .setURL(URL)
-                    .setThumbnail(image)
-                    .setDescription(fDescription)
-                    .setFooter(favourites + " Favourites")
+                    const embed = new Discord.MessageEmbed()
+                        .setTitle(sName)
+                        .setURL(URL)
+                        .setThumbnail(image)
+                        .setDescription(fDescription)
+                        .setFooter(favourites + " Favourites")
 
-                message.channel.send(embed)
-            });
+                    message.channel.send(embed);
+                });
+            } catch (error) {
+                message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
+            }
         });
     }
 }
