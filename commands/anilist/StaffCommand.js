@@ -14,9 +14,7 @@ module.exports = class ActivityCommand extends BaseCommand {
             return;
         }
 
-        function shorten(s, l) {
-            return (s.match(new RegExp(".{" + l + "}\\S*")) || [s])[0];
-        }
+        let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
         let string = message.content.replace("n.staff ", "");
 
@@ -43,9 +41,9 @@ module.exports = class ActivityCommand extends BaseCommand {
                     favourites = parseInt(favourites);
 
                     let fDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
-                    fText = fText.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
-                    fText = fText.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
-                    let fDescription = shorten(fDesc, 350);
+                    fDesc = fDesc.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
+                    fDesc = fDesc.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
+                    let fDescription = trimString(fDesc, 1024);
 
                     const embed = new Discord.MessageEmbed()
                         .setTitle(sName)

@@ -16,9 +16,7 @@ module.exports = class AnimeCommand extends BaseCommand {
       return;
     }
 
-    function shorten(s, l) {
-      return (s.match(new RegExp(".{" + l + "}\\S*")) || [s])[0];
-    }
+    let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
     let string = message.content.replace("n.anime ", "");
 
@@ -75,7 +73,7 @@ module.exports = class AnimeCommand extends BaseCommand {
           let genres = hGenres.replace(/,/g, ", ");
 
           // This part here limits the amount of letter's it displays. It does not cut off words
-          let trimmedString = shorten(ffDesc, 350);
+          let trimmedString = trimString(ffDesc, 1024);
 
           const Series1Embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
@@ -133,7 +131,7 @@ module.exports = class AnimeCommand extends BaseCommand {
             let genres2 = hGenres2.replace(/,/g, ", ");
 
             // This part here limits the amount of letter's it displays. It does not cut off words
-            let trimmedString2 = shorten(ffDesc2, 350);
+            let trimmedString2 = trimString(ffDesc2, 1024);
 
             const Series2Embed = new Discord.MessageEmbed()
               .setColor('RANDOM')
