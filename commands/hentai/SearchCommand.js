@@ -26,37 +26,32 @@ module.exports = class SearchCommand extends BaseCommand {
         }
 
         api.getID(number).json(data => {
+            try {
 
-            let hURL = data.url;
-            let hTitle = data.title.translated;
-            let hCover = data.images.cover;
-            let hTags = data.tag_table.tag;
-            let hArtist = data.tag_table.artist;
-            let hLanguage = data.tag_table.languages;
-            let hPages = data.number_pages;
+                let hURL = data.url;
+                let hTitle = data.title.translated;
+                let hCover = data.images.cover;
+                let hTags = data.tag_table.tag;
+                let hArtist = data.tag_table.artist;
+                let hLanguage = data.tag_table.languages;
+                let hPages = data.number_pages;
 
-            const wEmbed = new Discord.MessageEmbed()
-                .setTitle("This doujin goes against the Discord TOS")
-                .setDescription("Because it has the tags " + hTags)
+                const embed = new Discord.MessageEmbed()
+                    .setTitle(hTitle)
+                    .setURL(hURL)
+                    .setThumbnail(hCover)
+                    .setColor('RANDOM')
+                    .addFields(
+                        { name: 'Tags', value: hTags },
+                        { name: 'Artists', value: hArtist },
+                        { name: 'Page Count', value: hPages },
+                        { name: 'Language', value: hLanguage },
+                    )
 
-
-            if (hTags.toLowerCase().includes("loli") || hTags.toLowerCase().includes("beastiality") || hTags.toLowerCase().includes("torture") || hTags.toLowerCase().includes("minigirl") || hTags.toLowerCase().includes("lolicon") || hTags.toLowerCase().includes("blood") || hTags.toLowerCase().includes("shotacon") || hTags.toLowerCase().includes("shota") || hTags.toLowerCase().includes("guro") || hTags.toLowerCase().includes("cannibalism")) {
-                return message.channel.send(wEmbed);
+                message.channel.send(embed)
+            } catch (error) {
+                message.channel.send("One of these tags or more that this doujin has goes against Discord ToS");
             }
-
-            const embed = new Discord.MessageEmbed()
-                .setTitle(hTitle)
-                .setURL(hURL)
-                .setThumbnail(hCover)
-                .setColor('RANDOM')
-                .addFields(
-                    { name: 'Tags', value: hTags },
-                    { name: 'Artists', value: hArtist },
-                    { name: 'Page Count', value: hPages },
-                    { name: 'Language', value: hLanguage },
-                )
-
-            message.channel.send(embed)
         });
     }
 }

@@ -20,39 +20,36 @@ module.exports = class RandomCommand extends BaseCommand {
 
     let string = message.content.replace("n.random ", "");
 
+    api.IsDiscord = true;
+
     api.pRandSpecificTags("english " + string, data => { // The "english" exists to make sure that the doujin can't be in japanese. You can remove this if you want it to recommend all possible languages
+      try {
 
-      let hID = data.id;
-      let hURL = data.url;
-      let hTitle = data.title;
-      let hCover = data.cover;
-      let hTags = data.tags;
-      let hArtist = data.artist;
-      let hLanguage = data.language;
-      let hPages = data.pages;
+        let hURL = data.url;
+        let hTitle = data.title.translated;
+        let hCover = data.images.cover;
+        let hTags = data.tag_table.tag;
+        let hArtist = data.tag_table.artist;
+        let hLanguage = data.tag_table.languages;
+        let hPages = data.number_pages;
 
-      const wEmbed = new Discord.MessageEmbed()
-        .setTitle("This doujin goes against the Discord TOS")
-        .setDescription("Because it has the tags " + hTags)
+        const embed = new Discord.MessageEmbed()
+          .setTitle(hTitle)
+          .setURL(hURL)
+          .setThumbnail(hCover)
+          .setColor('RANDOM')
+          .addFields(
+            { name: 'ID', value: hID },
+            { name: 'Tags', value: hTags },
+            { name: 'Artists', value: hArtist },
+            { name: 'Page Count', value: hPages },
+            { name: 'Language', value: hLanguage },
+          )
 
-      if (hTags.toLowerCase().includes("loli") || hTags.toLowerCase().includes("beastiality") || hTags.toLowerCase().includes("torture") || hTags.toLowerCase().includes("minigirl") || hTags.toLowerCase().includes("lolicon") || hTags.toLowerCase().includes("blood") || hTags.toLowerCase().includes("shotacon") || hTags.toLowerCase().includes("shota") || hTags.toLowerCase().includes("guro") || hTags.toLowerCase().includes("cannibalism")) {
-        return message.channel.send(wEmbed);
+        message.channel.send(embed)
+      } catch (error) {
+        message.channel.send("One of these tags or more that this doujin has goes against Discord ToS");
       }
-
-      const embed = new Discord.MessageEmbed()
-        .setTitle(hTitle)
-        .setURL(hURL)
-        .setThumbnail(hCover)
-        .setColor('RANDOM')
-        .addFields(
-          { name: 'ID', value: hID },
-          { name: 'Tags', value: hTags },
-          { name: 'Artists', value: hArtist },
-          { name: 'Page Count', value: hPages },
-          { name: 'Language', value: hLanguage },
-        )
-
-      message.channel.send(embed)
     });
   }
 }
