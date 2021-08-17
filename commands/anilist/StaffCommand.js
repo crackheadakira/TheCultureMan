@@ -4,7 +4,7 @@ const settings = require('./anitoken.json');
 const anilist = require('anilist-node');
 const Anilist = new anilist(settings.token);
 
-module.exports = class ActivityCommand extends BaseCommand {
+module.exports = class StaffCommand extends BaseCommand {
     constructor() {
         super('staff', 'anilist', []);
     }
