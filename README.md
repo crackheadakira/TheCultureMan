@@ -61,3 +61,4 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 
 - ~~n.random by tag~~ __DONE__
 - ~~Anilist Support~~ __DONE__
+- Update bot to Discord.JS v13
