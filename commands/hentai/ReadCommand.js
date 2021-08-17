@@ -42,8 +42,7 @@ module.exports = class ReadCommand extends BaseCommand {
           .setImage(pages)
           .setColor('RANDOM')
           .setFooter("Page " + pn + " of " + hPageCount)
-
-
+          .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
         message.channel.send(embed).then(m => {
 

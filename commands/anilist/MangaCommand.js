@@ -95,6 +95,7 @@ module.exports = class MangaCommand extends BaseCommand {
               { name: 'End Date', value: eDate, inline: true },
               { name: 'Description', value: trimmedString }
             )
+            .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
           if (Data.pageInfo.hasNextPage == false) {
             return message.channel.send(Series1Embed);

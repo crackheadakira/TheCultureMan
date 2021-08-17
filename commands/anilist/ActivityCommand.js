@@ -84,7 +84,7 @@ module.exports = class ActivityCommand extends BaseCommand {
 
 
 
-            var fText = text.toString();
+          var fText = text.toString();
           fText = fText.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
           fText = fText.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
           fText = fText.replace(/~/gi, ''); // Removes the centering marks
@@ -96,6 +96,7 @@ module.exports = class ActivityCommand extends BaseCommand {
             .setDescription(fText)
             .setFooter(likeCount + " Likes")
             .setThumbnail(userAvatar)
+            .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
           if (hType.toLowerCase().includes("anime_list") || hType.toLowerCase().includes("manga_list")) {
             return message.channel.send(activityList);

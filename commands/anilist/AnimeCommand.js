@@ -89,6 +89,7 @@ module.exports = class AnimeCommand extends BaseCommand {
               { name: 'End Date', value: eDate, inline: true },
               { name: 'Description', value: trimmedString }
             )
+            .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
           if(Data.pageInfo.hasNextPage == false ) {
           return message.channel.send(Series1Embed);
@@ -151,6 +152,7 @@ module.exports = class AnimeCommand extends BaseCommand {
                 { name: 'End Date', value: eDate2, inline: true },
                 { name: 'Description', value: trimmedString2 }
               )
+              .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
             const pages = [
               Series1Embed,
@@ -165,8 +167,9 @@ module.exports = class AnimeCommand extends BaseCommand {
 
           });
         });
+
       } catch (error) {
-        message.channel.send("Bot received an error. Maybe there was a grammatical mistake?" + error)
+        message.channel.send("Bot received an error. Maybe there was a grammatical mistake? " + error)
       }
     });
   }

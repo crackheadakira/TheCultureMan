@@ -47,6 +47,7 @@ module.exports = class SearchCommand extends BaseCommand {
                         { name: 'Page Count', value: hPages },
                         { name: 'Language', value: hLanguage },
                     )
+                    .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
                 message.channel.send(embed)
             } catch (error) {

@@ -46,6 +46,7 @@ module.exports = class ActivityCommand extends BaseCommand {
                         .setURL(URL)
                         .setThumbnail(image)
                         .setDescription(fDescription)
+                        .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
                     message.channel.send(embed)
                 });

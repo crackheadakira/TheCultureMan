@@ -8,7 +8,7 @@ module.exports = class RandomCommand extends BaseCommand {
     super('random', 'hentai', []);
   }
 
-  run(client, message, args) {
+  async run(client, message, args) {
     if (!message.content.startsWith('n.random')) {
       return;
     }
@@ -25,6 +25,7 @@ module.exports = class RandomCommand extends BaseCommand {
     api.pRandSpecificTags("english " + string, data => { // The "english" exists to make sure that the doujin can't be in japanese. You can remove this if you want it to recommend all possible languages
       try {
 
+
         let hURL = data.url;
         let hTitle = data.title.translated;
         let hCover = data.images.cover;
@@ -32,6 +33,8 @@ module.exports = class RandomCommand extends BaseCommand {
         let hArtist = data.tag_table.artist;
         let hLanguage = data.tag_table.languages;
         let hPages = data.number_pages;
+        let hID = data.id;
+
 
         const embed = new Discord.MessageEmbed()
           .setTitle(hTitle)
@@ -45,11 +48,14 @@ module.exports = class RandomCommand extends BaseCommand {
             { name: 'Page Count', value: hPages },
             { name: 'Language', value: hLanguage },
           )
+          .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
-        message.channel.send(embed)
+        message.channel.send(embed);
+
       } catch (error) {
         message.channel.send("One of these tags or more that this doujin has goes against Discord ToS");
       }
+
     });
   }
 }

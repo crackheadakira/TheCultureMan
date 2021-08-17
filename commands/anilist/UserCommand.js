@@ -76,6 +76,7 @@ module.exports = class UserCommand extends BaseCommand {
             { name: "Manga Read", value: mangaRead, inline: true },
             { name: "Chapters Read", value: mangaChapters, inline: true },
           )
+          .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
         const favouritesEmbed = new Discord.MessageEmbed()
           .setTitle(userName + "'s favourites")
@@ -85,6 +86,7 @@ module.exports = class UserCommand extends BaseCommand {
             { name: "Favourite Anime", value: aTitles },
             { name: "Favourite Manga", value: mTitles },
           )
+          .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
         const pages = [
           embed,

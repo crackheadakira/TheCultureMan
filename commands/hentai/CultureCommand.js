@@ -24,6 +24,7 @@ module.exports = class CultureCommand extends BaseCommand {
     const embed = new Discord.MessageEmbed()
       .setTitle("Here's an image/gif from our Handcrafted database!")
       .setImage(cam69)
+      .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
     message.channel.send(embed)
   }
