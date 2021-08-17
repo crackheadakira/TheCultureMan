@@ -41,10 +41,21 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 
 ### n.user
 
-```This will search the specified Anilist user and give you info about them.```
+```This will search for the specified Anilist user and give you info about them.```
 
 ### n.character
-```This will search the specified character and give you info about them.```
+```This will search for the specified character and give you info about them..```
+
+### n.staff
+```This will search for the specified staff and give you info about them.'```
+
+### n.studio
+```This will search for the specified studio and give you info about them.```
+
+## General Commands
+
+### n.imdb
+```This will search IMDB for the specified item and give you info about it.```
 
 ## Want to Do
 
