@@ -8,6 +8,11 @@ Yes you can, I'd like it if you credited me though. But you don't have to.
 ## Will you keep adding feautres?
 I try to add features that I deem possible for my current skill level, but it's also mostly that I don't have many ideas of what features to add.
 
+## Command Categories
+- Hentai
+- Anilist
+- General
+
 ## Want to Do
 
 - ~~n.random by tag~~ __DONE__
