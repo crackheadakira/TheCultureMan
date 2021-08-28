@@ -1,0 +1,30 @@
+{
+  "name": "thecultureman-v13",
+  "version": "1.0.0",
+  "description": "A bot made to learn Javascript, with mostly cultured features",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crackheadakira/TheCultureMan.git"
+  },
+  "author": "crackheadakira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crackheadakira/TheCultureMan/issues"
+  },
+  "homepage": "https://github.com/crackheadakira/TheCultureMan#readme",
+  "dependencies": {
+    "anilist-node": "^1.9.1",
+    "ascii-table": "^0.0.9",
+    "culture69": "^1.0.5",
+    "discord.js": "^13.1.0",
+    "discordv13-pagination": "^1.1.0",
+    "fs": "^0.0.1-security",
+    "imdb-api": "^4.4.1",
+    "kasu.nhentaiapi.js": "^2.9.2",
+    "mongoose": "^6.0.2"
+  }
+}
