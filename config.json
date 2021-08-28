@@ -1,0 +1,6 @@
+{
+    "token": "BOT TOKEN HERE",
+    "prefix": "PREFIX HERE",
+    "mongoDB": "mongodb://localhost:27017/mongodb_discord",
+    "anitoken": "GET ANILIST USER TOKEN AT https://anilist-token.glitch.me/"
+}
