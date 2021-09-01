@@ -49,58 +49,98 @@ module.exports = {
 
                     let hType = type.toString();
 
-                    if (hType.toLowerCase().includes("anime_list") || hType.toLowerCase().includes("manga_list")) {
-
-                        var Media = data.map(function (item) {
-                            return item['media'];
-                        });
-
-                        var MediaTitle = Media.map(function (item) {
-                            return item['title'];
-                        });
-
-                        let romajiTitle = MediaTitle.map(({ romaji }) => romaji);
-
-                        hStatus = hStatus.toString();
-
-                        let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
-
-
-                        const activityList = new MessageEmbed()
-                            .setURL(URL)
-                            .setTitle("Here's " + userName.toString() + "'s most recent activity!")
-                            .setThumbnail(userAvatar)
-                            .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
-                            .addFields(
-                                { name: status.toString() + progress.toString(), value: romajiTitle.toString() }
-                            )
-
-                        return message.channel.send({ embeds: [activityList] });
-                    } else
-
-                        var fText = text.toString();
-                    fText = fText.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
-                    fText = fText.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
-                    fText = fText.replace(/~/gi, ''); // Removes the centering marks
-
-
-                    const embed = new MessageEmbed()
-                        .setURL(URL)
-                        .setTitle("Here's " + userName + "'s most recent activity!")
-                        .setDescription(fText)
-                        .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
-                        .setThumbnail(userAvatar)
+                    let media = data.map(function (item) {
+                        return item['media'];
+                    });
 
                     if (hType.toLowerCase().includes("message")) {
                         return message.channel.send("This user's most recent activity is unsupported.");
-                    } else
-                        message.channel.send({ embeds: [embed] })
+                    } else if (hType.includes('TEXT')) {
+
+                        var fText = text.toString();
+                        fText = fText.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
+                        fText = fText.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
+                        fText = fText.replace(/~/gi, ''); // Removes the centering marks
+
+                        const embed = new MessageEmbed()
+                            .setURL(URL)
+                            .setTitle("Here's " + userName + "'s most recent activity!")
+                            .setDescription(fText)
+                            .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
+                            .setThumbnail(userAvatar)
+
+                        return message.channel.send({ embeds: [embed] });
+                    } else if (hType.toLowerCase().includes("anime_list") || hType.toLowerCase().includes("manga_list")) {
+
+                        let mId = media.map(function (item) {
+                            return item['id'];
+                        });
+                        mId = parseInt(mId)
+
+                        if (hType.toLowerCase().includes("anime_list")) {
+                            Anilist.media.anime(mId).then(mData => {
+                                let animeCover = mData.coverImage.large;
+
+                                var Media = data.map(function (item) {
+                                    return item['media'];
+                                });
+
+                                var MediaTitle = Media.map(function (item) {
+                                    return item['title'];
+                                });
+
+                                let romajiTitle = MediaTitle.map(({ romaji }) => romaji);
+
+                                hStatus = hStatus.toString();
+
+                                let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+
+                                const animeList = new MessageEmbed()
+                                    .setURL(URL)
+                                    .setTitle("Here's " + userName.toString() + "'s most recent activity!")
+                                    .setThumbnail(animeCover)
+                                    .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
+                                    .addFields(
+                                        { name: `${status.toString()} ${progress.toString()}`, value: romajiTitle.toString() }
+                                    )
+                                return message.channel.send({ embeds: [animeList] })
+                            });
+                        } else if (hType.toLowerCase().includes("manga_list")) {
+                            Anilist.media.manga(mId).then(mData => {
+                                let mangaCover = mData.coverImage.large;
+
+                                var Media = data.map(function (item) {
+                                    return item['media'];
+                                });
+
+                                var MediaTitle = Media.map(function (item) {
+                                    return item['title'];
+                                });
+
+                                let romajiTitle = MediaTitle.map(({ romaji }) => romaji);
+
+                                hStatus = hStatus.toString();
+
+                                let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+
+                                const mangaList = new MessageEmbed()
+                                    .setURL(URL)
+                                    .setTitle("Here's " + userName.toString() + "'s most recent activity!")
+                                    .setThumbnail(mangaCover)
+                                    .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
+                                    .addFields(
+                                        { name: `${status.toString()} ${progress.toString()}`, value: romajiTitle.toString() }
+                                    )
+
+                                return message.channel.send({ embeds: [mangaList] });
+                            });
+                        }
+                    }
                 });
             } catch (error) {
                 message.channel.send("Bot received an error. Maybe there was a grammatical mistake?");
                 console.log(error);
             }
         });
-
     }
 }
