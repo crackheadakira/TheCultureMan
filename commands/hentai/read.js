@@ -34,13 +34,18 @@ module.exports = {
                 let pages = ("https://i.nhentai.net/galleries/" + hPID + "/" + pn + ".jpg"); // Combies the extracted digits with the url and then the page it's on to make an Image URL that is acceptable
                 let hTitle = data.title.translated;
 
+                let bannedTags = /lolicon|shotacon|beastiality|torture|minigirl|blood|guro|cannibalism|shota|loli/;
+                if(bannedTags.test(hTags)){
+                    message.channel.send("One of these tags or more that this doujin has goes against Discord ToS");
+                    return;
+                }
+
                 const embed = new MessageEmbed()
                     .setURL(hURL)
                     .setTitle(hTitle)
                     .setImage(pages)
                     .setColor('RANDOM')
                     .setFooter("Page " + pn + " of " + hPageCount + " | " + "Requested by " + message.author.username)
-                    .setAuthor("Requested by " + message.author.username)
 
                 message.channel.send({ embeds: [embed] }).then(m => {
 
@@ -60,21 +65,16 @@ module.exports = {
 
                         if (name === '⬅️') {
 
-                            m.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-                            m.react('⬅️')
-                            m.react('➡️')
+                            //m.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
+                            reaction.users.remove(message.author);
 
                             --pn;
 
                             var pages = ("https://i.nhentai.net/galleries/" + hPID + "/" + pn + ".jpg");
 
                             const embed = new MessageEmbed()
-                                .setURL(hURL)
-                                .setTitle(hTitle)
                                 .setImage(pages)
-                                .setColor('RANDOM')
                                 .setFooter("Page " + pn + " of " + hPageCount + " | " + "Requested by " + message.author.username)
-                                .setAuthor("Requested by " + message.author.username)
 
                             m.edit({ embeds: [embed] });
 
@@ -83,21 +83,16 @@ module.exports = {
 
                         else if (name === '➡️') {
 
-                            m.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-                            m.react('⬅️')
-                            m.react('➡️')
+                            //m.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
+                            reaction.users.remove(message.author);
 
                             ++pn;
 
                             var pages = ("https://i.nhentai.net/galleries/" + hPID + "/" + pn + ".jpg");
 
                             const embed = new MessageEmbed()
-                                .setURL(hURL)
-                                .setTitle(hTitle)
                                 .setImage(pages)
-                                .setColor('RANDOM')
                                 .setFooter("Page " + pn + " of " + hPageCount + " | " + "Requested by " + message.author.username)
-                                .setAuthor("Requested by " + message.author.username)
 
                             m.edit({ embeds: [embed] });
 

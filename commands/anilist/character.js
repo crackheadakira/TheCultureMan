@@ -39,9 +39,8 @@ module.exports = {
 
                     description = description.toString();
                     let fDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
-                    fDesc = fDesc.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
-                    fDesc = fDesc.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
-                    let fDescription = trimString(fDesc, 1024);
+                    fDesc = fDesc.replace(new RegExp('!~|~!', 'gi'), '||') // Makes spoiler tag's work in Discord
+                    let fDescription = trimString(fDesc, 4096);
 
                     const embed = new MessageEmbed()
                         .setTitle(name)

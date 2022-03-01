@@ -53,8 +53,25 @@ module.exports = {
                         return item['media'];
                     });
 
-                    if (hType.toLowerCase().includes("message")) {
-                        return message.channel.send("This user's most recent activity is unsupported.");
+                    if (hType.includes("MESSAGE")) {
+    
+                        var m1 = data.map(function (item) {
+                            return item['message'];
+                        });
+                        
+                        var fText = m1.toString();
+                        fText = fText.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
+                        fText = fText.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
+                        fText = fText.replace(/~/gi, ''); // Removes the centering marks
+
+                        const embed = new MessageEmbed()
+                            .setURL(URL)
+                            .setTitle(`${userName} was sent a message`)
+                            .setDescription(fText)
+                            .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
+                            .setThumbnail(userAvatar)
+
+                        return message.channel.send({ embeds: [embed] });
                     } else if (hType.includes('TEXT')) {
 
                         var fText = text.toString();
@@ -64,9 +81,9 @@ module.exports = {
 
                         const embed = new MessageEmbed()
                             .setURL(URL)
-                            .setTitle("Here's " + userName + "'s most recent activity!")
+                            .setTitle(`Here's ${userName.toString()}'s most recent activity!`)
                             .setDescription(fText)
-                            .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
+                            .setFooter(`Requested by ${message.author.username} | ${likeCount} likes`)
                             .setThumbnail(userAvatar)
 
                         return message.channel.send({ embeds: [embed] });
@@ -97,9 +114,9 @@ module.exports = {
 
                                 const animeList = new MessageEmbed()
                                     .setURL(URL)
-                                    .setTitle("Here's " + userName.toString() + "'s most recent activity!")
+                                    .setTitle(`Here's ${userName.toString()}'s most recent activity!`)
                                     .setThumbnail(animeCover)
-                                    .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
+                                    .setFooter(`Requested by ${message.author.username} | ${likeCount} likes`)
                                     .addFields(
                                         { name: `${status.toString()} ${progress.toString()}`, value: romajiTitle.toString() }
                                     )
@@ -125,9 +142,9 @@ module.exports = {
 
                                 const mangaList = new MessageEmbed()
                                     .setURL(URL)
-                                    .setTitle("Here's " + userName.toString() + "'s most recent activity!")
+                                    .setTitle(`Here's ${userName.toString()}'s most recent activity!`)
                                     .setThumbnail(mangaCover)
-                                    .setFooter("Requested by " + message.author.username + " | " + likeCount + " Likes")
+                                    .setFooter(`Requested by ${message.author.username} | ${likeCount} likes`)
                                     .addFields(
                                         { name: `${status.toString()} ${progress.toString()}`, value: romajiTitle.toString() }
                                     )

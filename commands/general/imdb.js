@@ -12,47 +12,47 @@ module.exports = {
 
         let string = message.content.replace("n.imdb ", "");
 
+        (async () => {
+            cli.get({ name: string }).then(data => {
+                try {
 
-        cli.get({ name: string }).then(data => {
-            try {
-
-                let title = data.title;
-                let releaseYear = data.released;
-                let description = data.plot;
-                let cover = data.poster;
-                let score = data.rating;
-                let runtime = data.runtime;
-                let genres = data.genres;
-                let URL = data.imdburl;
-
-
-                releaseYear = releaseYear.toISOString().slice(0, 10);
-                runtime = runtime.toString();
-                score = score.toString();
-
-                let trimmedString = trimString(description, 1024);
+                    let title = data.title;
+                    let releaseYear = data.released;
+                    let description = data.plot;
+                    let cover = data.poster;
+                    let score = data.rating;
+                    let runtime = data.runtime;
+                    let genres = data.genres;
+                    let URL = data.imdburl;
 
 
-                const embed = new MessageEmbed()
-                    .setDescription(trimmedString)
-                    .setTitle(title)
-                    .setURL(URL)
-                    .setThumbnail(cover)
-                    .addFields(
-                        { name: "Score", value: score, inline: true },
-                        { name: "Runtime", value: runtime, inline: true },
-                        { name: "Release Date", value: releaseYear, inline: true },
-                        { name: "Genres", value: genres, inline: false },
-                    )
-                    .setFooter("Requested by " + message.author.username)
+                    releaseYear = releaseYear.toISOString().slice(0, 10);
+                    runtime = runtime.toString();
+                    score = score.toString();
 
-                message.channel.send({ embeds: [embed] });
+                    let trimmedString = trimString(description, 4096);
 
-            } catch (error) {
-                message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
-                console.log("Here's the error: " + error)
-            }
+
+                    const embed = new MessageEmbed()
+                        .setDescription(trimmedString)
+                        .setTitle(title)
+                        .setURL(URL)
+                        .setThumbnail(cover)
+                        .addFields(
+                            { name: "Score", value: score, inline: true },
+                            { name: "Runtime", value: runtime, inline: true },
+                            { name: "Release Date", value: releaseYear, inline: true },
+                            { name: "Genres", value: genres, inline: false },
+                        )
+                        .setFooter("Requested by " + message.author.username)
+
+                    message.channel.send({ embeds: [embed] });
+
+                } catch (e) {
+                    message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
+                    console.log("Here's the error: " + error)
+                }
+            });
         });
-
     }
 }

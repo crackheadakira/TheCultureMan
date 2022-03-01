@@ -21,7 +21,7 @@ module.exports = {
         if (argz.length === 1) {
             const anilistCheck = await AnilistSchema.findOne({ userId: message.author.id });
             if (anilistCheck) {
-            string = anilistCheck.anilistName;
+                string = anilistCheck.anilistName;
             } else {
                 string = message.content.replace("n.user ", "");
             }
@@ -98,14 +98,13 @@ module.exports = {
                     )
                     .setFooter("Requested by " + message.author.username)
 
-                    const pages = [embed, favouritesEmbed]
-                    reactionMenu(message, pages)
+                const pages = [embed, favouritesEmbed]
+                reactionMenu(message, pages)
 
             } catch (error) {
                 message.channel.send("There was an error or either you haven't set your Anilist user, set it using n.setuser.")
                 console.log("Here's the error: " + error)
             }
         });
-
     }
 }

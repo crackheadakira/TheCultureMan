@@ -14,9 +14,9 @@ module.exports = {
             const anilistID = await Anilist.findOne({ userId: DiscordID });
             const anilistNAME = await Anilist.findOne({ anilistName: UserName });
             if (anilistID) {
-                message.channel.send("You've already set an username.")
+                return message.channel.send("You've already set an username.");
             } else if (anilistNAME) {
-                message.channel.send(`<@${anilistNAME.userId}> is already using this username`)
+                return message.channel.send(`<@${anilistNAME.userId}> is already using this username`);
             } else {
 
                 const anilist = await Anilist.create({

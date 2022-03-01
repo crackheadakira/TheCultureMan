@@ -2,7 +2,6 @@ const { MessageEmbed } = require('discord.js');
 const API = require('kasu.nhentaiapi.js');
 const api = new API();
 
-
 module.exports = {
     name: 'random',
     description: 'This will give you a random doujin from nHentai.',
@@ -19,7 +18,6 @@ module.exports = {
 
         let string = message.content.replace("n.random ", "");
 
-        api.IsDiscord = true;
 
         api.pRandSpecificTags("english " + string, data => { // The "english" exists to make sure that the doujin can't be in japanese. You can remove this if you want it to recommend all possible languages
             try {
@@ -33,6 +31,12 @@ module.exports = {
                 let hLanguage = data.tag_table.languages;
                 let hPages = data.number_pages;
                 let hID = data.id;
+
+                let bannedTags = /lolicon|shotacon|beastiality|torture|minigirl|blood|guro|cannibalism|shota|loli/;
+                if(bannedTags.test(hTags)){
+                    message.channel.send("One of these tags or more that this doujin has goes against Discord ToS");
+                    return;
+                }
 
 
                 const embed = new MessageEmbed()

@@ -8,10 +8,6 @@ module.exports = {
     description: "This will search Anilist for the specified Manga and give you info about it.",
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith('n.manga')) {
-            return;
-        }
-
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
         let string = message.content.replace("n.manga ", "");
@@ -63,7 +59,12 @@ module.exports = {
                         description = "No description exists as of now."
                     }
 
-                    let ffDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
+                    let ffDesc = description
+                    .replace(/<br><br>/g, "\n")
+                    .replace(/<br>/g, "\n")
+                    .replace(/<[^>]+>/g, "")
+                    .replace(/&nbsp;/g, " ")
+                    .replace(/\n\n/g, "\n") || "No description available.";
 
                     let format = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
                     let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
@@ -71,14 +72,14 @@ module.exports = {
                     let genres = hGenres.replace(/,/g, ", ");
 
                     // This part here limits the amount of letter's it displays. It does not cut off words
-                    let trimmedString = trimString(ffDesc, 1024);
+                    let trimmedString = trimString(ffDesc, 4096);
 
                     const embed = new MessageEmbed()
                         .setColor('RANDOM')
                         .setTitle(Title)
                         .setURL(URL)
                         .setThumbnail(cover)
-                        .setDescription('**Genres: **' + genres)
+                        .setDescription(trimmedString)
                         .addFields(
                             { name: 'Average Score', value: averageScore + "%", inline: true },
                             { name: 'Status', value: status, inline: true },
@@ -86,7 +87,6 @@ module.exports = {
                             { name: 'Genres', value: genres, },
                             { name: 'Start Date', value: sDate, inline: true },
                             { name: 'End Date', value: eDate, inline: true },
-                            { name: 'Description', value: trimmedString }
                         )
                         .setFooter("Requested by " + message.author.username, message.author.avatarURL())
 

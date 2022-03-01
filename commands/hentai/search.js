@@ -2,7 +2,6 @@ const { MessageEmbed } = require('discord.js');
 const API = require('kasu.nhentaiapi.js');
 const api = new API();
 
-
 module.exports = {
     name: 'search',
     description: 'This will search nHentai for the specified doujin using the ID and give you info about it.',
@@ -25,8 +24,9 @@ module.exports = {
             return;
         }
 
+
         api.getID(number).json(data => {
-            try {
+            try{
 
                 let hURL = data.url;
                 let hTitle = data.title.translated;
@@ -35,6 +35,13 @@ module.exports = {
                 let hArtist = data.tag_table.artist;
                 let hLanguage = data.tag_table.languages;
                 let hPages = data.number_pages;
+
+                let bannedTags = /lolicon|shotacon|beastiality|torture|minigirl|blood|guro|cannibalism|shota|loli/;
+                
+                if(bannedTags.test(hTags)){
+                    message.channel.send("One of these tags or more that this doujin has goes against Discord ToS");
+                    return;
+                }
 
                 const embed = new MessageEmbed()
                     .setTitle(hTitle)
@@ -50,6 +57,7 @@ module.exports = {
                     .setFooter(`Requested by ${message.author.username}`)
 
                 message.channel.send({ embeds: [embed] });
+                
 
             } catch (error) {
                 message.channel.send("One of these tags or more that this doujin has goes against Discord ToS");
