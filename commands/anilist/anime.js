@@ -1,149 +1,200 @@
-const anilist = require('anilist-node');
-const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist(process.env.anitoken);
+const { MessageEmbed, MessageButton } = require('discord.js');
+const GraphQLRequest = require("../../handlers/GraphQLRequest");
+const paginationEmbed = require('discordjs-button-pagination');
 
 module.exports = {
-    name: "anime",
-    description: "This will search Anilist for the specified Anime and give you info about it.",
-    run: async (client, message, args) => {
+  name: `anime`,
+  description: `This will search Anilist for the specified Anime and give you info about it.`,
+  run: async (client, message, args) => {
+    try {
 
-        if (!message.content.startsWith(`${process.env.prefix}anime`)) {
-            return;
-        }
+      let string = message.content.replace(`${process.env.prefix}anime `, ``);
+      let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
-        let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
+      if (string == `${process.env.prefix}anime`) {
+        message.channel.send("You forgot to mention an anime.")
+        return;
+      }
 
-        let string = message.content.replace(`${process.env.prefix}anime `, "");
+      const button1 = new MessageButton()
+        .setCustomId('previousbtn')
+        .setLabel('Previous')
+        .setStyle('DANGER');
 
-        Anilist.searchEntry.anime(string, null, 1, 1).then(Data => {
-            try {
+      const button2 = new MessageButton()
+        .setCustomId('nextbtn')
+        .setLabel('Next')
+        .setStyle('SUCCESS');
 
-                const getAge = (data, target) =>
-                    data.reduce((acc, obj) =>
-                        Math.abs(target - obj.age) < Math.abs(target - acc.age) ? obj : acc
-                    );
-
-                let Series1 = Data.media;
-
-                let S1FID = Series1.map(({ id }) => id);
-                var S1ID = parseInt(S1FID);
-
-                Anilist.media.anime(S1ID).then(S1Data => {
-                    console.log(S1Data)
-
-                    let hSource = S1Data.source;
-                    let Title = S1Data.title.romaji;
-                    let cover = S1Data.coverImage.large;
-                    let hGenres = S1Data.genres.toString();
-                    let averageScore = S1Data.averageScore;
-                    let hStatus = S1Data.status.toLowerCase();
-                    let description = S1Data.description;
-                    let URL = S1Data.siteUrl;
-
-                    let airz = S1Data.airingSchedule;
-                    var timez = airz.map(function (item) {
-                        return item['timeUntilAiring'];
-                    });
-
-                    let startDate = S1Data.startDate;
-                    let endDate = S1Data.endDate;
-
-                    let sYear = startDate.year;
-                    let sMonth = startDate.month;
-                    let sDay = startDate.day;
-
-                    let eYear = endDate.year;
-                    let eMonth = endDate.month;
-                    let eDay = endDate.day;
-
-                    var sDate = sYear + "-" + sMonth + "-" + sDay;
-                    var eDate = eYear + "-" + eMonth + "-" + eDay;
-
-                    if (sYear == null) {
-                        sDate = "Hasn't Released Yet"
-                    }
-
-                    if (eYear == null) {
-                        eDate = "Hasn't Ended Yet"
-                    }
-
-                    let ffDesc = description
-                        .replace(/<br><br>/g, "\n")
-                        .replace(/<br>/g, "\n")
-                        .replace(/<[^>]+>/g, "")
-                        .replace(/&nbsp;/g, " ")
-                        .replace(/\n\n/g, "\n") || "No description available.";
-
-                    if(!hSource){
-                        message.channel.send("You forgot to add mention an anime.")
-                        return;
-                    }
-                    hSource = hSource.toString();
-                    hStatus = hStatus.toString();
-                    let source = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter of each word capitalized, even if there is a space
-                    let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter of each word capitalized, even if there is a space
-
-                    let genres = hGenres.replace(/,/g, ", ");
-
-                    // This part here limits the amount of letter's it displays. It does not cut off words
-                    let trimmedString = trimString(ffDesc, 4096);
-
-                    let boy = /Finished|Cancelled|Hiatus/;
-
-                    if (boy.test(status)) {
-
-                        const embed = new MessageEmbed()
-                            .setDescription(trimmedString)
-                            .setColor('RANDOM')
-                            .setTitle(Title)
-                            .setURL(URL)
-                            .setThumbnail(cover)
-                            .addFields(
-                                { name: 'Start Date', value: sDate, inline: true },
-                                { name: 'End Date', value: eDate, inline: true },
-                                { name: 'Average Score', value: averageScore + "%", inline: true },
-                                { name: 'Status', value: status.toString(), inline: true },
-                                { name: 'Source', value: source, inline: true },
-                                { name: 'Genres', value: genres, },
-                            )
-                            .setFooter("Requested by " + message.author.username, message.author.avatarURL())
-
-                        message.channel.send({ embeds: [embed] })
-
-                        return;
-                    }
-
-                    timeS = getAge(timez.filter(function (x) { return x > -1 }), 0);
-                    var currentDate = new Date();
-                    var datez = new Date(currentDate.getTime() + timeS * 1000).toLocaleString('en-GB', { timeZone: 'UTC' });
-
-                    const embed = new MessageEmbed()
-                        .setDescription(trimmedString)
-                        .setColor('RANDOM')
-                        .setTitle(Title)
-                        .setURL(URL)
-                        .setThumbnail(cover)
-                        .addFields(
-                            { name: 'Start Date', value: sDate, inline: true },
-                            { name: 'End Date', value: eDate, inline: true },
-                            { name: 'Average Score', value: averageScore + "%", inline: true },
-                            { name: 'Status', value: status.toString(), inline: true },
-                            { name: 'Source', value: source, inline: true },
-                            { name: 'Next Episode', value: `Next episode airs at ${datez}`, inline: true },
-                            { name: 'Genres', value: genres, },
-                        )
-                        .setFooter("Requested by " + message.author.username, message.author.avatarURL())
-
-                    message.channel.send({ embeds: [embed] })
-
-                });
-            } catch (error) {
-                message.channel.send("Bot received an error. Maybe there was a grammatical mistake? ");
-                console.log();
+      var query = `
+        query ($search: String, $page: Int, $perPage: Int) {
+            Page(page: $page, perPage: $perPage) {
+              media(search: $search, type: ANIME, sort: POPULARITY_DESC) {
+                source
+                title {
+                  english
+                  romaji
+                  native
+                }
+                coverImage {
+                  large
+                }
+                bannerImage
+                genres
+                averageScore
+                favourites
+                status
+                description(asHtml: false)
+                siteUrl
+                nextAiringEpisode {
+                  airingAt
+                  episode
+                }
+                startDate {
+                  year
+                  month
+                  day
+                }
+                endDate {
+                  year
+                  month
+                  day
+                }
+              }
             }
+          }
+`;
+
+      var vars = {
+        search: string,
+        page: 1,
+        perPage: 3
+      };
+
+      GraphQLRequest(query, vars)
+        .then((yeezies) => {
+          let data = yeezies.Page;
+
+          let S1description = data.media[0].description.toString()
+            ?.replace(/<br><br>/g, "\n")
+            .replace(/<br>/g, "\n")
+            .replace(/<[^>]+>/g, "")
+            .replace(/&nbsp;/g, " ")
+            .replace(/\n\n/g, "\n") || "No description avsailable.";
+
+          let S1source = data.media[0].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
+          let S1status = data.media[0].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+          let S1genres = data.media[0].genres.toString().replace(/,/g, ", ");
+          let S1trimmedString = trimString(S1description, 350);
+
+          const embed1 = new MessageEmbed()
+            .setDescription(S1trimmedString)
+            .setColor('RANDOM')
+            .setTitle(data.media[0].title.romaji.toString())
+            .setURL(data.media[0].siteUrl)
+            .setThumbnail(data.media[0].coverImage.large)
+            .setImage(data.media[0].bannerImage)
+            .addFields(
+              { name: 'Start Date', value: `${data.media[0].startDate.year}-${data.media[0].startDate.month}-${data.media[0].startDate.day}`, inline: true },
+              {
+                name: data?.media[0].nextAiringEpisode?.episode ? `Episode ${data.media[0].nextAiringEpisode.episode} airing in:` : "Ended on:",
+                value: data?.media[0].nextAiringEpisode?.airingAt ? `<t:${data.media[0].nextAiringEpisode.airingAt}:R>` : `${data.media[0].endDate.day}-${data.media[0].endDate.month}-${data.media[0].endDate.year}`, inline: true
+              },
+              { name: 'Average Score', value: `${data.media[0].averageScore}%`, inline: true },
+              { name: 'Status', value: S1status.toString(), inline: true },
+              { name: 'Source', value: S1source, inline: true },
+              { name: 'Favorites', value: data.media[0].favourites.toString(), inline: true },
+              { name: 'Genres', value: S1genres, },
+            )
+            .setFooter(`Requested by ${message.author.username}`)
+
+          if (!data.media[1]) {
+            message.channel.send({ embeds: [embed1] })
+            return;
+          }
+
+          let S2description = data.media[1].description.toString()
+            ?.replace(/<br><br>/g, "\n")
+            .replace(/<br>/g, "\n")
+            .replace(/<[^>]+>/g, "")
+            .replace(/&nbsp;/g, " ")
+            .replace(/\n\n/g, "\n") || "No description available.";
+
+          let S2source = data.media[1].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
+          let S2status = data.media[1].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+          let S2genres = data.media[1].genres.toString().replace(/,/g, ", ");
+          let S2trimmedString = trimString(S2description, 4096);
+
+          const embed2 = new MessageEmbed()
+            .setDescription(S2trimmedString)
+            .setColor('RANDOM')
+            .setTitle(data.media[1].title.romaji.toString())
+            .setURL(data.media[1].siteUrl)
+            .setThumbnail(data.media[1].coverImage.large)
+            .setImage(data.media[1].bannerImage)
+            .addFields(
+              { name: 'Start Date', value: `${data.media[1].startDate.year}-${data.media[1].startDate.month}-${data.media[1].startDate.day}`, inline: true },
+              {
+                name: data?.media[1].nextAiringEpisode?.episode ? `Episode ${data.media[1].nextAiringEpisode.episode} airing in:` : "Ended on:",
+                value: data?.media[1].nextAiringEpisode?.airingAt ? `<t:${data.media[1].nextAiringEpisode.airingAt}:R>` : `${data.media[1].endDate.day}-${data.media[1].endDate.month}-${data.media[1].endDate.year}`, inline: true
+              },
+              { name: 'Average Score', value: `${data.media[1].averageScore}%`, inline: true },
+              { name: 'Status', value: S2status.toString(), inline: true },
+              { name: 'Source', value: S2source, inline: true },
+              { name: 'Favorites', value: data.media[1].favourites.toString(), inline: true },
+              { name: 'Genres', value: S2genres, },
+            )
+            .setFooter(`Requested by ${message.author.username}`)
+
+          let S3description = data.media[2].description.toString()
+            ?.replace(/<br><br>/g, "\n")
+            .replace(/<br>/g, "\n")
+            .replace(/<[^>]+>/g, "")
+            .replace(/&nbsp;/g, " ")
+            .replace(/\n\n/g, "\n") || "No description available.";
+
+          let S3source = data.media[2].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
+          let S3status = data.media[2].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+          let S3genres = data.media[2].genres.toString().replace(/,/g, ", ");
+          let S3trimmedString = trimString(S3description, 4096);
+
+          if (!data.media[2]) {
+
+            const pages = [embed1, embed2]
+            const btnList = [button1, button2]
+            paginationEmbed(message, pages, btnList)
+
+            return;
+          }
+          const embed3 = new MessageEmbed()
+            .setDescription(S3trimmedString)
+            .setColor('RANDOM')
+            .setTitle(data.media[2].title.romaji.toString())
+            .setURL(data.media[2].siteUrl)
+            .setThumbnail(data.media[2].coverImage.large)
+            .setImage(data.media[2].bannerImage)
+            .addFields(
+              { name: 'Start Date', value: `${data.media[2].startDate.year}-${data.media[2].startDate.month}-${data.media[2].startDate.day}`, inline: true },
+              {
+                name: data?.media[2].nextAiringEpisode?.episode ? `Episode ${data.media[2].nextAiringEpisode.episode} airing in:` : "Ended on:",
+                value: data?.media[2].nextAiringEpisode?.airingAt ? `<t:${data.media[2].nextAiringEpisode.airingAt}:R>` : `${data.media[2].endDate.day}-${data.media[2].endDate.month}-${data.media[2].endDate.year}`, inline: true
+              },
+              { name: 'Average Score', value: `${data.media[2].averageScore}%`, inline: true },
+              { name: 'Status', value: S3status.toString(), inline: true },
+              { name: 'Source', value: S3source, inline: true },
+              { name: 'Favorites', value: data.media[2].favourites.toString(), inline: true },
+              { name: 'Genres', value: S3genres, },
+            )
+            .setFooter(`Requested by ${message.author.username}`)
+
+          const pages = [embed1, embed2, embed3]
+          const btnList = [button1, button2]
+          paginationEmbed(message, pages, btnList)
 
         });
-
-
+    } catch (error) {
+      message.channel.send("There was an error or either you haven't set your Anilist user, set it using n.setuser.")
+      console.log("Here's the error: " + error)
     }
+  }
 }
