@@ -1,8 +1,8 @@
 const anilist = require('anilist-node');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton } = require('discord.js');
 const Anilist = new anilist(process.env.anitoken);
 const AnilistSchema = require('../../schemas/AnilistSchema');
-const reactionMenu = require("discordv13-pagination")
+const paginationEmbed = require('discordjs-button-pagination');
 
 module.exports = {
     name: "user",
@@ -25,6 +25,16 @@ module.exports = {
                 string = message.content.replace(`${process.env}user `, "");
             }
         };
+
+        const button1 = new MessageButton()
+            .setCustomId('previousbtn')
+            .setLabel('Previous')
+            .setStyle('DANGER');
+
+        const button2 = new MessageButton()
+            .setCustomId('nextbtn')
+            .setLabel('Next')
+            .setStyle('SUCCESS');
 
 
         Anilist.user.all(string).then(data => {
@@ -98,7 +108,8 @@ module.exports = {
                     .setFooter("Requested by " + message.author.username)
 
                 const pages = [embed, favouritesEmbed]
-                reactionMenu(message, pages)
+                const btnList = [button1,button2]
+                paginationEmbed(message, pages, btnList)
 
             } catch (error) {
                 message.channel.send("There was an error or either you haven't set your Anilist user, set it using n.setuser.")

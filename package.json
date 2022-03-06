@@ -21,7 +21,7 @@
     "ascii-table": "^0.0.9",
     "culture69": "^1.0.5",
     "discord.js": "^13.6.0",
-    "discordv13-pagination": "^1.1.0",
+    "discordjs-button-pagination": "^1.0.7",
     "dotenv-flow": "^3.2.0",
     "fs": "^0.0.1-security",
     "imdb-api": "^4.4.1",
