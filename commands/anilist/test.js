@@ -89,22 +89,23 @@ module.exports = {
             .replace(/<[^>]+>/g, "")
             .replace(/&nbsp;/g, " ")
             .replace(/\n\n/g, "\n") || "No description available.";
-            
+
           let S1source = data.media[0].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
-          let S1status = data.media[0].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
-          let S1genres = data.media[0].genres.toString().replace(/,/g, ", ");
-
           let S2source = data.media[1].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
-          let S2status = data.media[1].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
-          let S2genres = data.media[1].genres.toString().replace(/,/g, ", ");
-
           let S3source = data.media[2].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
+
+          let S1status = data.media[0].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+          let S2status = data.media[1].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
           let S3status = data.media[2].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+
+          let S1genres = data.media[0].genres.toString().replace(/,/g, ", ");
+          let S2genres = data.media[1].genres.toString().replace(/,/g, ", ");
           let S3genres = data.media[2].genres.toString().replace(/,/g, ", ");
 
           let S1trimmedString = trimString(S1description, 4096);
           let S2trimmedString = trimString(S2description, 4096);
           let S3trimmedString = trimString(S3description, 4096);
+
           //var S1date = new Date(data.media[0].airingSchedule.airingAt * 1000).toLocaleString("en-GB", { timeZone: 'UTC' });
           //var S2date = new Date(data.media[1].airingSchedule.airingAt * 1000).toLocaleString("en-GB", { timeZone: 'UTC' });
           //var S3date = new Date(data.media[2].airingSchedule.airingAt * 1000).toLocaleString("en-GB", { timeZone: 'UTC' });
@@ -118,7 +119,10 @@ module.exports = {
             .setImage(data.media[0].bannerImage)
             .addFields(
               { name: 'Start Date', value: `${data.media[0].startDate.year}-${data.media[0].startDate.month}-${data.media[0].startDate.day}`, inline: true },
-              { name: 'End Date', value: `${data.media[0].endDate.year}-${data.media[0].endDate.month}-${data.media[0].endDate.day}`, inline: true },
+              {
+                name: data?.media[0].nextAiringEpisode?.episode ? `Episode ${data.media[0].nextAiringEpisode.episode} airing in:` : "Ended on:",
+                value: data?.media[0].nextAiringEpisode?.airingAt ? `<t:${data.media[0].nextAiringEpisode.airingAt}:R>` : `${data.media[0].endDate.day}-${data.media[0].endDate.month}-${data.media[0].endDate.year}`, inline: true
+              },
               { name: 'Average Score', value: `${data.media[0].averageScore}%`, inline: true },
               { name: 'Status', value: S1status.toString(), inline: true },
               { name: 'Source', value: S1source, inline: true },
@@ -127,7 +131,7 @@ module.exports = {
             )
             .setFooter(`Requested by ${message.author.username}`)
 
-            const embed2 = new MessageEmbed()
+          const embed2 = new MessageEmbed()
             .setDescription(S2trimmedString)
             .setColor('RANDOM')
             .setTitle(data.media[1].title.romaji.toString())
@@ -136,7 +140,10 @@ module.exports = {
             .setImage(data.media[1].bannerImage)
             .addFields(
               { name: 'Start Date', value: `${data.media[1].startDate.year}-${data.media[1].startDate.month}-${data.media[1].startDate.day}`, inline: true },
-              { name: 'End Date', value: `${data.media[1].endDate.year}-${data.media[1].endDate.month}-${data.media[1].endDate.day}`, inline: true },
+              {
+                name: data?.media[1].nextAiringEpisode?.episode ? `Episode ${data.media[1].nextAiringEpisode.episode} airing in:` : "Ended on:",
+                value: data?.media[1].nextAiringEpisode?.airingAt ? `<t:${data.media[1].nextAiringEpisode.airingAt}:R>` : `${data.media[1].endDate.day}-${data.media[1].endDate.month}-${data.media[1].endDate.year}`, inline: true
+              },
               { name: 'Average Score', value: `${data.media[1].averageScore}%`, inline: true },
               { name: 'Status', value: S2status.toString(), inline: true },
               { name: 'Source', value: S2source, inline: true },
@@ -145,7 +152,7 @@ module.exports = {
             )
             .setFooter(`Requested by ${message.author.username}`)
 
-            const embed3 = new MessageEmbed()
+          const embed3 = new MessageEmbed()
             .setDescription(S3trimmedString)
             .setColor('RANDOM')
             .setTitle(data.media[2].title.romaji.toString())
@@ -154,7 +161,10 @@ module.exports = {
             .setImage(data.media[2].bannerImage)
             .addFields(
               { name: 'Start Date', value: `${data.media[2].startDate.year}-${data.media[2].startDate.month}-${data.media[2].startDate.day}`, inline: true },
-              { name: 'End Date', value: `${data.media[2].endDate.year}-${data.media[2].endDate.month}-${data.media[2].endDate.day}`, inline: true },
+              {
+                name: data?.media[2].nextAiringEpisode?.episode ? `Episode ${data.media[2].nextAiringEpisode.episode} airing in:` : "Ended on:",
+                value: data?.media[2].nextAiringEpisode?.airingAt ? `<t:${data.media[2].nextAiringEpisode.airingAt}:R>` : `${data.media[2].endDate.day}-${data.media[2].endDate.month}-${data.media[2].endDate.year}`, inline: true
+              },
               { name: 'Average Score', value: `${data.media[2].averageScore}%`, inline: true },
               { name: 'Status', value: S3status.toString(), inline: true },
               { name: 'Source', value: S3source, inline: true },
