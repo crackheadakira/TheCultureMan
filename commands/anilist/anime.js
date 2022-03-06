@@ -29,6 +29,7 @@ module.exports = {
                 var S1ID = parseInt(S1FID);
 
                 Anilist.media.anime(S1ID).then(S1Data => {
+                    console.log(S1Data)
 
                     let hSource = S1Data.source;
                     let Title = S1Data.title.romaji;

@@ -19,6 +19,7 @@
   "dependencies": {
     "anilist-node": "^1.11.1",
     "ascii-table": "^0.0.9",
+    "axios": "^0.26.0",
     "culture69": "^1.0.5",
     "discord.js": "^13.6.0",
     "discordjs-button-pagination": "^1.0.7",
