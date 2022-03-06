@@ -74,7 +74,7 @@ module.exports = {
 
                             const embed = new MessageEmbed()
                                 .setImage(pages)
-                                .setFooter("Page " + pn + " of " + hPageCount + " | " + "Requested by " + message.author.username)
+                                .setFooter(`Page ${pn} of ${hPageCount} | Requested by ${message.author.username}`)
 
                             m.edit({ embeds: [embed] });
 
