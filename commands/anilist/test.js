@@ -37,6 +37,7 @@ module.exports = {
                 bannerImage
                 genres
                 averageScore
+                favourites
                 status
                 description(asHtml: false)
                 siteUrl
@@ -97,6 +98,7 @@ module.exports = {
               { name: 'Average Score', value: `${data.media[0].averageScore}%`, inline: true },
               { name: 'Status', value: S1status.toString(), inline: true },
               { name: 'Source', value: S1source, inline: true },
+              { name: 'Favorites', value: data.media[0].favourites.toString(), inline: true },
               { name: 'Genres', value: S1genres, },
             )
             .setFooter(`Requested by ${message.author.username}`)
@@ -106,16 +108,17 @@ module.exports = {
             return;
           }
 
-          let S2source = data.media[1].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
-          let S2status = data.media[1].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
-          let S2genres = data.media[1].genres.toString().replace(/,/g, ", ");
-          let S2trimmedString = trimString(S2description, 4096);
           let S2description = data.media[1].description.toString()
             ?.replace(/<br><br>/g, "\n")
             .replace(/<br>/g, "\n")
             .replace(/<[^>]+>/g, "")
             .replace(/&nbsp;/g, " ")
             .replace(/\n\n/g, "\n") || "No description available.";
+
+          let S2source = data.media[1].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
+          let S2status = data.media[1].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+          let S2genres = data.media[1].genres.toString().replace(/,/g, ", ");
+          let S2trimmedString = trimString(S2description, 4096);
 
           const embed2 = new MessageEmbed()
             .setDescription(S2trimmedString)
@@ -133,14 +136,10 @@ module.exports = {
               { name: 'Average Score', value: `${data.media[1].averageScore}%`, inline: true },
               { name: 'Status', value: S2status.toString(), inline: true },
               { name: 'Source', value: S2source, inline: true },
+              { name: 'Favorites', value: data.media[1].favourites.toString(), inline: true },
               { name: 'Genres', value: S2genres, },
             )
             .setFooter(`Requested by ${message.author.username}`)
-
-          let S3source = data.media[2].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
-          let S3status = data.media[2].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
-          let S3genres = data.media[2].genres.toString().replace(/,/g, ", ");
-          let S3trimmedString = trimString(S3description, 4096);
 
           let S3description = data.media[2].description.toString()
             ?.replace(/<br><br>/g, "\n")
@@ -148,6 +147,11 @@ module.exports = {
             .replace(/<[^>]+>/g, "")
             .replace(/&nbsp;/g, " ")
             .replace(/\n\n/g, "\n") || "No description available.";
+
+          let S3source = data.media[2].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
+          let S3status = data.media[2].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
+          let S3genres = data.media[2].genres.toString().replace(/,/g, ", ");
+          let S3trimmedString = trimString(S3description, 4096);
 
           if (!data.media[2]) {
 
@@ -173,6 +177,7 @@ module.exports = {
               { name: 'Average Score', value: `${data.media[2].averageScore}%`, inline: true },
               { name: 'Status', value: S3status.toString(), inline: true },
               { name: 'Source', value: S3source, inline: true },
+              { name: 'Favorites', value: data.media[2].favourites.toString(), inline: true },
               { name: 'Genres', value: S3genres, },
             )
             .setFooter(`Requested by ${message.author.username}`)
