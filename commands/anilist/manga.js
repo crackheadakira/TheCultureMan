@@ -1,7 +1,6 @@
-const settings = require('../../config.json');
 const anilist = require('anilist-node');
 const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist(settings.anitoken);
+const Anilist = new anilist(process.env.anitoken);
 
 module.exports = {
     name: "manga",
@@ -10,7 +9,7 @@ module.exports = {
 
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
-        let string = message.content.replace("n.manga ", "");
+        let string = message.content.replace(`${process.env.prefix}manga `, "");
 
 
         Anilist.searchEntry.manga(string, null, 1, 1).then(Data => {

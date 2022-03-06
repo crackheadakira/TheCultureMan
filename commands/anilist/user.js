@@ -1,7 +1,6 @@
-const settings = require('../../config.json');
 const anilist = require('anilist-node');
 const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist(settings.anitoken);
+const Anilist = new anilist(process.env.anitoken);
 const AnilistSchema = require('../../schemas/AnilistSchema');
 const reactionMenu = require("discordv13-pagination")
 
@@ -10,20 +9,20 @@ module.exports = {
     description: "This will search Anilist for the specified user and give you info about them.",
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith('n.user')) {
+        if (!message.content.startsWith(`${process.env.prefix}user`)) {
             return;
         }
 
         const argz = message.content.split(" ");
 
-        let string = message.content.replace("n.user ", "");
+        let string = message.content.replace(`${process.env.prefix}user `, "");
 
         if (argz.length === 1) {
             const anilistCheck = await AnilistSchema.findOne({ userId: message.author.id });
             if (anilistCheck) {
                 string = anilistCheck.anilistName;
             } else {
-                string = message.content.replace("n.user ", "");
+                string = message.content.replace(`${process.env}user `, "");
             }
         };
 

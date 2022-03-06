@@ -7,7 +7,7 @@ module.exports = {
     description: 'This will search nHentai for the specified doujin using the ID and give you info about it.',
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith('n.search')) {
+        if (!message.content.startsWith(`${process.env.prefix}search`)) {
             return;
         }
 
@@ -17,10 +17,10 @@ module.exports = {
         }
 
 
-        let number = message.content.replace("n.search ", "");
+        let number = message.content.replace(`${process.env.prefix}search `, "");
 
         if (isNaN(number)) {
-            message.reply("Usage: n.search <ID> where <ID> is the nHentai.net ID");
+            message.reply(`Usage: ${process.env.prefix}search <ID> where <ID> is the nHentai.net ID`);
             return;
         }
 

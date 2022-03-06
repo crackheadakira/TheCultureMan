@@ -7,7 +7,7 @@ module.exports = {
     description: 'This allows you to read a doujin from nHentai in Discord with the homies.',
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith('n.read')) {
+        if (!message.content.startsWith(`${process.env.prefix}read`)) {
             return;
         }
         if (!message.channel.nsfw) {
@@ -15,12 +15,12 @@ module.exports = {
             return;
         }
 
-        let number = message.content.replace("n.read ", "");
+        let number = message.content.replace(`${process.env.prefix}read `, "");
 
         var pn = 1; // The page number
 
         if (isNaN(number)) {
-            message.reply("Usage: n.read <ID> where <ID> is the nHentai.net ID");
+            message.reply(`Usage: ${process.env.prefix}read <ID> where <ID> is the nHentai.net ID`);
             return;
         }
 

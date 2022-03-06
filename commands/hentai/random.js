@@ -7,7 +7,7 @@ module.exports = {
     description: 'This will give you a random doujin from nHentai.',
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith('n.random')) {
+        if (!message.content.startsWith(`${process.env.prefix}random`)) {
             return;
         }
 
@@ -16,7 +16,7 @@ module.exports = {
             return
         }
 
-        let string = message.content.replace("n.random ", "");
+        let string = message.content.replace(`${process.env.prefix}random `, "");
 
 
         api.pRandSpecificTags("english " + string, data => { // The "english" exists to make sure that the doujin can't be in japanese. You can remove this if you want it to recommend all possible languages

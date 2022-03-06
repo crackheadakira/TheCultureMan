@@ -1,6 +1,6 @@
 console.clear();
 const { Discord, Client, Collection } = require('discord.js')
-const config = require('./config.json');
+require("dotenv-flow").config();
 const client = new Client({
     intents: [
         "GUILDS",
@@ -35,17 +35,17 @@ client.on("ready", () => {
     setInterval(() => {
         client.user.setActivity(`${client.guilds.cache.size} Servers | n.help`, { type: 'WATCHING' })
     }, 60000);
-    mongoose.connect(config.mongoDB).then((m) => {
+    mongoose.connect(process.env.mongoDB).then((m) => {
         console.log("Connected to DB");
     });
 });
 
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
-    if (!message.content.startsWith(config.prefix)) return;
+    if (!message.content.startsWith(process.env.prefix)) return;
     if (!message.guild) return;
     if (!message.member) message.member = await message.guild.fetchMember(message);
-    const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+    const args = message.content.slice(process.env.prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
     if (cmd.length == 0) return;
     let command = client.commands.get(cmd);
@@ -53,4 +53,4 @@ client.on('messageCreate', async message => {
     if (command) command.run(client, message, args);
 });
 
-client.login(config.token);
+client.login(process.env.token);

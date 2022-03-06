@@ -1,20 +1,19 @@
-const settings = require('../../config.json');
 const anilist = require('anilist-node');
 const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist(settings.anitoken);
+const Anilist = new anilist(process.env.anitoken);
 
 module.exports = {
     name: "anime",
     description: "This will search Anilist for the specified Anime and give you info about it.",
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith('n.anime')) {
+        if (!message.content.startsWith(`${process.env.prefix}anime`)) {
             return;
         }
 
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
-        let string = message.content.replace("n.anime ", "");
+        let string = message.content.replace(`${process.env.prefix}anime `, "");
 
         Anilist.searchEntry.anime(string, null, 1, 1).then(Data => {
             try {

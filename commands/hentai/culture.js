@@ -7,7 +7,7 @@ module.exports = {
     description: 'This will give you an image from our handcrafted database.',
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith('n.culture')) {
+        if (!message.content.startsWith(`${process.env.prefix}culture`)) {
             return;
         }
 
