@@ -73,6 +73,10 @@ module.exports = {
                         .replace(/&nbsp;/g, " ")
                         .replace(/\n\n/g, "\n") || "No description available.";
 
+                    if(!hSource){
+                        message.channel.send("You forgot to add mention an anime.")
+                        return;
+                    }
                     hSource = hSource.toString();
                     hStatus = hStatus.toString();
                     let source = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()); // Makes the first letter of each word capitalized, even if there is a space
