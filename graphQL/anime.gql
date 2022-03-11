@@ -1,0 +1,36 @@
+query ($search: String, $page: Int, $perPage: Int) {
+  Page(page: $page, perPage: $perPage) {
+    media(search: $search, type: ANIME, sort: POPULARITY_DESC) {
+      source
+      title {
+        english
+        romaji
+        native
+      }
+      coverImage {
+        large
+      }
+      bannerImage
+      genres
+      averageScore
+      favourites
+      status
+      description(asHtml: false)
+      siteUrl
+      nextAiringEpisode {
+        airingAt
+        episode
+      }
+      startDate {
+        year
+        month
+        day
+      }
+      endDate {
+        year
+        month
+        day
+      }
+    }
+  }
+}

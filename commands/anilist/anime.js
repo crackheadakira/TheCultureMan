@@ -1,5 +1,6 @@
 const { MessageEmbed, MessageButton } = require('discord.js');
 const GraphQLRequest = require("../../handlers/GraphQLRequest");
+const GraphQLQueries = require("../../handlers/GraphQLQueries");
 const paginationEmbed = require('discordjs-button-pagination');
 
 module.exports = {
@@ -26,57 +27,19 @@ module.exports = {
         .setStyle('SUCCESS');
       const btnList = [button1, button2]
 
-      var query = `
-        query ($search: String, $page: Int, $perPage: Int) {
-            Page(page: $page, perPage: $perPage) {
-              media(search: $search, type: ANIME, sort: POPULARITY_DESC) {
-                source
-                title {
-                  english
-                  romaji
-                  native
-                }
-                coverImage {
-                  large
-                }
-                bannerImage
-                genres
-                averageScore
-                favourites
-                status
-                description(asHtml: false)
-                siteUrl
-                nextAiringEpisode {
-                  airingAt
-                  episode
-                }
-                startDate {
-                  year
-                  month
-                  day
-                }
-                endDate {
-                  year
-                  month
-                  day
-                }
-              }
-            }
-          }
-`;
-
       var vars = {
         search: string,
         page: 1,
         perPage: 3
       };
 
-      GraphQLRequest(query, vars)
+      GraphQLRequest(GraphQLQueries.anime, vars)
         .then((yeezies) => {
           let data = yeezies.Page;
 
           let embeds = [];
 
+          // 5head @TibixDev gave this code
           for (let i = 0; i < data.media.length; i++) {
               const embed = new MessageEmbed()
                   .setDescription(trimString(data.media[i].description.toString()?.replace(/<br><br>/g, "\n").replace(/<br>/g, "\n").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/\n\n/g, "\n") || "No description available.", 456))

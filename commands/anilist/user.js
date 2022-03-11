@@ -4,6 +4,7 @@ const GraphQLRequest = require("../../handlers/GraphQLRequest");
 const Anilist = new anilist(process.env.anitoken);
 const AnilistSchema = require('../../schemas/AnilistSchema');
 const paginationEmbed = require('discordjs-button-pagination');
+const GraphQLQueries = require("../../handlers/GraphQLQueries");
 
 module.exports = {
     name: "user",
@@ -47,24 +48,11 @@ module.exports = {
                 let userURL = data.siteUrl;
                 let userBanner = data.bannerImage;
 
-                var query = `
-                query ($userid: Int!) {
-                    Page(perPage: 1) {
-                      pageInfo {
-                        total
-                      }
-                      followers(userId: $userid) {
-                        id
-                      }
-                    }
-                  }
-        `;
-
                 var vars = {
                     userid: userID,
                 };
 
-                GraphQLRequest(query, vars)
+                GraphQLRequest(GraphQLQueries.user, vars)
                     .then((yeezies) => {
                         let followers = yeezies.Page.pageInfo.total;
 
