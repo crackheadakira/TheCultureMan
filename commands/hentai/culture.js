@@ -7,10 +7,6 @@ module.exports = {
     description: 'This will give you an image from our handcrafted database.',
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith(`${process.env.prefix}culture`)) {
-            return;
-        }
-
         if (!message.channel.nsfw) {
             message.reply("get your ass into an NSFW channel");
             return;

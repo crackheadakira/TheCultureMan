@@ -54,9 +54,6 @@ module.exports = {
             const embed2 = new MessageEmbed()
                 .setTitle('General Commands')
                 .addFields(
-                    { name: `${process.env.prefix}god`, value: `This tells you info about a few of my friends and me.` },
-                    { name: `${process.env.prefix}imdb`, value: `This will search IMDb for the specified item and give you info about it.` },
-                    { name: `${process.env.prefix}novel`, value: `This will allow you to read the finest novel in the entire world.` },
                     { name: `${process.env.prefix}ping`, value: `Returns bot latency.` },
                 );
 

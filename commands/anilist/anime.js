@@ -85,7 +85,8 @@ module.exports = {
           let S1source = data.media[0].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
           let S1status = data.media[0].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
           let S1genres = data.media[0].genres.toString().replace(/,/g, ", ");
-          let S1trimmedString = trimString(S1description, 350);
+          let S1trimmedString = trimString(S1description, 456);
+
 
           const embed1 = new MessageEmbed()
             .setDescription(S1trimmedString)
@@ -108,6 +109,7 @@ module.exports = {
             )
             .setFooter(`Requested by ${message.author.username}`)
 
+
           if (!data.media[1]) {
             message.channel.send({ embeds: [embed1] })
             return;
@@ -123,7 +125,7 @@ module.exports = {
           let S2source = data.media[1].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
           let S2status = data.media[1].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
           let S2genres = data.media[1].genres.toString().replace(/,/g, ", ");
-          let S2trimmedString = trimString(S2description, 4096);
+          let S2trimmedString = trimString(S2description, 456);
 
           const embed2 = new MessageEmbed()
             .setDescription(S2trimmedString)
@@ -156,7 +158,7 @@ module.exports = {
           let S3source = data.media[2].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())
           let S3status = data.media[2].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
           let S3genres = data.media[2].genres.toString().replace(/,/g, ", ");
-          let S3trimmedString = trimString(S3description, 4096);
+          let S3trimmedString = trimString(S3description, 456);
 
           if (!data.media[2]) {
 

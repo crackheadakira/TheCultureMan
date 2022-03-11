@@ -34,7 +34,7 @@ client.on("ready", () => {
     console.log(client.user.tag + ' has logged in.');;
     setInterval(() => {
         client.user.setActivity(`${client.guilds.cache.size} Servers | n.help`, { type: 'WATCHING' })
-    }, 60000);
+    }, 15000);
     mongoose.connect(process.env.mongoDB).then((m) => {
         console.log("Connected to DB");
     });
