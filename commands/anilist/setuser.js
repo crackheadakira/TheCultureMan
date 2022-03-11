@@ -3,10 +3,10 @@ const Anilist = require('../../schemas/AnilistSchema');
 
 module.exports = {
     name: "setuser",
-    description: "This allows the user to set their Anilist profile.",
+    description: `This allows the user to set their Anilist profile and use ${process.env.prefix}user without typing in an username.`,
     run: async (client, message, args) => {
 
-        let UserName = message.content.replace("n.setuser ", "");
+        let UserName = message.content.replace(`${process.env.prefix}setuser `, "");
         let DiscordID = message.author.id;
 
         try {
