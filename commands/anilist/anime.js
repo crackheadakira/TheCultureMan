@@ -75,83 +75,33 @@ module.exports = {
         .then((yeezies) => {
           let data = yeezies.Page;
 
-          let embed1 = new MessageEmbed()
-            .setDescription(trimString(data.media[0].description.toString()?.replace(/<br><br>/g, "\n").replace(/<br>/g, "\n").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/\n\n/g, "\n") || "No description available.", 456))
-            .setColor('RANDOM')
-            .setTitle(data.media[0].title.romaji.toString())
-            .setURL(data.media[0].siteUrl)
-            .setThumbnail(data.media[0].coverImage.large)
-            .setImage(data.media[0].bannerImage)
-            .addFields(
-              { name: 'Start Date', value: `${data.media[0].startDate.year}-${data.media[0].startDate.month}-${data.media[0].startDate.day}`, inline: true },
-              {
-                name: data?.media[0].nextAiringEpisode?.episode ? `Episode ${data.media[0].nextAiringEpisode.episode} airing in:` : "Ended on:",
-                value: data?.media[0].nextAiringEpisode?.airingAt ? `<t:${data.media[0].nextAiringEpisode.airingAt}:R>` : `${data.media[0].endDate.day}-${data.media[0].endDate.month}-${data.media[0].endDate.year}`, inline: true
-              },
-              { name: 'Average Score', value: `${data.media[0].averageScore}%`, inline: true },
-              { name: 'Status', value: data.media[0].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()), inline: true },
-              { name: 'Source', value: data.media[0].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()), inline: true },
-              { name: 'Favorites', value: data.media[0].favourites.toString(), inline: true },
-              { name: 'Genres', value: data.media[0].genres.toString().replace(/,/g, ", "), },
-            )
-            .setFooter(`Requested by ${message.author.username}`)
+          let embeds = [];
 
-          if (!data.media[1]) {
-            message.channel.send({ embeds: [embed1] })
-            return;
+          for (let i = 0; i < data.media.length; i++) {
+              const embed = new MessageEmbed()
+                  .setDescription(trimString(data.media[i].description.toString()?.replace(/<br><br>/g, "\n").replace(/<br>/g, "\n").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/\n\n/g, "\n") || "No description available.", 456))
+                  .setColor('RANDOM')
+                  .setTitle(data.media[i].title.romaji.toString())
+                  .setURL(data.media[i].siteUrl)
+                  .setThumbnail(data.media[i].coverImage.large)
+                  .setImage(data.media[i].bannerImage)
+                  .addFields(
+                      { name: 'Start Date', value: `${data.media[i].startDate.year}-${data.media[i].startDate.month}-${data.media[i].startDate.day}`, inline: true },
+                      {
+                        name: data?.media[i].nextAiringEpisode?.episode ? `Episode ${data.media[i].nextAiringEpisode.episode} airing in:` : "Ended on:",
+                        value: data?.media[i].nextAiringEpisode?.airingAt ? `<t:${data.media[i].nextAiringEpisode.airingAt}:R>` : `${data.media[i].endDate.day}-${data.media[i].endDate.month}-${data.media[i].endDate.year}`, inline: true
+                      },
+                      { name: 'Average Score', value: `${data.media[i].averageScore}%`, inline: true },
+                      { name: 'Status', value: data.media[i].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()), inline: true },
+                      { name: 'Source', value: data.media[i].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()), inline: true },
+                      { name: 'Favorites', value: data.media[i].favourites.toString(), inline: true },
+                      { name: 'Genres', value: data.media[i].genres.toString().replace(/,/g, ", "), },
+                  )
+                  .setFooter(`Requested by ${message.author.username}`);
+              embeds.push(embed);
           }
-
-          let embed2 = new MessageEmbed()
-            .setDescription(trimString(data.media[1].description.toString()?.replace(/<br><br>/g, "\n").replace(/<br>/g, "\n").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/\n\n/g, "\n") || "No description available.", 456))
-            .setColor('RANDOM')
-            .setTitle(data.media[1].title.romaji.toString())
-            .setURL(data.media[1].siteUrl)
-            .setThumbnail(data.media[1].coverImage.large)
-            .setImage(data.media[1].bannerImage)
-            .addFields(
-              { name: 'Start Date', value: `${data.media[1].startDate.year}-${data.media[1].startDate.month}-${data.media[1].startDate.day}`, inline: true },
-              {
-                name: data?.media[1].nextAiringEpisode?.episode ? `Episode ${data.media[1].nextAiringEpisode.episode} airing in:` : "Ended on:",
-                value: data?.media[1].nextAiringEpisode?.airingAt ? `<t:${data.media[1].nextAiringEpisode.airingAt}:R>` : `${data.media[1].endDate.day}-${data.media[1].endDate.month}-${data.media[1].endDate.year}`, inline: true
-              },
-              { name: 'Average Score', value: `${data.media[1].averageScore}%`, inline: true },
-              { name: 'Status', value: data.media[1].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()), inline: true },
-              { name: 'Source', value: data.media[1].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()), inline: true },
-              { name: 'Favorites', value: data.media[1].favourites.toString(), inline: true },
-              { name: 'Genres', value: data.media[1].genres.toString().replace(/,/g, ", "), },
-            )
-            .setFooter(`Requested by ${message.author.username}`)
-
-          if (!data.media[2]) {
-
-            const pages = [embed1, embed2]
-            paginationEmbed(message, pages, btnList)
-
-            return;
-          }
-          let embed3 = new MessageEmbed()
-            .setDescription(trimString(data.media[2].description.toString()?.replace(/<br><br>/g, "\n").replace(/<br>/g, "\n").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/\n\n/g, "\n") || "No description available.", 456))
-            .setColor('RANDOM')
-            .setTitle(data.media[2].title.romaji.toString())
-            .setURL(data.media[2].siteUrl)
-            .setThumbnail(data.media[2].coverImage.large)
-            .setImage(data.media[2].bannerImage)
-            .addFields(
-              { name: 'Start Date', value: `${data.media[2].startDate.year}-${data.media[2].startDate.month}-${data.media[2].startDate.day}`, inline: true },
-              {
-                name: data?.media[2].nextAiringEpisode?.episode ? `Episode ${data.media[2].nextAiringEpisode.episode} airing in:` : "Ended on:",
-                value: data?.media[2].nextAiringEpisode?.airingAt ? `<t:${data.media[2].nextAiringEpisode.airingAt}:R>` : `${data.media[2].endDate.day}-${data.media[2].endDate.month}-${data.media[2].endDate.year}`, inline: true
-              },
-              { name: 'Average Score', value: `${data.media[2].averageScore}%`, inline: true },
-              { name: 'Status', value: data.media[2].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()), inline: true },
-              { name: 'Source', value: data.media[2].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()), inline: true },
-              { name: 'Favorites', value: data.media[2].favourites.toString(), inline: true },
-              { name: 'Genres', value: data.media[2].genres.toString().replace(/,/g, ", "), },
-            )
-            .setFooter(`Requested by ${message.author.username}`)
-
-          const pages = [embed1, embed2, embed3]
-          paginationEmbed(message, pages, btnList)
+          
+          paginationEmbed(message, embeds, btnList)
 
         });
     } catch (error) {
