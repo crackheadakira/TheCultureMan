@@ -12,3 +12,9 @@ I try to add features that I deem possible for my current skill level, but it's 
 - Anilist
 - Hentai
 - General
+
+## because i'm a dumbass, here's the .env file code
+``token=BOT TOKEN HERE
+prefix=n.
+mongoDB=mongodb://localhost:27017/mongodb_discord
+anitoken=ANILIST TOKEN HERE``
