@@ -37,7 +37,6 @@ module.exports = {
                 let userAvatar = data.avatar.large;
                 let userURL = data.siteUrl;
                 let userBanner = data.bannerImage;
-
                 var vars = {
                     userid: userID,
                 };
