@@ -53,7 +53,7 @@ module.exports = {
                     message.channel.send({ embeds: [embed] });
                 });
             } catch (error) {
-                message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
+                return message.channel.send("Bot received an error. Maybe there was a grammatical mistake?");
             }
         });
 

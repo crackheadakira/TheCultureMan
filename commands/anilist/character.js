@@ -7,7 +7,7 @@ module.exports = {
     description: "This will search Anilist for the specified character and give you info about them.",
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith(`${proces.env.prefix}character`)) {
+        if (!message.content.startsWith(`${process.env.prefix}character`)) {
             return;
         }
 
@@ -51,8 +51,8 @@ module.exports = {
                     message.channel.send({ embeds: [embed] })
                 });
             } catch (error) {
-                message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
-                console.log(error)
+                message.channel.send("Bot received an error. Maybe there was a grammatical mistake?");
+                return console.log(error);
             }
         });
 

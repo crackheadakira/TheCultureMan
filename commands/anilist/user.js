@@ -1,10 +1,11 @@
-const anilist = require('anilist-node');
-const { MessageEmbed, MessageButton } = require('discord.js');
-const GraphQLRequest = require("../../handlers/GraphQLRequest");
-const Anilist = new anilist(process.env.anitoken);
-const AnilistSchema = require('../../schemas/AnilistSchema');
-const paginationEmbed = require('discordjs-button-pagination');
-const GraphQLQueries = require("../../handlers/GraphQLQueries");
+let anilist = require('anilist-node');
+let { MessageEmbed, MessageButton } = require('discord.js');
+let Anilist = new anilist(process.env.anitoken);
+let AnilistSchema = require('../../schemas/AnilistSchema');
+let paginationEmbed = require('@acegoal07/discordjs-pagination');
+let paginationOpts = require('../../handlers/paginationOptions');
+let GraphQLRequest = require("../../handlers/GraphQLRequest");
+let GraphQLQueries = require("../../handlers/GraphQLQueries");
 
 module.exports = {
     name: "user",
@@ -27,17 +28,6 @@ module.exports = {
                 string = message.content.replace(`${process.env}user `, "");
             }
         };
-
-        const button1 = new MessageButton()
-            .setCustomId('previousbtn')
-            .setLabel('Previous')
-            .setStyle('DANGER');
-
-        const button2 = new MessageButton()
-            .setCustomId('nextbtn')
-            .setLabel('Next')
-            .setStyle('SUCCESS');
-
 
         Anilist.user.all(string).then(data => {
             try {
@@ -122,13 +112,12 @@ module.exports = {
                             .setFooter("Requested by " + message.author.username)
 
                         const pages = [embed, favouritesEmbed]
-                        const btnList = [button1, button2]
-                        paginationEmbed(message, pages, btnList)
+                        paginationEmbed(paginationOpts(message, pages))
 
                     });
             } catch (error) {
-                message.channel.send("There was an error or either you haven't set your Anilist user, set it using n.setuser.")
-                console.log("Here's the error: " + error)
+                message.channel.send("The user doesn't exist or you haven't set your AniList user, set it using n.setuser.")
+                return console.log(error);
             }
         });
     }

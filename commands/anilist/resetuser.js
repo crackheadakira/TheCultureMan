@@ -17,7 +17,7 @@ module.exports = {
             }
         } catch (err) {
             console.log("There was an error, here it is: " + err);
-            message.channel.send("There was an error.")
+            return message.channel.send("There was an error.");
         }
 
     }

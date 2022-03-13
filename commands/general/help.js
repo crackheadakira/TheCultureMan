@@ -85,7 +85,7 @@ module.exports = {
             })
         } catch (error) {
             message.channel.send(`There was an error running this command, try again later.`)
-            console.log(error)
+            return console.log(error);
         }
     }
 }

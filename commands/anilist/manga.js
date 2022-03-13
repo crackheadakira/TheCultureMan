@@ -1,101 +1,73 @@
-const anilist = require('anilist-node');
-const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist(process.env.anitoken);
+const { MessageEmbed, MessageButton } = require('discord.js');
+const GraphQLRequest = require("../../handlers/GraphQLRequest");
+const GraphQLQueries = require("../../handlers/GraphQLQueries");
+const paginationEmbed = require('@acegoal07/discordjs-pagination');
+const paginationOpts = require('../../handlers/paginationOptions');
 
 module.exports = {
     name: "manga",
     description: "This will search Anilist for the specified Manga and give you info about it.",
     run: async (client, message, args) => {
 
+        let string = message.content.replace(`${process.env.prefix}manga `, ``);
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
-        let string = message.content.replace(`${process.env.prefix}manga `, "");
+        if (string == `${process.env.prefix}manga`) {
+            message.channel.send("You forgot to mention an manga.")
+            return;
+        }
 
+        var vars = {
+            search: string,
+            page: 1,
+            perPage: 5
+        };
 
-        Anilist.searchEntry.manga(string, null, 1, 1).then(Data => {
-            try {
+        GraphQLRequest(GraphQLQueries.manga, vars)
+            .then((yeezies) => {
+                let data = yeezies.Page;
 
-                let Series1 = Data.media.splice(0, 1);
+                if (data.media.length < 1) {
+                    throw ("Something went wrong with fetching the data. The series possibly doesn't exist or there has been a grammatical error.")
+                }
 
-                let S1FID = Series1.map(({ id }) => id);
-                var S1ID = parseInt(S1FID);
+                let embeds = [];
 
-
-                Anilist.media.manga(S1ID).then(mData => {
-
-                    let hSource = mData.format.toLowerCase();
-                    let Title = mData.title.romaji;
-                    let cover = mData.coverImage.large;
-                    let hGenres = mData.genres.toString();
-                    let averageScore = mData.averageScore;
-                    let hStatus = mData.status.toLowerCase();
-                    let description = mData.description;
-                    let URL = mData.siteUrl;
-
-                    let startDate = mData.startDate;
-                    let endDate = mData.endDate;
-
-                    let sYear = startDate.year;
-                    let sMonth = startDate.month;
-                    let sDay = startDate.day;
-
-                    let eYear = endDate.year;
-                    let eMonth = endDate.month;
-                    let eDay = endDate.day;
-
-                    var sDate = sYear + "-" + sMonth + "-" + sDay;
-                    var eDate = eYear + "-" + eMonth + "-" + eDay;
-
-                    if (sYear == null) {
-                        sDate = "Hasn't Released Yet"
-                    }
-
-                    if (eYear == null) {
-                        eDate = "Hasn't Ended Yet"
-                    }
-
-                    if (description == null) {
-                        description = "No description exists as of now."
-                    }
-
-                    let ffDesc = description
-                    .replace(/<br><br>/g, "\n")
-                    .replace(/<br>/g, "\n")
-                    .replace(/<[^>]+>/g, "")
-                    .replace(/&nbsp;/g, " ")
-                    .replace(/\n\n/g, "\n") || "No description available.";
-
-                    let format = hSource.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
-                    let status = hStatus.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
-
-                    let genres = hGenres.replace(/,/g, ", ");
-
-                    // This part here limits the amount of letter's it displays. It does not cut off words
-                    let trimmedString = trimString(ffDesc, 4096);
-
+                // 5head @TibixDev gave this code
+                for (let i = 0; i < data.media.length; i++) {
                     const embed = new MessageEmbed()
+                        .setDescription(
+                            trimString(data.media[i].description
+                                ?.toString()
+                                .replace(/<br><br>/g, "\n")
+                                .replace(/<br>/g, "\n")
+                                .replace(/<[^>]+>/g, "")
+                                .replace(/&nbsp;/g, " ")
+                                .replace(/\n\n/g, "\n") || "No description available.", 456))
                         .setColor('RANDOM')
-                        .setTitle(Title)
-                        .setURL(URL)
-                        .setThumbnail(cover)
-                        .setDescription(trimmedString)
+                        .setTitle(data.media[i].title.romaji.toString())
+                        .setURL(data.media[i].siteUrl)
+                        .setThumbnail(data.media[i].coverImage.large)
+                        .setImage(data.media[i].bannerImage)
                         .addFields(
-                            { name: 'Average Score', value: averageScore + "%", inline: true },
-                            { name: 'Status', value: status, inline: true },
-                            { name: 'Format', value: format, inline: true },
-                            { name: 'Genres', value: genres, },
-                            { name: 'Start Date', value: sDate, inline: true },
-                            { name: 'End Date', value: eDate, inline: true },
+                            { name: 'Start Date', value: `${data.media[i].startDate.year}-${data.media[i].startDate.month}-${data.media[i].startDate.day}`, inline: true },
+                            { name: "Ended on", value: `${data.media[i]?.endDate.year}-${data.media[i]?.endDate.month}-${data.media[i]?.endDate.day}`, inline: true },
+                            { name: 'Average Score', value: `${data.media[i].averageScore}%` || "Unknown", inline: true },
+                            { name: 'Status', value: data.media[i].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
+                            { name: 'Source', value: data.media[i]?.source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
+                            { name: 'Chapters', value: data.media[i].chapters.toString() || "Unknown", inline: true },
+                            { name: 'Genres', value: data.media[i].genres.toString().replace(/,/g, ", "), },
                         )
-                        .setFooter("Requested by " + message.author.username, message.author.avatarURL())
+                        .setFooter(`Requested by ${message.author.username}`);
+                    embeds.push(embed);
+                }
 
-                    message.channel.send({ embeds: [embed] })
+                paginationEmbed(paginationOpts(message, embeds))
 
-                });
-            } catch (error) {
-                message.channel.send("Bot received an error. Maybe there was a grammatical mistake?")
-            }
-        });
-
+            })
+            .catch((error) => {
+                console.log(error);
+                message.channel.send({ embeds: [EmbedError(error, vars)] });
+            });
     }
 }

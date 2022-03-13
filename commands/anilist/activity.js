@@ -53,11 +53,11 @@ module.exports = {
                     });
 
                     if (hType.includes(`MESSAGE`)) {
-    
+
                         var m1 = data.map(function (item) {
                             return item[`message`];
                         });
-                        
+
                         var fText = m1.toString();
                         fText = fText.replace(new RegExp(`!~`, `gi`), `||`) // Makes spoiler tag`s work in Discord
                         fText = fText.replace(new RegExp(`~!`, `gi`), `||`) // Makes spoiler tag`s work in Discord
@@ -154,8 +154,8 @@ module.exports = {
                     }
                 });
             } catch (error) {
-                message.channel.send(`Bot received an error. Maybe there was a grammatical mistake?`);
-                console.log(error);
+                message.channel.send("``" + "Here's the error the bot received: " + error + "``");
+                return console.log(error);
             }
         });
     }

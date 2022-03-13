@@ -1,8 +1,7 @@
 query ($search: String, $page: Int, $perPage: Int) {
   Page(page: $page, perPage: $perPage) {
-    media(search: $search, type: ANIME, sort: POPULARITY_DESC) {
+    media(search: $search, type: MANGA, sort: POPULARITY_DESC) {
       source
-      episodes
       title {
         english
         romaji
@@ -14,13 +13,10 @@ query ($search: String, $page: Int, $perPage: Int) {
       bannerImage
       genres
       averageScore
+      chapters
       status
       description(asHtml: false)
       siteUrl
-      nextAiringEpisode {
-        airingAt
-        episode
-      }
       startDate {
         year
         month
