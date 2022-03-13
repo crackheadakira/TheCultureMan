@@ -35,7 +35,13 @@ module.exports = {
         // 5head @TibixDev gave this code
         for (let i = 0; i < data.media.length; i++) {
           const embed = new MessageEmbed()
-            .setDescription(trimString(data.media[i].description.toString()?.replace(/<br><br>/g, "\n").replace(/<br>/g, "\n").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/\n\n/g, "\n") || "No description available.", 456))
+            .setDescription(
+              trimString(data.media[i].description
+                ?.toString()
+                .replace(/<br><br>/g, "\n")
+                .replace(/<br>/g, "\n")
+                .replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ")
+                .replace(/\n\n/g, "\n") || "No description available.", 456))
             .setColor('RANDOM')
             .setTitle(data.media[i].title.romaji.toString())
             .setURL(data.media[i].siteUrl)
