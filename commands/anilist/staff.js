@@ -12,7 +12,6 @@ module.exports = {
         }
 
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
-
         let string = message.content.replace(`${process.env.prefix}.staff `, "");
 
         Anilist.searchEntry.staff(string, 1, 1).then(cData => {
