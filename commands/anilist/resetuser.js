@@ -5,7 +5,6 @@ module.exports = {
     name: "resetuser",
     description: "This allows the user to reset their specified username.",
     run: async (client, message, args) => {
-
         try {
 
             let resetEntry = await Anilist.findOneAndRemove({ userId: message.author.id });
@@ -19,6 +18,5 @@ module.exports = {
             console.log("There was an error, here it is: " + err);
             return message.channel.send("There was an error.");
         }
-
     }
 }
