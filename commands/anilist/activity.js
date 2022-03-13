@@ -11,7 +11,6 @@ module.exports = {
             return;
         }
 
-
         let string = message.content.replace(`${process.env.prefix}activity `, ``);
 
         Anilist.user.profile(string).then(mData => {
