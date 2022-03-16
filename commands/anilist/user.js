@@ -24,8 +24,6 @@ module.exports = {
             const anilistCheck = await AnilistSchema.findOne({ userId: message.author.id });
             if (anilistCheck) {
                 string = anilistCheck.anilistName;
-            } else {
-                string = message.content.replace(`${process.env}user `, "");
             }
         }
 

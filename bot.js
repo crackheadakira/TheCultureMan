@@ -32,7 +32,7 @@ client.categories = fs.readdirSync('./commands/');
 })
 
 client.on("ready", () => {
-    console.log(client.user.tag + ' has logged in.');;
+    console.log(client.user.tag + ' has logged in.');
     setInterval(() => {
         client.user.setActivity(`${client.users.cache.size} members | n.help`, { type: 'WATCHING' })
     }, 15000);
