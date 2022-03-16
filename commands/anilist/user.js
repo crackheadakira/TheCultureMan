@@ -27,7 +27,7 @@ module.exports = {
             } else {
                 string = message.content.replace(`${process.env}user `, "");
             }
-        };
+        }
 
         Anilist.user.all(string).then(data => {
             try {

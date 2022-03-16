@@ -25,7 +25,7 @@ module.exports = {
                     userName: message.author.username,
                 });
                 message.channel.send("Username set.")
-            };
+            }
 
         } catch (err) {
             console.log("There was an error, here it is: " + err);
