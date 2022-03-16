@@ -45,15 +45,7 @@ module.exports = {
 
                         return message.channel.send({ embeds: [embed] });
 
-                    } else if (data.type.toString().includes("ANIME_LIST")) {
-                        embed
-                            .setTitle(`Here's ${uData.name.toString()}'s most recent activity!`)
-                            .setThumbnail(data.media.coverImage?.medium)
-                            .setDescription(`${data.status?.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())} ${data.progress.toString()} of ${data.media.title.romaji.toString()}`)
-
-
-                        return message.channel.send({ embeds: [embed] });
-                    } else if (data.type.toString().includes("MANGA_LIST")) {
+                    } else
                         embed
                             .setTitle(`Here's ${uData.name.toString()}'s most recent activity!`)
                             .setThumbnail(data.media.coverImage?.medium)
