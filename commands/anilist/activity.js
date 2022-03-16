@@ -24,15 +24,13 @@ module.exports = {
                 Anilist.activity.getUserActivity(mData.id, 1, 1).then(dData => {
 
                     let data = dData[0]
-                    let createdAt = new Date(data.createdAt * 1000).toLocaleString();
-                    let status = data.status?.toString()?.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
 
                     if (data.type.toString().includes("MESSAGE") || data.type.toString().includes("TEXT")) {
 
                         const embed = new MessageEmbed()
                             .setURL(`https://anilist.co/activity/${data.id}`)
                             .setDescription(data.text?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``) || data.message?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
-                            .setFooter(`Requested by ${message.author.username} | Created at ${createdAt}`)
+                            .setFooter(`Requested by ${message.author.username} | Created at ${new Date(data.createdAt * 1000).toLocaleString()}`)
                             .setThumbnail(mData.avatar.large)
 
                         if(data.type.toString().includes("TEXT")) {
@@ -48,8 +46,8 @@ module.exports = {
                                 .setURL(`https://anilist.co/activity/${data.id}`)
                                 .setTitle(`Here's ${mData.name.toString()}'s most recent activity!`)
                                 .setThumbnail(aData.coverImage.large)
-                                .setDescription(`**${status} ${data.progress.toString()} of ${data.media.title.romaji.toString()}**`)
-                                .setFooter(`Requested by ${message.author.username} | Created at ${createdAt}`)
+                                .setDescription(`**${data.status?.toString()?.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())} ${data.progress.toString()} of ${data.media.title.romaji.toString()}**`)
+                                .setFooter(`Requested by ${message.author.username} | Created at ${new Date(data.createdAt * 1000).toLocaleString()}`)
 
                             return message.channel.send({ embeds: [embed] })
 
@@ -62,9 +60,9 @@ module.exports = {
                                 .setURL(`https://anilist.co/activity/${data.id}`)
                                 .setTitle(`Here's ${mData.name.toString()}'s most recent activity!`)
                                 .setThumbnail(maData.coverImage.large)
-                                .setFooter(`Requested by ${message.author.username} | Created at ${createdAt}`)
+                                .setFooter(`Requested by ${message.author.username} | Created at ${new Date(data.createdAt * 1000).toLocaleString()}`)
                                 .addFields(
-                                    { name: `${status} ${data.progress.toString()}`, value: data.media.title.romaji.toString() }
+                                    { name: `${data.status?.toString()?.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())} ${data.progress.toString()}`, value: data.media.title.romaji.toString() }
                                 )
 
                             return message.channel.send({ embeds: [mangaList] });
