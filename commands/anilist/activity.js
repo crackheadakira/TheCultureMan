@@ -24,11 +24,9 @@ module.exports = {
                 Anilist.activity.getUserActivity(uData.id, 1, 1).then(dData => {
 
                     let data = dData[0]
-                    let status = data.status?.toString()?.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase());
 
                     const embed = new MessageEmbed()
                         .setURL(`https://anilist.co/activity/${data.id}`)
-                        .setDescription(data.text?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``) || data.message?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
                         .setFooter(`Requested by ${message.author.username} | Created at ${new Date(data.createdAt * 1000).toLocaleString()}`)
 
                     if (data.type.toString().includes("TEXT")) {
@@ -37,25 +35,31 @@ module.exports = {
                             .setDescription(data.text?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
                             .setThumbnail(uData.avatar.large)
 
+                        return message.channel.send({ embeds: [embed] });
+
                     } else if (data.type.toString().includes("MESSAGE")) {
                         embed
                             .setTitle(`${uData.name.toString()} was sent a message`)
                             .setDescription(data.message?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
                             .setThumbnail(uData.avatar.large)
 
+                        return message.channel.send({ embeds: [embed] });
+
                     } else if (data.type.toString().includes("ANIME_LIST")) {
                         embed
                             .setTitle(`Here's ${uData.name.toString()}'s most recent activity!`)
                             .setThumbnail(data.media.coverImage?.medium)
-                            .setDescription(`**${status.toString()} ${data.progress.toString()} of ${data.media.title.romaji.toString()}**`)
+                            .setDescription(`${data.status?.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())} ${data.progress.toString()} of ${data.media.title.romaji.toString()}`)
 
+
+                        return message.channel.send({ embeds: [embed] });
                     } else if (data.type.toString().includes("MANGA_LIST")) {
                         embed
                             .setTitle(`Here's ${uData.name.toString()}'s most recent activity!`)
                             .setThumbnail(data.media.coverImage?.medium)
-                            .setDescription(`**${data.status?.toString()?.replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())} ${data.progress.toString()} of ${data.media.title.romaji.toString()}**`)
+                            .setDescription(`${data.status?.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())} ${data.progress.toString()} of ${data.media.title.romaji.toString()}`)
 
-                        message.channel.send({ embeds: [embed] });
+                        return message.channel.send({ embeds: [embed] });
                     };
                 });
             } catch (error) {
