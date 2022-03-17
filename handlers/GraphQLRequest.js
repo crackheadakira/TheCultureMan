@@ -12,4 +12,4 @@ module.exports = function(query, vars, url = process.env.ANILIST_API || "https:/
             reject("GraphQL Request Rejected\n\n" + err?.response?.data?.errors.map(e => `> ${e.message}\n`) || err);
         });
     });
-}
+};

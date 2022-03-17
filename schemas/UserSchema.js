@@ -7,6 +7,6 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     discordMessageContent: mongoose.SchemaTypes.String,
-})
+});
 
 module.exports = mongoose.model('User', UserSchema);

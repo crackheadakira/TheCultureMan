@@ -10,9 +10,9 @@ module.exports = {
 
             let resetEntry = await Anilist.findOneAndRemove({ userId: message.author.id });
             if (!resetEntry) {
-                message.channel.send("You haven't set an username.")
+                message.channel.send("You haven't set an username.");
             } else {
-                message.channel.send("Succesfully deleted username")
+                message.channel.send("Succesfully deleted username");
 
             }
         } catch (err) {
@@ -20,4 +20,4 @@ module.exports = {
             return message.channel.send("There was an error.");
         }
     }
-}
+};

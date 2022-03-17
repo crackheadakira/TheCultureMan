@@ -25,7 +25,7 @@ module.exports = {
                     userId: message.author.id,
                     userName: message.author.username,
                 });
-                message.channel.send(`${UserName} has been set as your username.`)
+                message.channel.send(`${UserName} has been set as your username.`);
             }
 
         } catch (err) {
@@ -34,4 +34,4 @@ module.exports = {
         }
 
     }
-}
+};
