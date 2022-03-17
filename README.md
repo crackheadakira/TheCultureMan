@@ -1,6 +1,6 @@
 <p align="center">
-    <a href="https://www.codacy.com/gh/crackheadakira/TheCultureMan/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=crackheadakira/TheCultureMan&amp;utm_campaign=Badge_Grade" alt="Codacy Code Quality">
-        <img src="https://app.codacy.com/project/badge/Grade/6c414c7548b1403c8460576f3d1e7aa1" /></a>
+    <img src="https://app.codacy.com/project/badge/Grade/6c414c7548b1403c8460576f3d1e7aa1" />
+    <img src="https://img.shields.io/tokei/lines/github/crackheadakira/TheCultureMan">
 </p>
 
 # TheCultureMan
