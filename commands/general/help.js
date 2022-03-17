@@ -1,8 +1,11 @@
-const { Discord, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
+const fs = require('fs');
+const path = require('path')
 
 module.exports = {
-    name: 'help',
+    name: 'test',
     description: 'This shows you all the command this bot has to offer.',
+    type: 'general',
     run: async (client, message, args) => {
         try {
 
@@ -30,41 +33,66 @@ module.exports = {
                         ])
                 )
 
-
             const embed = new MessageEmbed()
                 .setTitle(`Here are all the bot commands`)
                 .setDescription(`Select one of the command categories using the dropdown menu.`)
 
             let sendmsg = await message.channel.send({ content: ` `, embeds: [embed], components: [row] })
 
-            const embed1 = new MessageEmbed()
-                .setTitle('AniList Commands')
-                .addFields(
-                    { name: `${process.env.prefix}activity`, value: `This will fetch the one recent activity of the specified person from Anilist.` },
-                    { name: `${process.env.prefix}anime`, value: `This will search Anilist for the specified Anime and give you info about it.` },
-                    { name: `${process.env.prefix}character`, value: `This will search Anilist for the specified character and give you info about them.` },
-                    { name: `${process.env.prefix}manga`, value: `This will search Anilist for the specified Manga and give you info about it.` },
-                    { name: `${process.env.prefix}resetuser`, value: `This allows the user to reset their specified anilist user.` },
-                    { name: `${process.env.prefix}setuser`, value: `This allows the user to set their Anilist profile and use ${process.env.prefix}user without typing in an username` },
-                    { name: `${process.env.prefix}staff`, value: `This will search Anilist for the specified staff and give you info about them.` },
-                    { name: `${process.env.prefix}studio`, value: `This will search Anilist for the specified studio and give you info about them.` },
-                    { name: `${process.env.prefix}user`, value: `This will search Anilist for the specified user and give you info about them.` },
-                );
+            let aCmds = fs.readdirSync(path.join(__dirname, '..', 'anilist'));
+            let aCmdsDesc = [];
+            let aCmdGroups = {};
+            for (let aCmd of aCmds) {
+                const aCmdEntry = require(path.join(__dirname, '..', 'anilist', aCmd));
+                if (!aCmdGroups[aCmdEntry.type]) {
+                    aCmdGroups[aCmdEntry.type] = [];
+                }
+                aCmdGroups[aCmdEntry.type].push({ name: aCmdEntry.name, description: aCmdEntry.description });
+            }
+
+            let gCmds = fs.readdirSync(path.join(__dirname, '..', 'general')).filter((x) => x.endsWith(".js") && x != "help.js" && x != "birthday.js");
+            let gCmdsDesc = [];
+            let gCmdGroups = {};
+            for (let gCmd of gCmds) {
+                const gCmdEntry = require(path.join(__dirname, '..', 'general', gCmd));
+                if (!gCmdGroups[gCmdEntry.type]) {
+                    gCmdGroups[gCmdEntry.type] = [];
+                }
+                gCmdGroups[gCmdEntry.type].push({ name: gCmdEntry.name, description: gCmdEntry.description });
+            }
+
+            let hCmds = fs.readdirSync(path.join(__dirname, '..', 'hentai'));
+            let hCmdsDesc = [];
+            let hCmdGroups = {};
+            for (let hCmd of hCmds) {
+                const hCmdEntry = require(path.join(__dirname, '..', 'hentai', hCmd));
+                if (!hCmdGroups[hCmdEntry.type]) {
+                    hCmdGroups[hCmdEntry.type] = [];
+                }
+                hCmdGroups[hCmdEntry.type].push({ name: hCmdEntry.name, description: hCmdEntry.description });
+            }
+
+            const embed1 = new MessageEmbed();
+            embed1.setTitle('AniList Commands')
+            embed1.setColor('DARK_BLUE')
+            for (category of Object.keys(aCmdGroups)) {
+                embed1.addField(`**Here are the commands**`, aCmdGroups[category].map((x) => `**${process.env.prefix}${x.name}** \n ${x.description} \n`).join("\n"));
+            }
+
 
             const embed2 = new MessageEmbed()
-                .setTitle('General Commands')
-                .addFields(
-                    { name: `${process.env.prefix}ping`, value: `Returns bot latency.` },
-                );
+            embed2.setTitle('General Commands')
+            embed2.setColor('DARK_BLUE')
+            for (category of Object.keys(gCmdGroups)) {
+                embed2.addField(`**Here are the commands**`, gCmdGroups[category].map((x) => `**${process.env.prefix}${x.name}** \n ${x.description} \n`).join("\n"));
+            }
 
             const embed3 = new MessageEmbed()
-                .setTitle(`Hentai Commands`)
-                .addFields(
-                    { name: `${process.env.prefix}culture`, value: `This will give you an image from our handcrafted database.` },
-                    { name: `${process.env.prefix}random`, value: `This will give you a random doujin from nHentai.` },
-                    { name: `${process.env.prefix}read`, value: `This allows you to read a doujin from nHentai in Discord with the homies.` },
-                    { name: `${process.env.prefix}search`, value: `This will search nHentai for the specified doujin using the ID and give you info about it.` },
-                );
+            embed3.setTitle('Hentai Commands')
+            embed3.setColor('DARK_BLUE')
+            for (category of Object.keys(hCmdGroups)) {
+                embed3.addField(`**Here are the commands**`, hCmdGroups[category].map((x) => `**${process.env.prefix}${x.name}** \n ${x.description} \n`).join("\n"));
+            }
 
             const collector = message.channel.createMessageComponentCollector({
                 componentType: `SELECT_MENU`
@@ -82,6 +110,7 @@ module.exports = {
                 if (value === `third`) {
                     collected.update({ embeds: [embed3] })
                 }
+
             })
         } catch (error) {
             message.channel.send("``" + error + "``");
