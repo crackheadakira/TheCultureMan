@@ -2,6 +2,7 @@
     <a href="https://www.codacy.com/gh/crackheadakira/TheCultureMan/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=crackheadakira/TheCultureMan&amp;utm_campaign=Badge_Grade" alt="Codacy Code Quality">
         <img src="https://app.codacy.com/project/badge/Grade/6c414c7548b1403c8460576f3d1e7aa1" /></a>
 </p>
+
 # TheCultureMan
 
 This is a bot I made as a personal project to learn JavaScript. I just opened up Notepad++ and started watching tutorials. I later switched to VS Code.
