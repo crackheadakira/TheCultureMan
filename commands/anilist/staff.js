@@ -22,8 +22,8 @@ module.exports = {
 
                 message.channel.send({ embeds: [embed] });
             } catch (error) {
-                console.log(error)
-                return message.channel.send("Bot received an error. Maybe there was a grammatical mistake?");
+                message.channel.send("``" + error + "``");
+                console.log(error);
             }
         });
 

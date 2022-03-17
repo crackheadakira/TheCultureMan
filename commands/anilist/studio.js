@@ -8,49 +8,32 @@ module.exports = {
     run: async (client, message, args) => {
 
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
-
         let string = message.content.replace(`${process.env.prefix}studio `, "");
 
         Anilist.studio(string).then(data => {
             try {
 
                 let name = data.name;
-                let studioType = data.isAnimationStudio;
                 let studioMedia = data.media;
                 let URL = data.siteURL;
                 let favourites = data.favourites;
 
                 // Sort's studioMedia to be in an easy readable form
                 let media = studioMedia.map(({ title }) => title);
-                var correctMedia = media.map(function (item) {
-                    return item['romaji'];
-                });
-
-                correctMedia = correctMedia.toString();
-                correctMedia = correctMedia.replace(/,/g, "\n");
-
-                // Show's if the studio is an animation studio
-                if (studioType == true) {
-                    studioType = "Animation Studio";
-                }
-
-                if (studioType == false) {
-                    studioType = "Non-Animation Studio";
-                }
+                var correctMedia = media.map(({ romaji}) => romaji).toString().replace(/,/g, "\n");
 
                 const embed = new MessageEmbed()
                     .setTitle(name)
                     .setURL(URL)
-                    .setFooter("Requested by " + message.author.username + " | " + favourites + " Favourites")
+                    .setFooter(`Requested by ${message.author.username} | ${favourites} Favourites`)
                     .addFields(
-                        { name: "Studio Type", value: studioType, inline: false },
-                        { name: "The Studio's Works", value: correctMedia, inline: false },
+                        { name: "The Studio's Works", value: correctMedia },
                     )
 
                 message.channel.send({ embeds: [embed] })
             } catch (error) {
-                message.channel.send("Bot received an error. Maybe there was a grammatical mistake?");
-                return console.log(error);
+                message.channel.send("``" + error + "``");
+                console.log(error);
             }
         });
 
