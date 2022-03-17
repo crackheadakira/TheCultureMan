@@ -4,9 +4,10 @@ const Anilist = require('../../schemas/AnilistSchema');
 module.exports = {
     name: "setuser",
     description: `This allows the user to set their Anilist profile and use ${process.env.prefix}user without typing in an username.`,
+    type: 'anilist',
     run: async (client, message, args) => {
 
-        let UserName = message.content.replace(`${process.env.prefix}setuser `, "");
+        let UserName = message.content.replace(`${process.env.prefix}setuser `, "").replace(/[^A-Za-z0-9]/g, '');
         let DiscordID = message.author.id;
 
         try {
@@ -24,12 +25,12 @@ module.exports = {
                     userId: message.author.id,
                     userName: message.author.username,
                 });
-                message.channel.send("Username set.")
+                message.channel.send(`${UserName} has been set as your username.`)
             }
 
         } catch (err) {
-            console.log("There was an error, here it is: " + err);
-            return message.channel.send("There was an error.");
+            message.channel.send("``" + error + "``");
+            console.log(error);
         }
 
     }

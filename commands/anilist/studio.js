@@ -5,6 +5,7 @@ const Anilist = new anilist(process.env.anitoken);
 module.exports = {
     name: "studio",
     description: "This will search Anilist for the specified studio and give you info about them.",
+    type: 'anilist',
     run: async (client, message, args) => {
 
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);

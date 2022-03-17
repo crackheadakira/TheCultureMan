@@ -4,6 +4,7 @@ const Anilist = require('../../schemas/AnilistSchema');
 module.exports = {
     name: "resetuser",
     description: "This allows the user to reset their specified username.",
+    type: 'anilist',
     run: async (client, message, args) => {
         try {
 

@@ -5,11 +5,8 @@ const api = new API();
 module.exports = {
     name: 'search',
     description: 'This will search nHentai for the specified doujin using the ID and give you info about it.',
+    type: 'hentai',
     run: async (client, message, args) => {
-
-        if (!message.content.startsWith(`${process.env.prefix}search`)) {
-            return;
-        }
 
         if (!message.channel.nsfw) {
             message.reply("get your ass into an NSFW channel");

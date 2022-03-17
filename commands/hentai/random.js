@@ -5,11 +5,8 @@ const api = new API();
 module.exports = {
     name: 'random',
     description: 'This will give you a random doujin from nHentai.',
+    type: 'hentai',
     run: async (client, message, args) => {
-
-        if (!message.content.startsWith(`${process.env.prefix}random`)) {
-            return;
-        }
 
         if (!message.channel.nsfw) {
             message.reply("get your ass into an NSFW channel");

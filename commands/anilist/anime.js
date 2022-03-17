@@ -7,6 +7,7 @@ const paginationOpts = require('../../handlers/paginationOptions');
 module.exports = {
   name: `anime`,
   description: `This will search Anilist for the specified Anime and give you info about it.`,
+  type: 'anilist',
   run: async (client, message, args) => {
 
     let string = message.content.replace(`${process.env.prefix}anime `, ``);

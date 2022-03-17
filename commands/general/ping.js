@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'ping',
+    type: 'general',
     description: 'Returns bot latency.',
     run: async(client, message, args) => {
         const msg = await message.channel.send(`checking...`);

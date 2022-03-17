@@ -5,6 +5,7 @@ const c69 = new Culture69();
 module.exports = {
     name: 'culture',
     description: 'This will give you an image from our handcrafted database.',
+    type: 'hentai',
     run: async (client, message, args) => {
         try {
 

@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: "birthday",
     description: "This will tell you the birthdays of the people from bros before hoes.",
+    type: 'general',
     run: async (client, message, args) => {
         try {
 

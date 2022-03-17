@@ -6,6 +6,7 @@ const Anilist = new anilist(process.env.anitoken);
 module.exports = {
     name: `activity`,
     description: `This will fetch the one recent activity of the specified person from Anilist.`,
+    type: 'anilist',
     run: async (client, message, args) => {
 
         const argz = message.content.split(" ");

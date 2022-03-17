@@ -5,11 +5,9 @@ const api = new API();
 module.exports = {
     name: 'read',
     description: 'This allows you to read a doujin from nHentai in Discord with the homies.',
+    type: 'hentai',
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith(`${process.env.prefix}read`)) {
-            return;
-        }
         if (!message.channel.nsfw) {
             message.reply("get your ass into an NSFW channel");
             return;
