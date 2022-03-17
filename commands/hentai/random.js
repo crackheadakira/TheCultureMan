@@ -56,8 +56,8 @@ module.exports = {
                 message.channel.send({ embeds: [embed] });
 
             } catch (error) {
-                message.channel.send("One of these tags or more that this doujin has possibly gone against Discord ToS");
-                return console.log(error);
+                message.channel.send("``" + error + "``");
+                console.log(error);
             }
 
         });

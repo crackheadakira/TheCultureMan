@@ -60,8 +60,8 @@ module.exports = {
                 
 
             } catch (error) {
-                message.channel.send("One of these tags or more that this doujin has possibly goes against Discord ToS");
-                return console.log("There was an error, here it is: " + error);
+                message.channel.send("``" + error + "``");
+                console.log(error);
             }
         });
         

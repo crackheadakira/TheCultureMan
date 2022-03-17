@@ -23,8 +23,8 @@ module.exports = {
             message.channel.send({ embeds: [embed] })
 
         } catch (error) {
-            message.channel.send("There was an error.")
-            return console.log(error);
+            message.channel.send("``" + error + "``");
+            console.log(error);
         }
     }
 }
