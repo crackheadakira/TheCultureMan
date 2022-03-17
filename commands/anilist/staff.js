@@ -8,46 +8,21 @@ module.exports = {
     run: async (client, message, args) => {
 
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
-        let string = message.content.replace(`${process.env.prefix}.staff `, "");
+        let string = message.content.replace(`${process.env.prefix}staff `, "");
 
-        Anilist.searchEntry.staff(string, 1, 1).then(cData => {
+        Anilist.people.staff(string).then(data => {
             try {
 
-                let Ch = cData.staff;
-                let ID = Ch.map(({ id }) => id);
-                let cID = parseInt(ID)
+                const embed = new MessageEmbed()
+                    .setTitle(data.name.english)
+                    .setURL(data.siteUrl)
+                    .setThumbnail(data.image.large)
+                    .setDescription(data.description.replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||'), 456)
+                    .setFooter(`Requested by ${message.author.username} | ${parseInt(data.favourites)} Favourites`)
 
-                var staff = Ch.map(function (item) {
-                    return item['name'];
-                });
-                let sName = staff.map(({ english }) => english);
-                sName = sName.toString();
-
-                Anilist.people.staff(cID).then(data => {
-
-                    let image = data.image.large;
-                    let description = data.description;
-                    let URL = data.siteUrl;
-                    let favourites = data.favourites;
-
-                    favourites = parseInt(favourites);
-
-                    let fDesc = description.replace(/<[^>]*>?/gm, ''); // Removes the HTML Tags from the String
-                    fDesc = fDesc.replace(new RegExp('!~', 'gi'), '||') // Makes spoiler tag's work in Discord
-                    fDesc = fDesc.replace(new RegExp('~!', 'gi'), '||') // Makes spoiler tag's work in Discord
-                    let fDescription = trimString(fDesc, 1024);
-
-                    const embed = new MessageEmbed()
-                        .setTitle(sName)
-                        .setURL(URL)
-                        .setThumbnail(image)
-                        .setDescription(fDescription)
-                        .setFooter(favourites + " Favourites")
-                        .setFooter("Requested by " + message.author.username + " | " + favourites + " Favourites")
-
-                    message.channel.send({ embeds: [embed] });
-                });
+                message.channel.send({ embeds: [embed] });
             } catch (error) {
+                console.log(error)
                 return message.channel.send("Bot received an error. Maybe there was a grammatical mistake?");
             }
         });

@@ -10,21 +10,18 @@ module.exports = {
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
         let string = message.content.replace(`${process.env.prefix}character `, "");
 
-        Anilist.searchEntry.character(string, 1, 1).then(cData => {
+        Anilist.people.character(string).then(data => {
             try {
 
-                Anilist.people.character(parseInt(cData.characters[0].id)).then(data => {
+                const embed = new MessageEmbed()
+                    .setTitle(data.name.english)
+                    .setURL(data.siteUrl)
+                    .setThumbnail(data.image.large)
+                    .setDescription(trimString(data.description.toString().replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||'), 456))
+                    .setFooter(`Requested by ${message.author.username} | ${parseInt(data.favourites)} Favourites`)
 
-                    const embed = new MessageEmbed()
-                        .setTitle(cData.characters[0].name.english.toString())
-                        .setURL(data.siteUrl)
-                        .setThumbnail(data.image.large)
-                        .setDescription(trimString(data.description.toString().replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||'), 456))
-                        .setFooter(`Requested by ${message.author.username} | ${parseInt(data.favourites)} Favourites`)
+                message.channel.send({ embeds: [embed] })
 
-                    message.channel.send({ embeds: [embed] })
-
-                });
             } catch (error) {
                 message.channel.send("Bot received an error. Maybe there was a grammatical mistake?");
                 return console.log(error);
