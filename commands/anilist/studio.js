@@ -26,9 +26,7 @@ module.exports = {
                     .setTitle(name)
                     .setURL(URL)
                     .setFooter(`Requested by ${message.author.username} | ${favourites} Favourites`)
-                    .addFields(
-                        { name: "The Studio's Works", value: correctMedia },
-                    )
+                    .setDescription(correctMedia)
 
                 message.channel.send({ embeds: [embed] })
             } catch (error) {
