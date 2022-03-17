@@ -7,10 +7,6 @@ module.exports = {
     description: "This will search Anilist for the specified studio and give you info about them.",
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith(`${process.env.prefix}studio`)) {
-            return;
-        }
-
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
         let string = message.content.replace(`${process.env.prefix}studio `, "");

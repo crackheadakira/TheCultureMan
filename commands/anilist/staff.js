@@ -7,10 +7,6 @@ module.exports = {
     description: "This will search Anilist for the specified staff and give you info about them.",
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith(`${process.env.prefix}staff`)) {
-            return;
-        }
-
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
         let string = message.content.replace(`${process.env.prefix}.staff `, "");
 

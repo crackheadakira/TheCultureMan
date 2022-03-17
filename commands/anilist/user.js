@@ -12,10 +12,6 @@ module.exports = {
     description: "This will search Anilist for the specified user and give you info about them.",
     run: async (client, message, args) => {
 
-        if (!message.content.startsWith(`${process.env.prefix}user`)) {
-            return;
-        }
-
         const argz = message.content.split(" ");
 
         let string = message.content.replace(`${process.env.prefix}user `, "");
