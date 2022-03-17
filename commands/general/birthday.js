@@ -65,7 +65,7 @@ module.exports = {
             const goal = 0;
             const nextBirthday = counts.reduce((prev, curr) => Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
 
-            if (server === 843208877326860299) {
+            if (server == 843208877326860299) {
 
                 let embed = new MessageEmbed()
                     .setTitle("Here's the birthday's of every bros before hoes member")
