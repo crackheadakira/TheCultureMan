@@ -65,104 +65,104 @@ module.exports = {
             const goal = 0;
             const nextBirthday = counts.reduce((prev, curr) => Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
 
-            if (server == 843208877326860299) {
+            if (server === 843208877326860299) {
 
                 let embed = new MessageEmbed()
                     .setTitle("Here's the birthday's of every bros before hoes member")
                     .setDescription(basicInfo)
 
-                if (nextBirthday == bd1) {
+                if (nextBirthday === bd1) {
                     embed.setDescription(`${basicInfo} It's <@420825464245059586>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd2) {
+                if (nextBirthday === bd2) {
                     embed.setDescription(`${basicInfo} It's <@327012928031162368>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd3) {
+                if (nextBirthday === bd3) {
                     embed.setDescription(`${basicInfo} It's <@529146606470168616>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd4) {
+                if (nextBirthday === bd4) {
                     embed.setDescription(`${basicInfo} It's <@236907218342117376>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd5) {
+                if (nextBirthday === bd5) {
                     embed.setDescription(`${basicInfo} It's <@313699902758715404>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd6) {
+                if (nextBirthday === bd6) {
                     embed.setDescription(`${basicInfo} It's <@331164413623009281>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd7) {
+                if (nextBirthday === bd7) {
                     embed.setDescription(`${basicInfo} It's <@419512104685666304>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd8) {
+                if (nextBirthday === bd8) {
                     embed.setDescription(`${basicInfo} It's <@422007636133675018>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd9) {
+                if (nextBirthday === bd9) {
                     embed.setDescription(`${basicInfo} It's <@725519804496085015>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd10) {
+                if (nextBirthday === bd10) {
                     embed.setDescription(`${basicInfo} It's <@852665699892985866>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd11) {
+                if (nextBirthday === bd11) {
                     embed.setDescription(`${basicInfo} It's <@795261856964673536>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd12) {
+                if (nextBirthday === bd12) {
                     embed.setDescription(`${basicInfo} It's <@227032992978042881>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd13) {
+                if (nextBirthday === bd13) {
                     embed.setDescription(`${basicInfo} It's <@696943140183081052>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd14) {
+                if (nextBirthday === bd14) {
                     embed.setDescription(`${basicInfo} It's <@794890277332320256>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd15) {
+                if (nextBirthday === bd15) {
                     embed.setDescription(`${basicInfo} It's <@343726471124090881>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd16) {
+                if (nextBirthday === bd16) {
                     embed.setDescription(`${basicInfo} It's <@211952293476696066>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd17) {
+                if (nextBirthday === bd17) {
                     embed.setDescription(`${basicInfo} It's <@618204263767867412>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday == bd18) {
+                if (nextBirthday === bd18) {
                     embed.setDescription(`${basicInfo} It's <@592338499810885653>'s birthday next, in ${nextBirthday} days!`)
                 }
 
                 message.channel.send({ embeds: [embed] })
 
-                if (bd1 == 0) {
+                if (bd1 === 0) {
                     message.channel.send("@everyone it's <@420825464245059586> birthday today")
-                } else if (bd2 == 0) {
+                } else if (bd2 === 0) {
                     message.channel.send("@everyone it's <@327012928031162368> birthday today")
-                } else if (bd3 == 0) {
+                } else if (bd3 === 0) {
                     message.channel.send("@everyone it's <@529146606470168616> birthday today")
-                } else if (bd4 == 0) {
+                } else if (bd4 === 0) {
                     message.channel.send("@everyone it's <@236907218342117376> birthday today")
-                } else if (bd5 == 0) {
+                } else if (bd5 === 0) {
                     message.channel.send("@everyone it's <@313699902758715404> birthday today")
-                } else if (bd6 == 0) {
+                } else if (bd6 === 0) {
                     message.channel.send("@everyone it's <@331164413623009281> birthday today")
-                } else if (bd7 == 0) {
+                } else if (bd7 === 0) {
                     message.channel.send("@everyone it's <@419512104685666304> birthday today")
-                } else if (bd8 == 0) {
+                } else if (bd8 === 0) {
                     message.channel.send("@everyone it's <@422007636133675018> birthday today")
-                } else if (bd9 == 0) {
+                } else if (bd9 === 0) {
                     message.channel.send("@everyone it's <@725519804496085015> birthday today")
-                } else if (bd10 == 0) {
+                } else if (bd10 === 0) {
                     message.channel.send("@everyone it's <@852665699892985866> birthday today")
-                } else if (bd11 == 0) {
+                } else if (bd11 === 0) {
                     message.channel.send("@everyone it's <@795261856964673536> birthday today")
-                } else if (bd12 == 0) {
+                } else if (bd12 === 0) {
                     message.channel.send("@everyone it's <@227032992978042881> birthday today")
-                } else if (bd13 == 0) {
+                } else if (bd13 === 0) {
                     message.channel.send("@everyone it's <@696943140183081052> birthday today")
-                } else if (bd14 == 0) {
+                } else if (bd14 === 0) {
                     message.channel.send("@everyone it's <@794890277332320256> birthday today")
-                } else if (bd15 == 0) {
+                } else if (bd15 === 0) {
                     message.channel.send("@everyone it's <@343726471124090881> birthday today")
-                } else if (bd16 == 0) {
+                } else if (bd16 === 0) {
                     message.channel.send("@everyone it's <@211952293476696066> birthday today")
-                } else if (bd17 == 0) {
+                } else if (bd17 === 0) {
                     message.channel.send("@everyone it's <@211952293476696066> birthday today")
-                } else if (bd18 == 0) {
+                } else if (bd18 === 0) {
                     message.channel.send("@everyone it's <@592338499810885653> birthday today")
                 }
 
