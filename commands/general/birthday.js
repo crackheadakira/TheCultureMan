@@ -45,8 +45,8 @@ module.exports = {
         <@420825464245059586> birthday - march 5th **${bd1} day's to go** AGE: **13** \n 
         <@592338499810885653> birthday - march 7th **${bd18} day's to go** AGE: **15** \n
         <@327012928031162368> birthday - march 11th **${bd2} day's to go** AGE: **15**\n
-        <@529146606470168616> birthday - march 18th **${bd3} day's to go** AGE: **15**\n
-        <@343726471124090881> birthday - march 19th **${bd15} day's to go** AGE: **16**\n
+        <@529146606470168616> birthday - march 18th **${bd3} day's to go** AGE: **16**\n
+        <@343726471124090881> birthday - march 19th **${bd15} day's to go** AGE: **17**\n
         <@236907218342117376> birthday - april 23rd **${bd4} day's to go** AGE: **14**\n
         <@313699902758715404> birthday - june 24th **${bd5} day's to go** AGE: **16**\n
         <@211952293476696066> birthday - june 24th **${bd16} day's to go** AGE: **19**\n
