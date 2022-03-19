@@ -1,6 +1,7 @@
 <p align="center">
     <img src="https://app.codacy.com/project/badge/Grade/6c414c7548b1403c8460576f3d1e7aa1" />
-    <img src="https://img.shields.io/tokei/lines/github/crackheadakira/TheCultureMan">
+    <img src="https://img.shields.io/github/commit-activity/m/crackheadakira/TheCultureMan">
+    
 </p>
 
 # TheCultureMan
