@@ -8,17 +8,15 @@ module.exports = {
     run: async (client, message, args) => {
 
         let UserName = message.content.replace(`${process.env.prefix}setuser `, "").replace(/[^A-Za-z0-9]/g, '');
-        let DiscordID = message.author.id;
+        
         try {
 
             const anilistID = await Anilist.findOne({ userId: message.author.id });
-            const anilistNAME = await Anilist.findOne({ anilistName: UserName });
 
-            if(anilistID){
-            const anilist = await Anilist.findOneAndUpdate({userId: message.author.id }, {anilistName: UserName})
-            return message.channel.send(`${UserName} has been set as your username.`);;
-            } else if (anilistNAME) {
-                return message.channel.send(`<@${anilistNAME.userId}> is already using this username`);
+            if (anilistID) {
+                const anilist = await Anilist.findOneAndUpdate({ userId: message.author.id }, { anilistName: UserName })
+                return message.channel.send(`${UserName} has been set as your username.`);
+
             } else {
 
                 const anilist = await Anilist.create({
