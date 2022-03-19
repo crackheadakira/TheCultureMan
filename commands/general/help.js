@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path')
 
 module.exports = {
-    name: 'test',
+    name: 'help',
     description: 'This shows you all the command this bot has to offer.',
     type: 'general',
     run: async (client, message, args) => {
