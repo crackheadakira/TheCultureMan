@@ -8,5 +8,4 @@ RUN npm i
 
 COPY . .
 
-EXPOSE 27017
 CMD ["node", "bot.js"]
