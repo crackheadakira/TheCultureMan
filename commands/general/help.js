@@ -7,6 +7,43 @@ module.exports = {
     description: 'This shows you all the command this bot has to offer.',
     type: 'general',
     run: async (client, message, args) => {
+        
+        const categories = [
+            {
+                label: `AniList Commands`,
+                description: `Show's you the AniList commands`,
+                id: 'anilist',
+                commandFolder: "anilist",
+                filterFn: (x) => x.endsWith(".js")
+            },
+            {
+                label: `General Commands`,
+                description: `Show's you the general commands`,
+                id: 'general',
+                commandFolder: "general",
+                filterFn: (x) => x.endsWith(".js") && x != "help.js" && x != "birthday.js"
+            },
+            {
+                label: `Hentai Commands`,
+                description: `Show's you the Hentai commands`,
+                id: 'hentai',
+                commandFolder: "hentai",
+                filterFn: (x) => x.endsWith(".js")
+            }
+        ]
+
+        function parseCategory(category) {
+            const commandFiles = fs.readdirSync(path.join(__dirname, `../${category.commandFolder}`)).filter(category.filterFn);
+            const commands = [];
+            for (const file of commandFiles) {
+                const command = require(`../${category.commandFolder}/${file}`);
+                if (command.name && command.description && command.type) {
+                    commands.push({ name: command.name, description: command.description });
+                }
+            }
+            return commands;
+        }
+
         try {
 
             const row = new MessageActionRow()
@@ -14,24 +51,16 @@ module.exports = {
                     new MessageSelectMenu()
                         .setCustomId(`1`)
                         .setPlaceholder(`Select one of the available categories`)
-                        .addOptions([
-                            {
-                                label: `AniList Commands`,
-                                description: `Show's you the AniList commands`,
-                                value: 'first',
-                            },
-                            {
-                                label: `General Commands`,
-                                description: `Show's you the General commands`,
-                                value: 'second',
-                            },
-                            {
-                                label: `Hentai Commands`,
-                                description: `Show's you the Hentai commands`,
-                                value: 'third',
+                        .addOptions(categories.map(category => {
+                            return {
+                                label: category.label,
+                                description: category.description,
+                                value: category.id
                             }
-                        ])
+                        })
+                        )
                 )
+
 
             const embed = new MessageEmbed()
                 .setTitle(`Here are all the bot commands`)
@@ -39,59 +68,26 @@ module.exports = {
 
             let sendmsg = await message.channel.send({ content: ` `, embeds: [embed], components: [row] })
 
-            let aCmds = fs.readdirSync(path.join(__dirname, '..', 'anilist'));
-            let aCmdsDesc = [];
-            let aCmdGroups = {};
-            for (let aCmd of aCmds) {
-                const aCmdEntry = require(path.join(__dirname, '..', 'anilist', aCmd));
-                if (!aCmdGroups[aCmdEntry.type]) {
-                    aCmdGroups[aCmdEntry.type] = [];
+            let categoryContents = {};
+            for (const category of categories) {
+                categoryContents[category.id] = parseCategory(category);
+            }
+
+            let categoryEmbeds = {};
+            for (const category of categories) {
+                const commands = categoryContents[category.id];
+                if (commands.length > 0) {
+                    const embed = new MessageEmbed()
+                        .setTitle(`${category.label}`)
+                        .setDescription(`${category.description}`)
+                        .setColor('#0099ff')
+                        .setFooter(`${commands.length} commands in this category`)
+                        .setTimestamp();
+                    for (const command of commands) {
+                        embed.addField(`${command.name}`, `${command.description}`);
+                    }
+                    categoryEmbeds[category.id] = embed;
                 }
-                aCmdGroups[aCmdEntry.type].push({ name: aCmdEntry.name, description: aCmdEntry.description });
-            }
-
-            let gCmds = fs.readdirSync(path.join(__dirname, '..', 'general')).filter((x) => x.endsWith(".js") && x != "help.js" && x != "birthday.js");
-            let gCmdsDesc = [];
-            let gCmdGroups = {};
-            for (let gCmd of gCmds) {
-                const gCmdEntry = require(path.join(__dirname, '..', 'general', gCmd));
-                if (!gCmdGroups[gCmdEntry.type]) {
-                    gCmdGroups[gCmdEntry.type] = [];
-                }
-                gCmdGroups[gCmdEntry.type].push({ name: gCmdEntry.name, description: gCmdEntry.description });
-            }
-
-            let hCmds = fs.readdirSync(path.join(__dirname, '..', 'hentai'));
-            let hCmdsDesc = [];
-            let hCmdGroups = {};
-            for (let hCmd of hCmds) {
-                const hCmdEntry = require(path.join(__dirname, '..', 'hentai', hCmd));
-                if (!hCmdGroups[hCmdEntry.type]) {
-                    hCmdGroups[hCmdEntry.type] = [];
-                }
-                hCmdGroups[hCmdEntry.type].push({ name: hCmdEntry.name, description: hCmdEntry.description });
-            }
-
-            const embed1 = new MessageEmbed();
-            embed1.setTitle('AniList Commands')
-            embed1.setColor('DARK_BLUE')
-            for (category of Object.keys(aCmdGroups)) {
-                embed1.addField(`**Here are the commands**`, aCmdGroups[category].map((x) => `**${process.env.prefix}${x.name}** \n ${x.description} \n`).join("\n"));
-            }
-
-
-            const embed2 = new MessageEmbed()
-            embed2.setTitle('General Commands')
-            embed2.setColor('DARK_BLUE')
-            for (category of Object.keys(gCmdGroups)) {
-                embed2.addField(`**Here are the commands**`, gCmdGroups[category].map((x) => `**${process.env.prefix}${x.name}** \n ${x.description} \n`).join("\n"));
-            }
-
-            const embed3 = new MessageEmbed()
-            embed3.setTitle('Hentai Commands')
-            embed3.setColor('DARK_BLUE')
-            for (category of Object.keys(hCmdGroups)) {
-                embed3.addField(`**Here are the commands**`, hCmdGroups[category].map((x) => `**${process.env.prefix}${x.name}** \n ${x.description} \n`).join("\n"));
             }
 
             const collector = message.channel.createMessageComponentCollector({
@@ -100,17 +96,7 @@ module.exports = {
 
             collector.on(`collect`, async (collected) => {
                 const value = collected.values[0]
-
-                if (value === `first`) {
-                    collected.update({ embeds: [embed1] })
-                }
-                if (value === `second`) {
-                    collected.update({ embeds: [embed2] })
-                }
-                if (value === `third`) {
-                    collected.update({ embeds: [embed3] })
-                }
-
+                collected.update({ embeds: [categoryEmbeds[value]] })
             })
         } catch (error) {
             message.channel.send("``" + error + "``");
