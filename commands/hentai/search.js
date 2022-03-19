@@ -21,46 +21,37 @@ module.exports = {
             return;
         }
 
+        api.IsDiscord = true;
+        await api.getID(number).json().then((data) => {
 
-        api.getID(number).json(data => {
-            try{
+            let hURL = data.url;
+            let hTitle = data.title.translated;
+            let hCover = data.images.cover;
+            let hTags = data.tag_table.tag;
+            let hArtist = data.tag_table.artist;
+            let hLanguage = data.tag_table.languages;
+            let hPages = data.number_pages;
 
-                let hURL = data.url;
-                let hTitle = data.title.translated;
-                let hCover = data.images.cover;
-                let hTags = data.tag_table.tag;
-                let hArtist = data.tag_table.artist;
-                let hLanguage = data.tag_table.languages;
-                let hPages = data.number_pages;
+            const embed = new MessageEmbed()
+                .setTitle(hTitle)
+                .setURL(hURL)
+                .setThumbnail(hCover)
+                .setColor('RANDOM')
+                .addFields(
+                    { name: 'Tags', value: hTags },
+                    { name: 'Artists', value: hArtist },
+                    { name: 'Page Count', value: hPages },
+                    { name: 'Language', value: hLanguage },
+                )
+                .setFooter(`Requested by ${message.author.username}`)
 
-                let bannedTags = /lolicon|shotacon|beastiality|torture|minigirl|blood|guro|cannibalism|shota|loli/;
-                
-                if(bannedTags.test(hTags)){
-                    message.channel.send("One of these tags or more that this doujin has goes against Discord ToS");
-                    return;
-                }
+            message.channel.send({ embeds: [embed] });
 
-                const embed = new MessageEmbed()
-                    .setTitle(hTitle)
-                    .setURL(hURL)
-                    .setThumbnail(hCover)
-                    .setColor('RANDOM')
-                    .addFields(
-                        { name: 'Tags', value: hTags },
-                        { name: 'Artists', value: hArtist },
-                        { name: 'Page Count', value: hPages },
-                        { name: 'Language', value: hLanguage },
-                    )
-                    .setFooter(`Requested by ${message.author.username}`)
 
-                message.channel.send({ embeds: [embed] });
-                
-
-            } catch (error) {
-                message.channel.send("``" + error + "``");
-                console.log(error);
-            }
+        }).catch((error) => {
+            message.channel.send("``" + error + "``");
+            console.log(error);
         });
-        
     }
+
 }
