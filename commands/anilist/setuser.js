@@ -13,9 +13,11 @@ module.exports = {
 
             const anilistID = await Anilist.findOne({ userId: message.author.id });
             const anilistNAME = await Anilist.findOne({ anilistName: UserName });
-            const anilist = await Anilist.findOneAndUpdate({userId: message.author.id }, {anilistName: UserName})
 
-            if (anilistNAME) {
+            if(anilistID){
+            const anilist = await Anilist.findOneAndUpdate({userId: message.author.id }, {anilistName: UserName})
+            return message.channel.send(`${UserName} has been set as your username.`);;
+            } else if (anilistNAME) {
                 return message.channel.send(`<@${anilistNAME.userId}> is already using this username`);
             } else {
 
