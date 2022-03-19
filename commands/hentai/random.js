@@ -13,7 +13,7 @@ module.exports = {
             return
         }
 
-        let string = message.content.replace(`${process.env.prefix}random `, "");
+        let string = args.slice(1).join(" ");
 
 
         api.IsDiscord = true;

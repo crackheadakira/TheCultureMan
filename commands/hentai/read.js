@@ -13,7 +13,7 @@ module.exports = {
             return;
         }
 
-        let number = message.content.replace(`${process.env.prefix}read `, "");
+        let number = args.slice(1).join(" ");
 
         var pn = 1; // The page number
 

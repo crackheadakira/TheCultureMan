@@ -10,7 +10,7 @@ module.exports = {
   type: 'anilist',
   run: async (client, message, args) => {
 
-    let string = message.content.replace(`${process.env.prefix}anime `, ``);
+    let string = args.slice(1).join(" ");
     let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
     if (string == `${process.env.prefix}anime`) {
       message.channel.send("You forgot to mention an anime.")

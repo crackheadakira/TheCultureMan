@@ -9,7 +9,7 @@ module.exports = {
     run: async (client, message, args) => {
 
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
-        let string = message.content.replace(`${process.env.prefix}character `, "");
+        let string = args.slice(1).join(" ");
 
         Anilist.people.character(string).then((data) => {
             try {

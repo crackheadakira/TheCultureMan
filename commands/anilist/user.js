@@ -13,14 +13,18 @@ module.exports = {
     type: 'anilist',
     run: async (client, message, args) => {
 
-        const argz = message.content.split(" ");
+        let string = args.slice(1).join(" ");
 
-        let string = message.content.replace(`${process.env.prefix}user `, "");
-
-        if (argz.length === 1) {
-            const anilistCheck = await AnilistSchema.findOne({ userId: message.author.id });
-            if (anilistCheck) {
-                string = anilistCheck.anilistName.toString();
+        if (!string) {
+            try {
+                const anilistCheck = await AnilistSchema.findOne({ where: { userId: message.author.id } });
+                if (!anilistCheck) {
+                    return message.channel.send("You have yet to set an AniList username.")
+                }
+                string = anilistCheck.anilistName
+            } catch (error) {
+                message.channel.send("``" + error + "``");
+                console.log(error);
             }
         }
 
