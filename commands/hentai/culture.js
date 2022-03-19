@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
-const Culture69 = require('culture69').Culture69;
-const c69 = new Culture69();
+const Culture69 = require('culture69');
+const c69 = new Culture69;
 
 module.exports = {
     name: 'culture',
