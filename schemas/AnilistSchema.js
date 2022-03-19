@@ -1,19 +1,23 @@
-const mongoose = require('mongoose');
+const { Sequelize, Model, DataTypes } = require("sequelize");
+const sequelize = require('../db/db');
 
-const AnilistSchema = new mongoose.Schema({
-  
+const AnilistSchema = sequelize.define("anilistuser", {
+
   anilistName: {
-    type: mongoose.SchemaTypes.String,
-    required: true,
+    type: DataTypes.STRING(32),
+    allowNull: false,
+    unique: true,
   },
   userId: {
-    type: mongoose.SchemaTypes.String,
-    required: true,
-  },
-  userName: {
-    type: mongoose.SchemaTypes.String,
-  },
-  
+    type: DataTypes.STRING(32),
+    allowNull: false,
+    unique: true,
+    validate: {
+      is: ["^[a-zA-Z0-9_]+$", 'i'],
+      len: [1, 32]
+    }
+  }
+
 });
 
-module.exports = mongoose.model("Anilist", AnilistSchema);
+module.exports = AnilistSchema;

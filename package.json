@@ -27,7 +27,8 @@
     "fs": "^0.0.1-security",
     "imdb-api": "^4.4.1",
     "kasu.nhentaiapi.js": "^2.9.2",
-    "mongoose": "^6.2.4",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "sequelize": "^6.17.0",
+    "sqlite3": "^4.2.0"
   }
 }

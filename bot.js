@@ -21,7 +21,6 @@ const client = new Client({
     ],
 });
 const fs = require('fs');
-const mongoose = require('mongoose');
 
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -33,12 +32,7 @@ client.categories = fs.readdirSync('./commands/');
 
 client.on("ready", () => {
     console.log(client.user.tag + ' has logged in.');
-    setInterval(() => {
-        client.user.setActivity(`${client.users.cache.size} members | n.help`, { type: 'WATCHING' })
-    }, 15000);
-    mongoose.connect(process.env.mongoDB).then((m) => {
-        console.log("Connected to DB");
-    });
+    client.user.setActivity(`${client.users.cache.size} members | n.help`, { type: 'WATCHING' });
 });
 
 client.on('messageCreate', async (message) => {
