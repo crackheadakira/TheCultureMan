@@ -7,7 +7,7 @@ module.exports = {
     type: 'anilist',
     run: async (client, message, args) => {
 
-        let UserName = args.slice(1).join(" ").replace(/[^A-Za-z0-9]/g, '');
+        let UserName = message.content.replace(`${process.env.prefix}setuser `, ``).replace(/[^A-Za-z0-9]/g, '');
 
         const anilistID = await Anilist.findOne({ where: { userId: message.author.id } });
 
