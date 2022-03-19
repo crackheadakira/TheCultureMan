@@ -1,12 +1,12 @@
-FROM node:alpine
+FROM node:16
 
-WORKDIR /usr/bot
+WORKDIR /usr/src/cultureman
 
 COPY package*.json ./
 
-COPY . .
+RUN npm i 
 
-RUN npm i
+COPY . .
 
 EXPOSE 27017
 CMD ["node", "bot.js"]
