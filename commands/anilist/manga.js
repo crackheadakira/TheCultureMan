@@ -10,7 +10,7 @@ module.exports = {
     type: 'anilist',
     run: async (client, message, args) => {
 
-        let string = args.slice(1).join(" ");
+        let string = args.slice(0).join(" ");
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 
         if (string == `${process.env.prefix}manga`) {

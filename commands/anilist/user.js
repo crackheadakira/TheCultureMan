@@ -1,6 +1,6 @@
 let anilist = require('anilist-node');
 let { MessageEmbed, MessageButton } = require('discord.js');
-let Anilist = new anilist(process.env.anitoken);
+let Anilist = new anilist();
 let AnilistSchema = require('../../schemas/AnilistSchema');
 let paginationEmbed = require('@acegoal07/discordjs-pagination');
 let paginationOpts = require('../../handlers/paginationOptions');
@@ -13,7 +13,7 @@ module.exports = {
     type: 'anilist',
     run: async (client, message, args) => {
 
-        let string = args.slice(1).join(" ");
+        let string = args.slice(0).join(" ");
 
         if (!string) {
             try {

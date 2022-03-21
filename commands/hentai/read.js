@@ -13,7 +13,7 @@ module.exports = {
             return;
         }
 
-        let number = args.slice(1).join(" ");
+        let string = args.slice(0).join(" ");
 
         var pn = 1; // The page number
 

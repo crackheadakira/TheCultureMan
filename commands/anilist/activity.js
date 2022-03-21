@@ -1,7 +1,7 @@
 const anilist = require(`anilist-node`);
 let AnilistSchema = require('../../schemas/AnilistSchema');
 const { MessageEmbed } = require(`discord.js`);
-const Anilist = new anilist(process.env.anitoken);
+const Anilist = new anilist();
 
 module.exports = {
     name: `activity`,
@@ -9,7 +9,7 @@ module.exports = {
     type: 'anilist',
     run: async (client, message, args) => {
 
-        let string = args.slice(1).join(" ");
+        let string = args.slice(0).join(" ");
 
         if (!string) {
             try {

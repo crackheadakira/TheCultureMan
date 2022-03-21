@@ -1,6 +1,6 @@
 const anilist = require('anilist-node');
 const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist(process.env.anitoken);
+const Anilist = new anilist();
 
 module.exports = {
     name: "character",
@@ -9,7 +9,7 @@ module.exports = {
     run: async (client, message, args) => {
 
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
-        let string = args.slice(1).join(" ");
+        let string = args.slice(0).join(" ");
 
         Anilist.people.character(string).then((data) => {
             try {

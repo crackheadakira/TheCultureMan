@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  app:
+    image: node:16
+    command: "node ."
+    working_dir: /usr/src/cultureman
+    volumes:
+      - ./:/usr/src/cultureman
+    environment:
+      token: token
+      prefix: n.

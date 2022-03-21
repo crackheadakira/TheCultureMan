@@ -14,7 +14,7 @@ module.exports = {
         }
 
 
-        let number = args.slice(1).join(" ");
+        let string = args.slice(0).join(" ");
 
         if (isNaN(number)) {
             message.reply(`Usage: ${process.env.prefix}search <ID> where <ID> is the nHentai.net ID`);

@@ -13,7 +13,7 @@ module.exports = {
             return
         }
 
-        let string = args.slice(1).join(" ");
+        let string = args.slice(0).join(" ");
 
 
         api.IsDiscord = true;
