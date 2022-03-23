@@ -13,7 +13,7 @@ module.exports = {
             return;
         }
 
-        let string = args.slice(0).join(" ");
+        let number = args.slice(0).join(" ");
 
         var pn = 1; // The page number
 
@@ -28,7 +28,7 @@ module.exports = {
             let hTags = data.tag_table.tag;
             let hURL = data.url;
             let hPageCount = data.number_pages;
-            let hPID = data.images.cover.match(/\d+/)[0]; // Extracts the digits from nHentai's image gallery for a doujin
+            let hPID = data.images.cover.match(/[0-9]+/g)[data.images.cover.match(/[0-9]+/g).length - 1]; // Extracts the digits from nHentai's image gallery for a doujin
             let pages = ("https://i.nhentai.net/galleries/" + hPID + "/" + pn + ".jpg"); // Combies the extracted digits with the url and then the page it's on to make an Image URL that is acceptable
             let hTitle = data.title.translated;
 

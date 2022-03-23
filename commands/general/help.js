@@ -66,7 +66,7 @@ module.exports = {
                 .setTitle(`Here are all the bot commands`)
                 .setDescription(`Select one of the command categories using the dropdown menu.`)
 
-            let sendmsg = await message.channel.send({ content: ` `, embeds: [embed], components: [row] })
+            await message.channel.send({ content: ` `, embeds: [embed], components: [row] })
 
             let categoryContents = {};
             for (const category of categories) {
@@ -98,6 +98,7 @@ module.exports = {
                 const value = collected.values[0]
                 collected.update({ embeds: [categoryEmbeds[value]] })
             })
+
         } catch (error) {
             message.channel.send("``" + error + "``");
             console.log(error);
