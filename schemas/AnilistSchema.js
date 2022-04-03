@@ -1,7 +1,7 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
 const sequelize = require('../db/db');
 
-const AnilistSchema = sequelize.define("anilistName", {
+const AnilistSchema = sequelize.define("anilistuser", {
 
   anilistName: {
     type: DataTypes.STRING(32),
