@@ -29,7 +29,7 @@
     "kasu.nhentaiapi.js": "^2.9.2",
     "path": "^0.12.7",
     "rebuild": "^0.1.2",
-    "sqlite3": "^4.2.0",
-    "sequelize": "^6.17.0"
+    "sequelize": "^6.17.0",
+    "sqlite3": "^4.2.0"
   }
 }

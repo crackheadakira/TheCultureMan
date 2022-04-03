@@ -1,19 +1,20 @@
-const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageSelectMenu, SelectMenuInteraction } = require('discord.js');
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 
 module.exports = {
     name: 'help',
     description: 'This shows you all the command this bot has to offer.',
     type: 'general',
     run: async (client, message, args) => {
-        
+
         const categories = [
             {
                 label: `AniList Commands`,
                 description: `Show's you the AniList commands`,
                 id: 'anilist',
                 commandFolder: "anilist",
+                color: '#0099ff',
                 filterFn: (x) => x.endsWith(".js")
             },
             {
@@ -21,6 +22,7 @@ module.exports = {
                 description: `Show's you the general commands`,
                 id: 'general',
                 commandFolder: "general",
+                color: '#ea9e07',
                 filterFn: (x) => x.endsWith(".js") && x != "help.js" && x != "birthday.js"
             },
             {
@@ -28,6 +30,7 @@ module.exports = {
                 description: `Show's you the Hentai commands`,
                 id: 'hentai',
                 commandFolder: "hentai",
+                color: '#fb2347',
                 filterFn: (x) => x.endsWith(".js")
             }
         ]
@@ -57,8 +60,7 @@ module.exports = {
                                 description: category.description,
                                 value: category.id
                             }
-                        })
-                        )
+                        }))
                 )
 
 
@@ -66,11 +68,9 @@ module.exports = {
                 .setTitle(`Here are all the bot commands`)
                 .setDescription(`Select one of the command categories using the dropdown menu.`)
 
-            await message.channel.send({ content: ` `, embeds: [embed], components: [row] })
-
             let categoryContents = {};
             for (const category of categories) {
-                categoryContents[category.id] = parseCategory(category);
+                categoryContents[category.id] = parseCategory(category)
             }
 
             let categoryEmbeds = {};
@@ -79,29 +79,31 @@ module.exports = {
                 if (commands.length > 0) {
                     const embed = new MessageEmbed()
                         .setTitle(`${category.label}`)
-                        .setDescription(`${category.description}`)
-                        .setColor('#0099ff')
+                        .setColor(category.color)
                         .setFooter(`${commands.length} commands in this category`)
                         .setTimestamp();
                     for (const command of commands) {
-                        embed.addField(`${command.name}`, `${command.description}`);
+                        embed.addField(`${process.env.prefix}${command.name}`, `${command.description}`);
                     }
                     categoryEmbeds[category.id] = embed;
                 }
             }
 
-            const collector = message.channel.createMessageComponentCollector({
-                componentType: `SELECT_MENU`
-            })
+            await message.channel.send({ content: ` `, embeds: [embed], components: [row] })
+
+            let collector = message.channel.createMessageComponentCollector({
+                componentType: `SELECT_MENU`,
+                idle: 2_000,
+            });
 
             collector.on(`collect`, async (collected) => {
-                const value = collected.values[0]
-                collected.update({ embeds: [categoryEmbeds[value]] })
+                let value = collected.values[0];
+                collected.update({ embeds: [categoryEmbeds[value]] });
             })
 
         } catch (error) {
             message.channel.send("``" + error + "``");
-            console.log(error);
+            console.log(error)
         }
     }
 }

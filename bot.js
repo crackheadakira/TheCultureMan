@@ -1,6 +1,6 @@
 console.clear();
-global.EmbedError = require('./handlers/EmbedError')
-const { Discord, Client, Collection } = require('discord.js')
+global.EmbedError = require('./handlers/EmbedError');
+const { Discord, Client, Collection } = require('discord.js');
 require("dotenv-flow").config();
 const client = new Client({
     intents: [
