@@ -54,11 +54,11 @@ module.exports = {
                 name: data?.media[i].nextAiringEpisode?.episode ? `Episode ${data.media[i].nextAiringEpisode.episode} airing in:` : "Ended on:",
                 value: data?.media[i].nextAiringEpisode?.airingAt ? `<t:${data.media[i].nextAiringEpisode.airingAt}:R>` : `${data.media[i].endDate.day}-${data.media[i].endDate.month}-${data.media[i].endDate.year}`, inline: true
               },
-              { name: 'Average Score', value: `${data.media[i].averageScore}%` || "Unknown", inline: true },
-              { name: 'Status', value: data.media[i].status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
-              { name: 'Source', value: data.media[i].source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
-              { name: 'Episodes', value: data.media[i].episodes.toString() || "Unknown", inline: true },
-              { name: 'Genres', value: data.media[i].genres.toString().replace(/,/g, ", "), },
+              { name: 'Average Score', value: `${data.media[i]?.averageScore}%` || "Unknown", inline: true },
+              { name: 'Status', value: data.media[i]?.status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
+              { name: 'Source', value: data.media[i]?.source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
+              { name: 'Episodes', value: data.media[i]?.episodes?.toString() || "Unknown", inline: true },
+              { name: 'Genres', value: data.media[i]?.genres?.toString().replace(/,/g, ", "), },
             )
             .setFooter(`Requested by ${message.author.username}`);
           embeds.push(embed);
