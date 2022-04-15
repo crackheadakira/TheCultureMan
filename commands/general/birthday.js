@@ -9,6 +9,10 @@ module.exports = {
 
             let server = message.guild.id
 
+            function calculateAge(birthdate) {
+                return Math.floor((new Date() - new Date(birthdate)) / 31557600000)
+            }
+
             function birthdayCalculator(month, day) {
 
                 var manos = new Date(),
@@ -27,10 +31,8 @@ module.exports = {
             var bd3 = birthdayCalculator(03, 18);
             var bd4 = birthdayCalculator(04, 23);
             var bd5 = birthdayCalculator(06, 24);
-            var bd6 = birthdayCalculator(07, 04);
             var bd7 = birthdayCalculator(07, 18);
             var bd8 = birthdayCalculator(08, 03);
-            var bd9 = birthdayCalculator(08, 19);
             var bd10 = birthdayCalculator(08, 20);
             var bd11 = birthdayCalculator(09, 12);
             var bd12 = birthdayCalculator(10, 01);
@@ -42,27 +44,25 @@ module.exports = {
             var bd18 = birthdayCalculator(03, 07)
 
             let basicInfo = `
-        <@420825464245059586> birthday - march 5th **${bd1} day's to go** AGE: **13** \n 
-        <@592338499810885653> birthday - march 7th **${bd18} day's to go** AGE: **15** \n
-        <@327012928031162368> birthday - march 11th **${bd2} day's to go** AGE: **15**\n
-        <@529146606470168616> birthday - march 18th **${bd3} day's to go** AGE: **16**\n
-        <@343726471124090881> birthday - march 19th **${bd15} day's to go** AGE: **17**\n
-        <@236907218342117376> birthday - april 23rd **${bd4} day's to go** AGE: **14**\n
-        <@313699902758715404> birthday - june 24th **${bd5} day's to go** AGE: **16**\n
-        <@211952293476696066> birthday - june 24th **${bd16} day's to go** AGE: **19**\n
-        *fallen soldier:* <@331164413623009281> birthday - july 4th **${bd6} day's to go** AGE: **16**\n
-        <@419512104685666304> birthday - july 18th **${bd7} day's to go** AGE: **15**\n
-        <@422007636133675018> birthday - august 3rd **${bd8} day's to go** AGE: **15**\n
-        *fallen soldier:* <@725519804496085015> birthday - august 19th **${bd9} day's to go** AGE: **?**\n
-        <@212179051652055040> birthday - august 20th **${bd10} day's to go** AGE: **17**\n
-        <@795261856964673536> birthday - september 12th **${bd11} day's to go** AGE: **15**\n
-        <@227032992978042881> birthday - october 1st **${bd12} day's to go** AGE: **18**\n
-        <@618204263767867412> birthday - october 15th **${bd17} day's to go** AGE: **17**\n
-        <@696943140183081052> birthday - november 12th **${bd13} day's to go** AGE: **13**\n
-        <@794890277332320256> birthday - november 29th **${bd14} day's to go** AGE: **15**\n
+        <@420825464245059586> birthday - march 5th **${bd1} day's to go** AGE: **${calculateAge("2009-03-05")}** \n 
+        <@592338499810885653> birthday - march 7th **${bd18} day's to go** AGE: **${calculateAge("2007-03-07")}** \n
+        <@327012928031162368> birthday - march 11th **${bd2} day's to go** AGE: **${calculateAge("2007-03-11")}**\n
+        <@529146606470168616> birthday - march 18th **${bd3} day's to go** AGE: **${calculateAge("2006-03-18")}**\n
+        <@343726471124090881> birthday - march 19th **${bd15} day's to go** AGE: **${calculateAge("2005-03-19")}**\n
+        <@236907218342117376> birthday - april 23rd **${bd4} day's to go** AGE: **${calculateAge("2007-04-23")}**\n
+        <@313699902758715404> birthday - june 24th **${bd5} day's to go** AGE: **${calculateAge("2005-06-24")}**\n
+        <@211952293476696066> birthday - june 24th **${bd16} day's to go** AGE: **${calculateAge("2002-06-24")}**\n
+        <@419512104685666304> birthday - july 18th **${bd7} day's to go** AGE: **${calculateAge("2006-07-18")}**\n
+        <@422007636133675018> birthday - august 3rd **${bd8} day's to go** AGE: **${calculateAge("2006-08-03")}**\n
+        <@212179051652055040> birthday - august 20th **${bd10} day's to go** AGE: **${calculateAge("2004-08-20")}**\n
+        <@795261856964673536> birthday - september 12th **${bd11} day's to go** AGE: **${calculateAge("2006-09-12")}**\n
+        <@227032992978042881> birthday - october 1st **${bd12} day's to go** AGE: **${calculateAge("2003-10-01")}**\n
+        <@618204263767867412> birthday - october 15th **${bd17} day's to go** AGE: **${calculateAge("2004-10-15")}**\n
+        <@696943140183081052> birthday - november 12th **${bd13} day's to go** AGE: **${calculateAge("2008-11-12")}**\n
+        <@794890277332320256> birthday - november 29th **${bd14} day's to go** AGE: **${calculateAge("2006-11-29")}**\n
         `;
 
-            const counts = [bd1, bd2, bd3, bd4, bd5, bd6, bd7, bd8, bd9, bd10, bd11, bd12, bd13, bd14, bd15, bd16, bd17, bd18];
+            const counts = [bd1, bd2, bd3, bd4, bd5, bd7, bd8, bd10, bd11, bd12, bd13, bd14, bd15, bd16, bd17, bd18];
             const goal = 0;
             const nextBirthday = counts.reduce((prev, curr) => Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
 
@@ -87,17 +87,11 @@ module.exports = {
                 if (nextBirthday === bd5) {
                     embed.setDescription(`${basicInfo} It's <@313699902758715404>'s birthday next, in ${nextBirthday} days!`)
                 }
-                if (nextBirthday === bd6) {
-                    embed.setDescription(`${basicInfo} It's <@331164413623009281>'s birthday next, in ${nextBirthday} days!`)
-                }
                 if (nextBirthday === bd7) {
                     embed.setDescription(`${basicInfo} It's <@419512104685666304>'s birthday next, in ${nextBirthday} days!`)
                 }
                 if (nextBirthday === bd8) {
                     embed.setDescription(`${basicInfo} It's <@422007636133675018>'s birthday next, in ${nextBirthday} days!`)
-                }
-                if (nextBirthday === bd9) {
-                    embed.setDescription(`${basicInfo} It's <@725519804496085015>'s birthday next, in ${nextBirthday} days!`)
                 }
                 if (nextBirthday === bd10) {
                     embed.setDescription(`${basicInfo} It's <@852665699892985866>'s birthday next, in ${nextBirthday} days!`)
@@ -139,14 +133,10 @@ module.exports = {
                     message.channel.send("@everyone it's <@236907218342117376> birthday today")
                 } else if (bd5 === 0) {
                     message.channel.send("@everyone it's <@313699902758715404> birthday today")
-                } else if (bd6 === 0) {
-                    message.channel.send("@everyone it's <@331164413623009281> birthday today")
                 } else if (bd7 === 0) {
                     message.channel.send("@everyone it's <@419512104685666304> birthday today")
                 } else if (bd8 === 0) {
                     message.channel.send("@everyone it's <@422007636133675018> birthday today")
-                } else if (bd9 === 0) {
-                    message.channel.send("@everyone it's <@725519804496085015> birthday today")
                 } else if (bd10 === 0) {
                     message.channel.send("@everyone it's <@852665699892985866> birthday today")
                 } else if (bd11 === 0) {
