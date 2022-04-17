@@ -18,8 +18,6 @@ module.exports = {
             return;
         }
 
-        console.log(string)
-
         var vars = {
             search: string,
             page: 1,

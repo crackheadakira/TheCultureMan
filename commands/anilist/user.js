@@ -94,8 +94,8 @@ module.exports = {
                         .setThumbnail(userAvatar)
                         .setURL(userURL)
                         .addFields(
-                            { name: "Favourite Anime", value: `${aTitles || "No Favourites"}` },
-                            { name: "Favourite Manga", value: `${mTitles || "No Favourites"}` },
+                            { name: "Favourite Anime", value: `${aTitles || "No Favourites"}`, inline: true },
+                            { name: "Favourite Manga", value: `${mTitles || "No Favourites"}`, inline: true },
                         )
                         .setFooter(`Requested by ${message.author.username}`)
 

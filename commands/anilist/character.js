@@ -15,11 +15,11 @@ module.exports = {
             try {
 
                 const embed = new MessageEmbed()
-                    .setTitle(data.name.english)
-                    .setURL(data.siteUrl)
-                    .setThumbnail(data.image.large)
-                    .setDescription(trimString(data.description.toString().replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||'), 456))
-                    .setFooter(`Requested by ${message.author.username} | ${parseInt(data.favourites)} Favourites`)
+                    .setTitle(data?.name?.english || "Unknown")
+                    .setURL(data?.siteUrl)
+                    .setThumbnail(data?.image?.large || data?.image?.medium)
+                    .setDescription(trimString(data?.description?.toString().replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||'), 456))
+                    .setFooter(`Requested by ${message.author.username} | ${+data?.favourites || "Unknown amount of"} Favourites`)
 
                 message.channel.send({ embeds: [embed] })
 
