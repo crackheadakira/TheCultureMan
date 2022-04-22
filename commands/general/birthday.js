@@ -47,7 +47,7 @@ module.exports = {
         <@420825464245059586> birthday - march 5th **${bd1} day's to go** AGE: **${calculateAge("2009-03-05")}** \n 
         <@592338499810885653> birthday - march 7th **${bd18} day's to go** AGE: **${calculateAge("2007-03-07")}** \n
         <@327012928031162368> birthday - march 11th **${bd2} day's to go** AGE: **${calculateAge("2007-03-11")}**\n
-        <@529146606470168616> birthday - march 18th **${bd3} day's to go** AGE: **${calculateAge("2006-03-18")}**\n
+        <@529146606470168616> birthday - march 18th **${bd3} day's to go** AGE: **${calculateAge("2007-03-18")}**\n
         <@343726471124090881> birthday - march 19th **${bd15} day's to go** AGE: **${calculateAge("2005-03-19")}**\n
         <@236907218342117376> birthday - april 23rd **${bd4} day's to go** AGE: **${calculateAge("2007-04-23")}**\n
         <@313699902758715404> birthday - june 24th **${bd5} day's to go** AGE: **${calculateAge("2005-06-24")}**\n

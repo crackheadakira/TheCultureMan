@@ -4,3 +4,4 @@ node_modules/
 .env.production.local
 .env.local
 /db/*.sqlite
+/commands/general/birthday.js
