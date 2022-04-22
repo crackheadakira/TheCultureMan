@@ -41,7 +41,7 @@ module.exports = {
             var bd15 = birthdayCalculator(03, 19)
             var bd16 = birthdayCalculator(06, 24)
             var bd17 = birthdayCalculator(10, 15)
-            var bd18 = birthdayCalculator(03, 07)
+            var bd18 = birthdayCalculator(03, 07);
 
             let basicInfo = `
         <@420825464245059586> birthday - march 5th **${bd1} day's to go** AGE: **${calculateAge("2009-03-05")}** \n 
