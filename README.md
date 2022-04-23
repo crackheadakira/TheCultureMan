@@ -7,6 +7,7 @@
 # TheCultureMan
 
 This is a bot I made as a personal project to learn JavaScript. I just opened up Notepad++ and started watching tutorials. I later switched to VS Code.
+You can [invite](https://discord.com/oauth2/authorize?client_id=867010131745177621&permissions=274878164032&scope=bot) it to your server
 
 ## Can I use this?
 Yes you can, crediting me is optional.
