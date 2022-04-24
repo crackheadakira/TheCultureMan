@@ -1,6 +1,6 @@
-const anilist = require('anilist-node');
 const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist();
+const GraphQLRequest = require("../../handlers/GraphQLRequest");
+const GraphQLQueries = require("../../handlers/GraphQLQueries");
 
 module.exports = {
     name: "staff",
@@ -11,22 +11,27 @@ module.exports = {
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
         let string = args.slice(0).join(" ");
 
-        Anilist.people.staff(string).then(data => {
-            try {
+        let vars = {
+            staff: string,
+        }
+
+        GraphQLRequest(GraphQLQueries.staff, vars)
+            .then((data) => {
+
+                data = data.Staff;
 
                 const embed = new MessageEmbed()
-                    .setTitle(data.name.english)
-                    .setURL(data.siteUrl)
-                    .setThumbnail(data.image.large)
-                    .setDescription(data.description.replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||'), 456)
-                    .setFooter(`Requested by ${message.author.username} | ${parseInt(data.favourites)} Favourites`)
+                    .setTitle(data?.name?.full || data?.name?.native)
+                    .setURL(data?.siteUrl)
+                    .setThumbnail(data?.image?.large || data?.image?.medium)
+                    .setDescription(trimString(data?.description?.replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||') || "Unknown", 456))
+                    .setFooter(`Requested by ${message.author.username} | ${parseInt(data?.favourites) || "Unknown amount of"} Favourites`)
 
                 message.channel.send({ embeds: [embed] });
-            } catch (error) {
+
+            }).catch((error) => {
                 message.channel.send("``" + error + "``");
                 console.log(error);
-            }
-        });
-
+            });
     }
 }

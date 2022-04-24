@@ -1,6 +1,6 @@
-const anilist = require('anilist-node');
 const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist();
+const GraphQLRequest = require("../../handlers/GraphQLRequest");
+const GraphQLQueries = require("../../handlers/GraphQLQueries");
 
 module.exports = {
     name: "studio",
@@ -11,30 +11,33 @@ module.exports = {
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
         let string = args.slice(0).join(" ");
 
-        Anilist.studio(string).then(data => {
-            try {
+        let vars = {
+            studio: string,
+        }
 
-                let name = data.name;
-                let studioMedia = data.media;
-                let URL = data.siteURL;
-                let favourites = data.favourites;
+        GraphQLRequest(GraphQLQueries.studio, vars)
+            .then((data) => {
+                data = data?.Studio;
 
-                // Sort's studioMedia to be in an easy readable form
-                let media = studioMedia.map(({ title }) => title);
-                var correctMedia = media.map(({ romaji}) => romaji).toString().replace(/,/g, "\n");
+                let series = []
+                for (serie of data.media.nodes) {
+                    series = series.concat(serie?.title?.english || serie?.title?.romaji || "Unknown")
+                }
+
+                series = series.toString().replaceAll(",", "\n")
 
                 const embed = new MessageEmbed()
-                    .setTitle(name)
-                    .setURL(URL)
-                    .setFooter(`Requested by ${message.author.username} | ${favourites} Favourites`)
-                    .setDescription(correctMedia)
+                    .setTitle(data?.name || "Unknown")
+                    .setURL(data?.siteUrl)
+                    .setFooter(`Requested by ${message.author.username} | ${data?.favourites || "Unknown amount of "} Favourites`)
+                    .setDescription(series.toString())
 
                 message.channel.send({ embeds: [embed] })
-            } catch (error) {
+
+            }).catch((error) => {
                 message.channel.send("``" + error + "``");
                 console.log(error);
-            }
-        });
+            });
 
     }
 }

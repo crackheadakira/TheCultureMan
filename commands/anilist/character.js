@@ -1,6 +1,6 @@
-const anilist = require('anilist-node');
 const { MessageEmbed } = require('discord.js');
-const Anilist = new anilist();
+const GraphQLRequest = require("../../handlers/GraphQLRequest");
+const GraphQLQueries = require("../../handlers/GraphQLQueries");
 
 module.exports = {
     name: "character",
@@ -11,11 +11,17 @@ module.exports = {
         let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
         let string = args.slice(0).join(" ");
 
-        Anilist.people.character(string).then((data) => {
-            try {
+        let vars = {
+            character: string,
+        }
+
+        GraphQLRequest(GraphQLQueries.character, vars)
+            .then((data) => {
+
+                data = data.Character;
 
                 const embed = new MessageEmbed()
-                    .setTitle(data?.name?.english || "Unknown")
+                    .setTitle(data?.name?.full || "Unknown")
                     .setURL(data?.siteUrl)
                     .setThumbnail(data?.image?.large || data?.image?.medium)
                     .setDescription(trimString(data?.description?.toString().replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||'), 456))
@@ -23,10 +29,9 @@ module.exports = {
 
                 message.channel.send({ embeds: [embed] })
 
-            } catch (error) {
+            }).catch((error) => {
                 message.channel.send("``" + error + "``");
                 console.log(error);
-            }
-        });
+            });
     }
 }

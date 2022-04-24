@@ -1,4 +1,3 @@
-const { MessageEmbed } = require('discord.js');
 const Anilist = require('../../schemas/AnilistSchema');
 
 module.exports = {
@@ -21,6 +20,7 @@ module.exports = {
             }
 
         }
+
         try {
             await Anilist.create({ userId: message.author.id, anilistName: UserName })
             return message.channel.send(`${UserName} has been set as your username.`);

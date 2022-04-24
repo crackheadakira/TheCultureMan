@@ -1,0 +1,16 @@
+query ($studio: String) {
+  Studio(search: $studio) {
+    name
+    siteUrl
+    favourites
+    media {
+      nodes {
+        title {
+          romaji
+          native
+          english
+        }
+      }
+    }
+  }
+}

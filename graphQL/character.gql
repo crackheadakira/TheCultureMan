@@ -1,0 +1,15 @@
+query ($character: String) {
+  Character(search: $character) {
+    name {
+      full
+      native
+    }
+    image {
+      medium
+      large
+    }
+    siteUrl
+    favourites
+    description
+  }
+}

@@ -1,0 +1,15 @@
+query ($staff: String) {
+  Staff(search: $staff){
+    name{
+      full
+      native
+    }
+    image{
+      large
+      medium
+    }
+    description
+    siteUrl
+    
+  }
+}
