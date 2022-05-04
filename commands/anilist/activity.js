@@ -41,7 +41,7 @@ module.exports = {
                             .setDescription(data.text?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
                             .setThumbnail(uData.avatar.large)
 
-                        message.channel.send({ embeds: [embed] });
+                        return message.channel.send({ embeds: [embed] });
 
                     } else if (data.type.toString().includes("MESSAGE")) {
                         embed
@@ -49,14 +49,14 @@ module.exports = {
                             .setDescription(data.message?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
                             .setThumbnail(uData.avatar.large)
 
-                        message.channel.send({ embeds: [embed] });
+                        return message.channel.send({ embeds: [embed] });
 
                     } else
                         embed
                             .setTitle(`Here's ${uData.name.toString()}'s most recent activity!`)
                             .setThumbnail(data?.media?.coverImage?.large || data?.media?.coverImage?.medium)
                             .setDescription(`**${data?.status?.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, (match) => match.toUpperCase())} ${data?.progress?.toString() || ""} ${data?.media?.title?.romaji?.toString()}**`)
-                    message.channel.send({ embeds: [embed] });
+                    return message.channel.send({ embeds: [embed] });
                 });
             } catch (error) {
                 message.channel.send("``" + error + "``");

@@ -21,9 +21,10 @@ module.exports = {
 
                 let series = []
                 for (serie of data.media.nodes) {
-                    series = series.concat(serie?.title?.english || serie?.title?.romaji || "Unknown")
+                    let serieEntry = `[${serie?.title?.english || serie?.title?.romaji || "Unknown"}](${serie.siteUrl})`
+                    series = series.concat(serieEntry)
                 }
-
+                
                 series = series.toString().replaceAll(",", "\n")
 
                 const embed = new MessageEmbed()
