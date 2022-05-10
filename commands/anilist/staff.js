@@ -21,11 +21,11 @@ module.exports = {
                 data = data.Staff;
 
                 const embed = new MessageEmbed()
-                    .setTitle(data?.name?.full || data?.name?.native)
-                    .setURL(data?.siteUrl)
+                    .setTitle(data?.name?.full || data?.name?.native || "Unknown")
+                    .setURL(data.siteUrl)
                     .setThumbnail(data?.image?.large || data?.image?.medium)
                     .setDescription(trimString(data?.description?.replace(/<[^>]*>?/gm, '').replace(new RegExp('!~|~!', 'gi'), '||') || "Unknown", 456))
-                    .setFooter(`Requested by ${message.author.username} | ${parseInt(data?.favourites) || "Unknown amount of"} Favourites`)
+                    .setFooter(`Requested by ${message.author.username} | ${+data?.favourites || "Unknown amount of"} Favourites`)
 
                 message.channel.send({ embeds: [embed] });
 

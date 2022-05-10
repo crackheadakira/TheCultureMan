@@ -1,0 +1,10 @@
+query ($userid: Int!) {
+    Page(perPage: 1) {
+        pageInfo {
+            total
+        }
+        followers(userId: $userid) {
+            id
+        }
+    }
+}

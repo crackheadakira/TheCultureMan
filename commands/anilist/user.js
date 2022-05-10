@@ -28,85 +28,86 @@ module.exports = {
             }
         }
 
-        Anilist.user.all(string).then(data => {
-            try {
+        let vars = {
+            name: string,
+        };
 
-                let userID = data.id;
-                let userName = data.name.toString();
-                let userAvatar = data.avatar.large;
-                let userURL = data.siteUrl.toString();
-                let userBanner = data.bannerImage;
-                var vars = {
+        GraphQLRequest(GraphQLQueries.user, vars)
+            .then((data) => {
+
+                data = data.user;
+
+                let userID = data?.id || "Unknown ID";
+                let userName = data?.name?.toString() || "Unknown";
+                let userAvatar = data?.avatar?.large || data?.avatar?.medium;
+                let userURL = data?.siteUrl?.toString() || "Unknown URL";
+                let userBanner = data?.bannerImage || "Unknown";
+                vars = {
                     userid: userID,
                 };
 
-                GraphQLRequest(GraphQLQueries.user, vars).then((yeezies) => {
+                GraphQLRequest(GraphQLQueries.followers, vars)
+                    .then((followerData) => {
 
-                    let followers = yeezies.Page.pageInfo.total;
+                        let followers = followerData.Page.pageInfo.total;
 
-                    let donatorTier = data.donatorTier.toString();
+                        // User's Anime Statistics
+                        let animeWatched = data?.statistics?.anime?.count.toString() || "Unknown amount";
+                        let animeEpisodes = data?.statistics?.anime?.episodesWatched.toString() || "Unknown amount";
 
-                    // User's Anime Statistics
-                    let animeStatistics = data.statistics.anime;
-                    let animeMeanScore = animeStatistics.meanScore.toString();
-                    let animeWatched = animeStatistics.count.toString();
-                    let animeEpisodes = animeStatistics.episodesWatched.toString();
+                        // User's Manga Statistics
+                        let mangaRead = data?.statistics?.manga?.count.toString() || "Unknown amount";
+                        let mangaChapters = data?.statistics?.manga?.chaptersRead.toString() || "Unknown amount";
 
-                    // User's Manga Statistics
-                    let mangaStatistics = data.statistics.manga;
-                    let mangaMeanScore = mangaStatistics.meanScore.toString();
-                    let mangaRead = mangaStatistics.count.toString();
-                    let mangaChapters = mangaStatistics.chaptersRead.toString();
+                        let animeSeries = [];
+                        let mangaSeries = []
 
-                    // Sort user's favourite anime
-                    let aTitle = data.favourites.anime.map(({ title }) => title);
-                    let aTitles = aTitle.map(({ romaji }) => romaji);
+                        data.favourites.anime.nodes.forEach(serie => {
+                            animeSeries.unshift(`[${serie?.title?.userPreferred || serie?.title?.romaji || serie?.title?.english || serie?.title?.native || "Unknown"}](${serie?.siteUrl || "Unknown"})`);
+                        });
 
-                    // Sort user's favourite manga
-                    let mTitle = data.favourites.manga.map(({ title }) => title);
-                    let mTitles = mTitle.map(({ romaji }) => romaji);
+                        data.favourites.manga.nodes.forEach(serie => {
+                            mangaSeries.unshift(`[${serie?.title?.userPreferred || serie?.title?.romaji || serie?.title?.english || serie?.title?.native || "Unknown"}](${serie?.siteUrl || "Unknown"})`);
+                        });
 
-                    // Fixes the titles to be in a good order
-                    aTitles = aTitles.toString().replace(/,/g, "\n");
-                    mTitles = mTitles.toString().replace(/,/g, "\n");
+                        animeSeries = animeSeries.toString().replace(/,/g, "\n");
+                        mangaSeries = mangaSeries.toString().replace(/,/g, "\n");
 
 
-                    const embed = new MessageEmbed()
-                        .setTitle(`${userName}'s profile`)
-                        .setThumbnail(userAvatar)
-                        .setImage(userBanner)
-                        .setURL(userURL)
-                        .addFields(
-                            { name: "User ID", value: userID.toString(), inline: true },
-                            { name: "Followers", value: followers.toString(), inline: true },
-                            { name: "Donator Tier", value: `Tier ${donatorTier}`, inline: true },
-                            { name: "Anime Mean Score", value: animeMeanScore, inline: true },
-                            { name: "Anime Watched", value: animeWatched, inline: true },
-                            { name: "Episodes Watched", value: animeEpisodes, inline: true },
-                            { name: "Manga Mean Score", value: mangaMeanScore, inline: true },
-                            { name: "Manga Read", value: mangaRead, inline: true },
-                            { name: "Chapters Read", value: mangaChapters, inline: true },
-                        )
-                        .setFooter("Requested by " + message.author.username)
+                        const embed = new MessageEmbed()
+                            .setTitle(`${userName}'s profile`)
+                            .setThumbnail(userAvatar)
+                            .setImage(userBanner)
+                            .setURL(userURL)
+                            .addFields(
+                                { name: "User ID", value: userID.toString(), inline: true },
+                                { name: "Followers", value: followers.toString(), inline: true },
+                                { name: "Anime Statistics", value: `${animeWatched} anime watched \n ${animeEpisodes} episodes watched` },
+                                { name: "Manga Statistics", value: `${mangaRead} manga read \n ${mangaChapters} chapters read` },
+                            )
+                            .setFooter("Requested by " + message.author.username)
 
-                    const favouritesEmbed = new MessageEmbed()
-                        .setTitle(`${userName}'s favourites`)
-                        .setThumbnail(userAvatar)
-                        .setURL(userURL)
-                        .addFields(
-                            { name: "Favourite Anime", value: `${aTitles || "No Favourites"}`, inline: true },
-                            { name: "Favourite Manga", value: `${mTitles || "No Favourites"}`, inline: true },
-                        )
-                        .setFooter(`Requested by ${message.author.username}`)
+                        const favouritesEmbed = new MessageEmbed()
+                            .setTitle(`${userName}'s favourites`)
+                            .setThumbnail(userAvatar)
+                            .setURL(userURL)
+                            .addFields(
+                                { name: "Favourite Anime", value: `${animeSeries || "No Favourites"}`, inline: true },
+                                { name: "Favourite Manga", value: `${mangaSeries || "No Favourites"}`, inline: true },
+                            )
+                            .setFooter(`Requested by ${message.author.username}`)
 
-                    const pages = [embed, favouritesEmbed]
-                    paginationEmbed(paginationOpts(message, pages))
+                        const pages = [embed, favouritesEmbed]
+                        paginationEmbed(paginationOpts(message, pages))
 
-                });
-            } catch (error) {
-                message.channel.send("``" + `${error}, you have possibly not set an username` + "``");
+                    }).catch((error) => {
+                        console.log(error);
+                        message.channel.send({ embeds: [EmbedError(error, vars)] });
+                    });
+
+            }).catch((error) => {
                 console.log(error);
-            }
-        });
+                message.channel.send({ embeds: [EmbedError(error, vars)] });
+            });
     }
 }

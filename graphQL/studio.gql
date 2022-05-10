@@ -1,9 +1,13 @@
-query ($studio: String) {
+query ($studio: String, $page: Int) {
   Studio(search: $studio) {
     name
     siteUrl
     favourites
-    media {
+    media(page: $page) {
+      pageInfo{
+        perPage
+        hasNextPage
+      }
       nodes {
         title {
           romaji

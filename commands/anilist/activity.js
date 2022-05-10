@@ -37,9 +37,9 @@ module.exports = {
 
                     if (data.type.toString().includes("TEXT")) {
                         embed
-                            .setTitle(`Here's ${uData.name.toString()}'s most recent activity!`)
-                            .setDescription(data.text?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
-                            .setThumbnail(uData.avatar.large)
+                            .setTitle(`Here's ${uData?.name?.toString() || "Unknown Name"}'s most recent activity!`)
+                            .setDescription(data?.text?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
+                            .setThumbnail(uData?.avatar?.large)
 
                         return message.channel.send({ embeds: [embed] });
 

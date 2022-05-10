@@ -1,10 +1,46 @@
-query ($userid: Int!) {
-    Page(perPage: 1) {
-        pageInfo {
-            total
-        }
-        followers(userId: $userid) {
-            id
-        }
+query($name: String) {
+  User(name: $name) {
+    id
+    name
+    avatar {
+      large
+      medium
     }
+    siteUrl
+    bannerImage
+    statistics {
+      anime {
+        count
+        episodesWatched
+      }
+      manga {
+        count
+        chaptersRead
+      }
+    }
+    favourites {
+      anime {
+        nodes {
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          siteUrl
+        }
+      }
+      manga {
+        nodes {
+          title {
+            romaji
+            english
+            native
+            userPreferred
+          }
+          siteUrl
+        }
+      }
+    }
+  }
 }

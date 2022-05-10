@@ -7,47 +7,46 @@ module.exports = {
     description: 'This shows you all the command this bot has to offer.',
     type: 'general',
     run: async (client, message, args) => {
-
-        const categories = [
-            {
-                label: `AniList Commands`,
-                description: `Show's you the AniList commands`,
-                id: 'anilist',
-                commandFolder: "anilist",
-                color: '#0099ff',
-                filterFn: (x) => x.endsWith(".js")
-            },
-            {
-                label: `General Commands`,
-                description: `Show's you the general commands`,
-                id: 'general',
-                commandFolder: "general",
-                color: '#ea9e07',
-                filterFn: (x) => x.endsWith(".js") && x != "help.js" && x != "birthday.js"
-            },
-            {
-                label: `Hentai Commands`,
-                description: `Show's you the Hentai commands`,
-                id: 'hentai',
-                commandFolder: "hentai",
-                color: '#fb2347',
-                filterFn: (x) => x.endsWith(".js")
-            }
-        ]
-
-        function parseCategory(category) {
-            const commandFiles = fs.readdirSync(path.join(__dirname, `../${category.commandFolder}`)).filter(category.filterFn);
-            const commands = [];
-            for (const file of commandFiles) {
-                const command = require(`../${category.commandFolder}/${file}`);
-                if (command.name && command.description && command.type) {
-                    commands.push({ name: command.name, description: command.description });
-                }
-            }
-            return commands;
-        }
-
         try {
+
+            const categories = [
+                {
+                    label: `AniList Commands`,
+                    description: `Show's you the AniList commands`,
+                    id: 'anilist',
+                    commandFolder: "anilist",
+                    color: '#0099ff',
+                    filterFn: (x) => x.endsWith(".js")
+                },
+                {
+                    label: `General Commands`,
+                    description: `Show's you the general commands`,
+                    id: 'general',
+                    commandFolder: "general",
+                    color: '#ea9e07',
+                    filterFn: (x) => x.endsWith(".js") && x != "help.js" && x != "birthday.js"
+                },
+                {
+                    label: `Hentai Commands`,
+                    description: `Show's you the Hentai commands`,
+                    id: 'hentai',
+                    commandFolder: "hentai",
+                    color: '#fb2347',
+                    filterFn: (x) => x.endsWith(".js")
+                }
+            ]
+
+            function parseCategory(category) {
+                const commandFiles = fs.readdirSync(path.join(__dirname, `../${category.commandFolder}`)).filter(category.filterFn);
+                const commands = [];
+                for (const file of commandFiles) {
+                    const command = require(`../${category.commandFolder}/${file}`);
+                    if (command.name && command.description && command.type) {
+                        commands.push({ name: command.name, description: command.description });
+                    }
+                }
+                return commands;
+            }
 
             const row = new MessageActionRow()
                 .addComponents(
@@ -67,6 +66,8 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`Here are all the bot commands`)
                 .setDescription(`Select one of the command categories using the dropdown menu.`)
+
+            await message.channel.send({ content: ` `, embeds: [embed], components: [row] })
 
             let categoryContents = {};
             for (const category of categories) {
@@ -88,8 +89,6 @@ module.exports = {
                     categoryEmbeds[category.id] = embed;
                 }
             }
-
-            await message.channel.send({ content: ` `, embeds: [embed], components: [row] })
 
             let collector = message.channel.createMessageComponentCollector({
                 componentType: `SELECT_MENU`,
