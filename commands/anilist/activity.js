@@ -1,7 +1,7 @@
-const anilist = require(`anilist-node`);
-let AnilistSchema = require('../../schemas/AnilistSchema');
 const { MessageEmbed } = require(`discord.js`);
-const Anilist = new anilist();
+let AnilistSchema = require('../../schemas/AnilistSchema');
+const GraphQLRequest = require("../../handlers/GraphQLRequest");
+const GraphQLQueries = require("../../handlers/GraphQLQueries");
 
 module.exports = {
     name: `activity`,
@@ -24,44 +24,58 @@ module.exports = {
             }
         }
 
-        Anilist.user.profile(string).then((uData) => {
-            try {
+        let vars = {
+            name: string
+        };
 
-                Anilist.activity.getUserActivity(uData.id, 1, 1).then((dData) => {
+        GraphQLRequest(GraphQLQueries.user, vars)
+            .then((uData) => {
+                uData = uData.User;
 
-                    let data = dData[0]
+                vars = {
+                    userid: uData.id
+                };
 
-                    const embed = new MessageEmbed()
-                        .setURL(`https://anilist.co/activity/${data.id}`)
-                        .setFooter(`Requested by ${message.author.username} | Created at ${new Date(data.createdAt * 1000).toLocaleString()}`)
+                GraphQLRequest(GraphQLQueries.activity, vars)
+                    .then((dData) => {
 
-                    if (data.type.toString().includes("TEXT")) {
-                        embed
-                            .setTitle(`Here's ${uData?.name?.toString() || "Unknown Name"}'s most recent activity!`)
-                            .setDescription(data?.text?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
-                            .setThumbnail(uData?.avatar?.large)
+                        let data = dData.Activity;
 
+                        const embed = new MessageEmbed()
+                            .setURL(data.siteUrl)
+                            .setFooter(`Requested by ${message.author.username} | Created at ${new Date(data.createdAt * 1000).toLocaleString()}`)
+
+                        if (data.__typename.includes("TextActivity")) {
+                            embed
+                                .setTitle(`Here's ${uData?.name?.toString() || "Unknown Name"}'s most recent activity!`)
+                                .setDescription(data?.text?.replace(`!~`, `||`)
+                                    .replace(`~!`, `||`)
+                                    .replaceAll('~', ``))
+                                .setThumbnail(uData?.avatar?.large)
+
+                            return message.channel.send({ embeds: [embed] });
+
+                        } else if (data.__typename.includes("MessageActivity")) {
+                            embed
+                                .setTitle(`${uData.name.toString()} was sent a message`)
+                                .setDescription(data?.message?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
+                                .setThumbnail(uData.avatar.large)
+
+                            return message.channel.send({ embeds: [embed] });
+
+                        } else
+                            embed
+                                .setTitle(`Here's ${uData.name.toString()}'s most recent activity!`)
+                                .setThumbnail(data?.media?.coverImage?.large || data?.media?.coverImage?.medium)
+                                .setDescription(`**${data?.status?.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, (match) => match.toUpperCase())} ${data?.progress?.toString() || ""} ${data?.media?.title?.romaji || data?.media?.title?.english || data?.media?.title?.native}**`)
                         return message.channel.send({ embeds: [embed] });
-
-                    } else if (data.type.toString().includes("MESSAGE")) {
-                        embed
-                            .setTitle(`${uData.name.toString()} was sent a message`)
-                            .setDescription(data.message?.toString()?.replace(new RegExp(`!~`, `gi`), `||`).replace(new RegExp(`~!`, `gi`), `||`).replace(/~/gi, ``))
-                            .setThumbnail(uData.avatar.large)
-
-                        return message.channel.send({ embeds: [embed] });
-
-                    } else
-                        embed
-                            .setTitle(`Here's ${uData.name.toString()}'s most recent activity!`)
-                            .setThumbnail(data?.media?.coverImage?.large || data?.media?.coverImage?.medium)
-                            .setDescription(`**${data?.status?.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, (match) => match.toUpperCase())} ${data?.progress?.toString() || ""} ${data?.media?.title?.romaji?.toString()}**`)
-                    return message.channel.send({ embeds: [embed] });
-                });
-            } catch (error) {
-                message.channel.send("``" + error + "``");
+                    }).catch((error) => {
+                        console.log(error);
+                        message.channel.send({ embeds: [EmbedError(error, vars)] });
+                    });
+            }).catch((error) => {
                 console.log(error);
-            }
-        });
+                message.channel.send({ embeds: [EmbedError(error, vars)] });
+            });
     }
 }

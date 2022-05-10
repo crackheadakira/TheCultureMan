@@ -18,7 +18,6 @@
   "homepage": "https://github.com/crackheadakira/TheCultureMan#readme",
   "dependencies": {
     "@acegoal07/discordjs-pagination": "^1.2.6",
-    "anilist-node": "^1.11.1",
     "ascii-table": "^0.0.9",
     "axios": "^0.26.0",
     "culture69": "^1.0.5",

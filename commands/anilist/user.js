@@ -1,6 +1,4 @@
-let anilist = require('anilist-node');
 let { MessageEmbed, MessageButton } = require('discord.js');
-let Anilist = new anilist();
 let AnilistSchema = require('../../schemas/AnilistSchema');
 let paginationEmbed = require('@acegoal07/discordjs-pagination');
 let paginationOpts = require('../../handlers/paginationOptions');
