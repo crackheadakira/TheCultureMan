@@ -35,7 +35,7 @@ module.exports = {
         GraphQLRequest(GraphQLQueries.user, vars)
             .then((data) => {
 
-                data = data.user;
+                data = data.User;
 
                 let userID = data?.id || "Unknown ID";
                 let userName = data?.name?.toString() || "Unknown";
