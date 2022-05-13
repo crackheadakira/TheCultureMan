@@ -38,15 +38,14 @@ module.exports = {
                 for (let i = 0; i < data.media.length; i++) {
                     const embed = new MessageEmbed()
                         .setDescription(
-                            trimString(data.media[i].description
-                                ?.toString()
+                            trimString(data?.media[i]?.description
                                 .replace(/<br><br>/g, "\n")
                                 .replace(/<br>/g, "\n")
                                 .replace(/<[^>]+>/g, "")
                                 .replace(/&nbsp;/g, " ")
                                 .replace(/\n\n/g, "\n") || "No description available.", 456))
                         .setColor('RANDOM')
-                        .setTitle(data.media[i].title.romaji.toString())
+                        .setTitle(data.media[i].title.romaji)
                         .setURL(data.media[i].siteUrl)
                         .setThumbnail(data.media[i].coverImage.large)
                         .setImage(data.media[i].bannerImage)
@@ -54,16 +53,16 @@ module.exports = {
                             { name: 'Start Date', value: `${data.media[i].startDate.year}-${data.media[i].startDate.month}-${data.media[i].startDate.day}`, inline: true },
                             { name: "Ended on", value: `${data.media[i]?.endDate.year}-${data.media[i]?.endDate.month}-${data.media[i]?.endDate.day}`, inline: true },
                             { name: 'Average Score', value: `${data.media[i].averageScore}%` || "Unknown", inline: true },
-                            { name: 'Status', value: data.media[i].status?.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
-                            { name: 'Source', value: data.media[i]?.source?.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
-                            { name: 'Chapters', value: data.media[i]?.chapters?.toString() || "Unknown", inline: true },
-                            { name: 'Genres', value: data.media[i].genres?.toString().replace(/,/g, ", "), },
+                            { name: 'Status', value: data.media[i]?.status || "Unknown", inline: true },
+                            { name: 'Source', value: data.media[i]?.source || "Unknown", inline: true },
+                            { name: 'Chapters', value: data.media[i].chapters?.toString() || "Unknown", inline: true },
+                            { name: 'Genres', value: data.media[i]?.genres?.toString().replaceAll(',', ", ") || "Unknown" },
                         )
                         .setFooter(`Requested by ${message.author.username}`);
                     embeds.push(embed);
                 }
 
-                paginationEmbed(paginationOpts(message, embeds))
+                paginationEmbed(paginationOpts(message, embeds));
 
             })
             .catch((error) => {

@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageSelectMenu, SelectMenuInteraction } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -92,13 +92,17 @@ module.exports = {
 
             let collector = message.channel.createMessageComponentCollector({
                 componentType: `SELECT_MENU`,
-                idle: 2_000,
+                idle: 10_000,
             });
 
             collector.on(`collect`, async (collected) => {
                 let value = collected.values[0];
-                collected.update({ embeds: [categoryEmbeds[value]] });
+                await collected.update({ embeds: [categoryEmbeds[value]] });
             })
+
+            process.on('unhandledRejection', error => {
+                // console.error(error);
+            });
 
         } catch (error) {
             message.channel.send("``" + error + "``");

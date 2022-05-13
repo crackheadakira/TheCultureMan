@@ -12,7 +12,7 @@ module.exports = {
 
     let string = args.slice(0).join(" ");
     let trimString = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
-    if (string == `${process.env.prefix}anime`) {
+    if (string === '') {
       message.channel.send("You forgot to mention an anime.")
       return;
     }
@@ -23,46 +23,48 @@ module.exports = {
       perPage: 5
     };
 
-    GraphQLRequest(GraphQLQueries.anime, vars)
-      .then((yeezies) => {
-        let data = yeezies.Page;
-
-        if (data.media.length < 1) {
-          throw ("Something went wrong with fetching the data. The series possibly doesn't exist or there has been a grammatical error.")
-        }
+    await GraphQLRequest(GraphQLQueries.anime, vars)
+      .then((data) => {
 
         let embeds = [];
 
         // 5head @TibixDev gave this code
-        for (let i = 0; i < data.media.length; i++) {
+        for (let i = 0; i < data.Page.media.length; i++) {
           const embed = new MessageEmbed()
             .setDescription(
-              trimString(data.media[i].description
-                ?.toString()
-                .replace(/<br><br>/g, "\n")
-                .replace(/<br>/g, "\n")
+              trimString(data.Page?.media[i]?.description?.toString().replace(/<br><br>/g, "\n").replace(/<br>/g, "\n")
                 .replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ")
-                .replace(/\n\n/g, "\n") || "No description available.", 456))
+                .replace(/\n\n/g, "\n") || "Unknown", 456))
             .setColor('RANDOM')
-            .setTitle(data.media[i].title.romaji.toString())
-            .setURL(data.media[i].siteUrl)
-            .setThumbnail(data.media[i].coverImage.large)
-            .setImage(data.media[i].bannerImage)
+            .setTitle(data.Page.media[i].title.romaji.toString())
+            .setURL(data.Page.media[i].siteUrl)
+            .setThumbnail(data.Page.media[i].coverImage.large)
+            .setImage(data.Page.media[i].bannerImage)
             .addFields(
-              { name: 'Start Date', value: `${data.media[i].startDate.year}-${data.media[i].startDate.month}-${data.media[i].startDate.day}`, inline: true },
+              { name: 'Start Date', value: `${data.Page.media[i].startDate.year}-${data.Page.media[i].startDate.month}-${data.Page.media[i].startDate.day}`, inline: true },
               {
-                name: data?.media[i].nextAiringEpisode?.episode ? `Episode ${data.media[i].nextAiringEpisode.episode} airing in:` : "Ended on:",
-                value: data?.media[i].nextAiringEpisode?.airingAt ? `<t:${data.media[i].nextAiringEpisode.airingAt}:R>` : `${data.media[i].endDate.day}-${data.media[i].endDate.month}-${data.media[i].endDate.year}`, inline: true
+                name: data.Page?.media[i].nextAiringEpisode?.episode ? `Episode ${data.Page.media[i].nextAiringEpisode.episode} airing in:` : "Ended on:",
+                value: data.Page?.media[i].nextAiringEpisode?.airingAt ? `<t:${data.Page.media[i].nextAiringEpisode.airingAt}:R>` : `${data.Page.media[i].endDate.day}-${data.Page.media[i].endDate.month}-${data.Page.media[i].endDate.year}`, inline: true
               },
-              { name: 'Average Score', value: `${data.media[i]?.averageScore}%` || "Unknown", inline: true },
-              { name: 'Status', value: data.media[i]?.status.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
-              { name: 'Source', value: data.media[i]?.source.toString().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) || "Unknown", inline: true },
-              { name: 'Episodes', value: data.media[i]?.episodes?.toString() || "Unknown", inline: true },
-              { name: 'Genres', value: data.media[i]?.genres?.toString().replace(/,/g, ", "), },
+              { name: 'Average Score', value: `${data.Page.media[i]?.averageScore}%` || "Unknown", inline: true },
+              { name: 'Status', value: data.Page.media[i]?.status.toString() || "Unknown", inline: true },
+              { name: 'Source', value: data.Page.media[i]?.source.toString() || "Unknown", inline: true },
+              { name: 'Episodes', value: data.Page.media[i]?.episodes?.toString() || "Unknown", inline: true },
+              { name: 'Genres', value: data.Page.media[i]?.genres?.toString().replace(/,/g, ", ") || "Unknown Genres" },
             )
             .setFooter(`Requested by ${message.author.username}`);
           embeds.push(embed);
         }
+
+        function betterTrim(str, max) {
+          console.log(str.length);
+          if (str.length > max) {
+            str = `${str.slice(0, max)}...`;
+          }
+          return str;
+        }
+
+        console.log(betterTrim("Hello there!", 5))
 
         paginationEmbed(paginationOpts(message, embeds))
 

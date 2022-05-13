@@ -32,7 +32,7 @@ client.categories = fs.readdirSync('./commands/');
 
 client.on("ready", () => {
     console.log(client.user.tag + ' has logged in.');
-    client.user.setActivity(`${client.users.cache.size} members | n.help`, { type: 'WATCHING' });
+    client.user.setActivity(`${client.users.cache.size} ppl & ${client.guilds.cache.size} guilds | n.help`, { type: 'WATCHING' });
 });
 
 client.on('messageCreate', async (message) => {
