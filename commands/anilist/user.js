@@ -1,8 +1,8 @@
-let { MessageEmbed, MessageButton } = require('discord.js');
-let AnilistSchema = require('../../schemas/AnilistSchema');
+let { MessageEmbed } = require('discord.js');
 let paginationEmbed = require('@acegoal07/discordjs-pagination');
 let paginationOpts = require('../../handlers/paginationOptions');
 let GraphQLRequest = require("../../handlers/GraphQLRequest");
+let UserChecker = require("../../handlers/UserChecker");
 
 module.exports = {
     name: "user",
@@ -16,17 +16,8 @@ module.exports = {
         };
 
         if (!string) {
-            try {
-                const anilistCheck = await AnilistSchema.findOne({ where: { userId: message.author.id } });
-                if (!anilistCheck) {
-                    return message.channel.send(`You have yet to add your token, you can do so by running the ${prefix}oauth command!`)
-                }
-                vars = {
-                    id: +anilistCheck.anilistID
-                }
-            } catch (error) {
-                message.channel.send("``" + error + "``");
-                console.log(error);
+            vars = {
+                id: (await UserChecker(message)).anilistID
             }
         }
 

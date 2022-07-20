@@ -1,6 +1,6 @@
 const { MessageEmbed } = require(`discord.js`);
-let AnilistSchema = require('../../schemas/AnilistSchema');
 const GraphQLRequest = require("../../handlers/GraphQLRequest");
+let UserChecker = require("../../handlers/UserChecker");
 
 module.exports = {
     name: `planning`,
@@ -9,19 +9,8 @@ module.exports = {
     run: async (client, message, args) => {
 
         let string = args.slice(0).join(" ");
-        if(!string){ return message.channel.send("You forgot to mention a media ID!")}
-        let authToken;
-
-        try {
-            const anilistCheck = await AnilistSchema.findOne({ where: { userId: message.author.id } });
-            if (!anilistCheck) {
-                return message.channel.send("You have yet to set an AniList token.")
-            }
-            authToken = anilistCheck.authToken;
-        } catch (error) {
-            message.channel.send("``" + error + "``");
-            console.log(error);
-        }
+        if (!string) { return message.channel.send("You forgot to mention a media ID!") }
+        let authToken = (await UserChecker(message)).authToken;
 
         let vars = {
             mediaId: +string
@@ -33,7 +22,6 @@ module.exports = {
 
                 const embed = new MessageEmbed()
                     .setTitle(`Added ${data?.media?.title?.userPreferred || "Unknown"} to Planning`)
-                    .setThumbnail(data?.media?.coverImage?.large || "Unknown")
                     .setURL(data?.media?.siteUrl)
                     .setImage(data?.media?.bannerImage);
 
