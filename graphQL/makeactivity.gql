@@ -1,0 +1,6 @@
+mutation($text: String){
+  SaveTextActivity(text: $text) {
+    siteUrl
+    text
+  }
+}

@@ -3,13 +3,13 @@ let AnilistSchema = require('../../schemas/AnilistSchema');
 const GraphQLRequest = require("../../handlers/GraphQLRequest");
 
 module.exports = {
-    name: `planning`,
-    description: `This allows you to add series to your planning if you've authenticated yourself, just use the media ID when trying to add a series.`,
+    name: `makeactivity`,
+    description: `This allows you to make activities for AniList.`,
     type: 'anilist',
     run: async (client, message, args) => {
 
         let string = args.slice(0).join(" ");
-        if(!string){ return message.channel.send("You forgot to mention a media ID!")}
+        if(!string){ return message.channel.send("You forgot to add text that should be included in the activity!")}
         let authToken;
 
         try {
@@ -24,18 +24,17 @@ module.exports = {
         }
 
         let vars = {
-            mediaId: +string
+            text: string
         }
 
-        GraphQLRequest("p2w", vars, authToken)
+        GraphQLRequest("makeactivity", vars, authToken)
             .then((data) => {
-                data = data.SaveMediaListEntry;
+                data = data.SaveTextActivity;
 
                 const embed = new MessageEmbed()
-                    .setTitle(`Added ${data?.media?.title?.userPreferred || "Unknown"} to Planning`)
-                    .setThumbnail(data?.media?.coverImage?.large || "Unknown")
-                    .setURL(data?.media?.siteUrl)
-                    .setImage(data?.media?.bannerImage);
+                    .setTitle("Activity has been made!")
+                    .setDescription(data.text)
+                    .setURL(data?.siteUrl)
 
                 message.channel.send({ embeds: [embed] });
 
