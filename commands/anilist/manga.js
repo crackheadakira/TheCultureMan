@@ -1,6 +1,5 @@
 const { MessageEmbed, MessageButton } = require('discord.js');
 const GraphQLRequest = require("../../handlers/GraphQLRequest");
-const GraphQLQueries = require("../../handlers/GraphQLQueries");
 const paginationEmbed = require('@acegoal07/discordjs-pagination');
 const paginationOpts = require('../../handlers/paginationOptions');
 
@@ -24,7 +23,7 @@ module.exports = {
             perPage: 5
         };
 
-        GraphQLRequest(GraphQLQueries.manga, vars)
+        GraphQLRequest("manga", vars)
             .then((yeezies) => {
                 let data = yeezies.Page;
 
@@ -56,6 +55,7 @@ module.exports = {
                             { name: 'Status', value: data.media[i]?.status || "Unknown", inline: true },
                             { name: 'Source', value: data.media[i]?.source || "Unknown", inline: true },
                             { name: 'Chapters', value: data.media[i].chapters?.toString() || "Unknown", inline: true },
+                            { name: 'Media ID', value: data.media[i]?.id?.toString() || "Unknown ID", inline: true },
                             { name: 'Genres', value: data.media[i]?.genres?.toString().replaceAll(',', ", ") || "Unknown" },
                         )
                         .setFooter(`Requested by ${message.author.username}`);

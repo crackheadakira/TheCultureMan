@@ -1,0 +1,15 @@
+mutation ($mediaId: Int) {
+  SaveMediaListEntry(mediaId: $mediaId, status: PLANNING) {
+    id
+    media {
+      siteUrl
+      title {
+        userPreferred
+      }
+      bannerImage
+      coverImage {
+        large
+      }
+    }
+  }
+}

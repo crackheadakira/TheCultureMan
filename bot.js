@@ -1,6 +1,9 @@
 console.clear();
 global.EmbedError = require('./handlers/EmbedError');
-const { Discord, Client, Collection } = require('discord.js');
+const { Console } = require('console');
+const { Discord, Client, Collection, DMChannel } = require('discord.js');
+const ALSchema = require('./schemas/AnilistSchema');
+const GraphQLRequest = require('./handlers/GraphQLRequest');
 require("dotenv-flow").config();
 const client = new Client({
     intents: [
@@ -19,6 +22,9 @@ const client = new Client({
         "DIRECT_MESSAGE_REACTIONS",
         "DIRECT_MESSAGE_TYPING"
     ],
+    partials: [
+        "MESSAGE", "CHANNEL"
+    ]
 });
 const fs = require('fs');
 
@@ -36,6 +42,29 @@ client.on("ready", () => {
 });
 
 client.on('messageCreate', async (message) => {
+    if (message.channel.type == "DM" && message.content.length > 750) {
+
+        const anilistID = await ALSchema.findOne({ where: { userId: message.author.id } });
+
+        if (anilistID) {
+            try {
+                await anilistID.update({ authToken: message.content })
+                return message.channel.send('Token has been added!');
+            } catch (error) {
+                message.channel.send("``" + error + "``");
+                console.log(error);
+            }
+        }
+        try {
+            const ALid = await GraphQLRequest(`mutation{UpdateUser{id name}}`, "", message.content);
+            await ALSchema.create({ userId: message.author.id, authToken: message.content, "anilistID": ALid.UpdateUser.id });
+            return message.channel.send(`Token has been added! Welcome, ` + "``" + ALid.UpdateUser.name + "``");
+
+        } catch (error) {
+            message.channel.send("``" + error + "``");
+            console.log(error);
+        }
+    }
     if (message.author.bot) return;
     if (!message.content.startsWith(process.env.prefix)) return;
     if (!message.guild) return;

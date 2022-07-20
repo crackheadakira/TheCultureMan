@@ -1,6 +1,5 @@
 const { MessageEmbed, MessageButton } = require('discord.js');
 const GraphQLRequest = require("../../handlers/GraphQLRequest");
-const GraphQLQueries = require("../../handlers/GraphQLQueries");
 const paginationEmbed = require('@acegoal07/discordjs-pagination');
 const paginationOpts = require('../../handlers/paginationOptions');
 
@@ -23,7 +22,7 @@ module.exports = {
       perPage: 5
     };
 
-    await GraphQLRequest(GraphQLQueries.anime, vars)
+    await GraphQLRequest("anime", vars)
       .then((data) => {
 
         let embeds = [];
@@ -50,6 +49,7 @@ module.exports = {
               { name: 'Status', value: data.Page.media[i]?.status.toString() || "Unknown", inline: true },
               { name: 'Source', value: data.Page.media[i]?.source.toString() || "Unknown", inline: true },
               { name: 'Episodes', value: data.Page.media[i]?.episodes?.toString() || "Unknown", inline: true },
+              { name: 'Media ID', value: data.Page.media[i]?.id?.toString() || "Unknown ID", inline: true },
               { name: 'Genres', value: data.Page.media[i]?.genres?.toString().replace(/,/g, ", ") || "Unknown Genres" },
             )
             .setFooter(`Requested by ${message.author.username}`);
@@ -57,14 +57,11 @@ module.exports = {
         }
 
         function betterTrim(str, max) {
-          console.log(str.length);
           if (str.length > max) {
             str = `${str.slice(0, max)}...`;
           }
           return str;
         }
-
-        console.log(betterTrim("Hello there!", 5))
 
         paginationEmbed(paginationOpts(message, embeds))
 

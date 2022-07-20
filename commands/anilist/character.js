@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const GraphQLRequest = require("../../handlers/GraphQLRequest");
-const GraphQLQueries = require("../../handlers/GraphQLQueries");
 
 module.exports = {
     name: "character",
@@ -15,7 +14,7 @@ module.exports = {
             character: string,
         }
 
-        GraphQLRequest(GraphQLQueries.character, vars)
+        GraphQLRequest("character", vars)
             .then((data) => {
 
                 data = data.Character;
