@@ -43,9 +43,7 @@ client.on("ready", () => {
 
 client.on('messageCreate', async (message) => {
     if (message.channel.type == "DM" && message.content.length > 750) {
-
         const anilistID = await ALSchema.findOne({ where: { userId: message.author.id } });
-
         if (anilistID) {
             try {
                 await anilistID.update({ authToken: message.content })
@@ -55,11 +53,11 @@ client.on('messageCreate', async (message) => {
                 console.log(error);
             }
         }
+
         try {
             const ALid = await GraphQLRequest(`mutation{UpdateUser{id name}}`, "", message.content);
             await ALSchema.create({ userId: message.author.id, authToken: message.content, "anilistID": ALid.UpdateUser.id });
             return message.channel.send(`Token has been added! Welcome, ` + "``" + ALid.UpdateUser.name + "``");
-
         } catch (error) {
             message.channel.send("``" + error + "``");
             console.log(error);

@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const Culture69 = require('culture69');
-const c69 = new Culture69;
+const cultureDB = require('culture69');
 
 module.exports = {
     name: 'culture',
@@ -14,11 +13,9 @@ module.exports = {
                 return;
             }
 
-            let cam69 = c69.getCulture69();
-
             const embed = new MessageEmbed()
                 .setTitle("Here's an image from our handcrafted database")
-                .setImage(cam69)
+                .setImage(cultureDB())
                 .setFooter("Requested by " + message.author.username)
 
             message.channel.send({ embeds: [embed] })
