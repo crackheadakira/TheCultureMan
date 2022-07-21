@@ -1,7 +1,6 @@
 const { MessageEmbed } = require(`discord.js`);
-let AnilistSchema = require('../../schemas/AnilistSchema');
 const GraphQLRequest = require("../../handlers/GraphQLRequest");
-const GraphQLQueries = require("../../handlers/GraphQLQueries");
+let UserChecker = require("../../handlers/UserChecker");
 
 module.exports = {
     name: `activity`,
@@ -10,25 +9,17 @@ module.exports = {
     run: async (client, message, args) => {
 
         let string = args.slice(0).join(" ");
-
-        if (!string) {
-            try {
-                const anilistCheck = await AnilistSchema.findOne({ where: { userId: message.author.id } });
-                if (!anilistCheck) {
-                    return message.channel.send("You have yet to set an AniList username.")
-                }
-                string = anilistCheck.anilistName
-            } catch (error) {
-                message.channel.send("``" + error + "``");
-                console.log(error);
-            }
-        }
-
         let vars = {
             name: string
         };
 
-        GraphQLRequest(GraphQLQueries.user, vars)
+        if (!string) {
+            vars = {
+                id: (await UserChecker(message)).anilistID
+            }
+        }
+
+        GraphQLRequest("user", vars)
             .then((uData) => {
                 uData = uData.User;
 
@@ -36,7 +27,8 @@ module.exports = {
                     userid: uData.id
                 };
 
-                GraphQLRequest(GraphQLQueries.activity, vars)
+
+                GraphQLRequest("activity", vars)
                     .then((dData) => {
 
                         let data = dData.Activity;

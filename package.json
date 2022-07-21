@@ -20,7 +20,7 @@
     "@acegoal07/discordjs-pagination": "^1.2.6",
     "ascii-table": "^0.0.9",
     "axios": "^0.26.0",
-    "culture69": "^1.0.5",
+    "culture69": "^1.0.8",
     "discord.js": "^13.6.0",
     "dotenv-flow": "^3.2.0",
     "fs": "^0.0.1-security",

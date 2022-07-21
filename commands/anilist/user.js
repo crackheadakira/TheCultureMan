@@ -1,9 +1,8 @@
-let { MessageEmbed, MessageButton } = require('discord.js');
-let AnilistSchema = require('../../schemas/AnilistSchema');
+let { MessageEmbed } = require('discord.js');
 let paginationEmbed = require('@acegoal07/discordjs-pagination');
 let paginationOpts = require('../../handlers/paginationOptions');
 let GraphQLRequest = require("../../handlers/GraphQLRequest");
-let GraphQLQueries = require("../../handlers/GraphQLQueries");
+let UserChecker = require("../../handlers/UserChecker");
 
 module.exports = {
     name: "user",
@@ -12,25 +11,17 @@ module.exports = {
     run: async (client, message, args) => {
 
         let string = args.slice(0).join(" ");
-
-        if (!string) {
-            try {
-                const anilistCheck = await AnilistSchema.findOne({ where: { userId: message.author.id } });
-                if (!anilistCheck) {
-                    return message.channel.send("You have yet to set an AniList username.")
-                }
-                string = anilistCheck.anilistName
-            } catch (error) {
-                message.channel.send("``" + error + "``");
-                console.log(error);
-            }
-        }
-
         let vars = {
             name: string,
         };
 
-        GraphQLRequest(GraphQLQueries.user, vars)
+        if (!string) {
+            vars = {
+                id: (await UserChecker(message)).anilistID
+            }
+        }
+
+        GraphQLRequest("user", vars)
             .then((data) => {
 
                 data = data.User;
@@ -40,11 +31,12 @@ module.exports = {
                 let userAvatar = data?.avatar?.large || data?.avatar?.medium;
                 let userURL = data?.siteUrl?.toString() || "Unknown URL";
                 let userBanner = data?.bannerImage || "Unknown";
+                
                 vars = {
                     userid: userID,
                 };
 
-                GraphQLRequest(GraphQLQueries.followers, vars)
+                GraphQLRequest("followers", vars)
                     .then((followerData) => {
 
                         let followers = followerData.Page.pageInfo.total;

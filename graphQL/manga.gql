@@ -1,6 +1,7 @@
 query ($search: String, $page: Int, $perPage: Int) {
   Page(page: $page, perPage: $perPage) {
     media(search: $search, type: MANGA, sort: POPULARITY_DESC) {
+      id
       source
       title {
         english
