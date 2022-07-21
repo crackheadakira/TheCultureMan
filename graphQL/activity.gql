@@ -5,11 +5,24 @@ query($userid: Int){
       text
       siteUrl
       createdAt
+      user {
+        name
+        avatar {
+          large
+        }
+      }
+      likes {
+        name
+      }
     }
     
     ... on ListActivity{
-      status
-      progress
+      user {
+        name
+        avatar {
+          large
+        }
+      }
       status
       progress
       media{
@@ -26,11 +39,29 @@ query($userid: Int){
       }
       createdAt
       siteUrl
+      likes {
+        name
+      }
     }
     ... on MessageActivity{
       message
       siteUrl
       createdAt
+      recipient{
+        avatar {
+          large
+        }
+        name
+      }
+      likes {
+        name
+      }
+      messenger {
+        name
+        avatar {
+          large
+        }
+      }
     }
   }
 }
