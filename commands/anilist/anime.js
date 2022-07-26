@@ -46,21 +46,14 @@ module.exports = {
                 value: data.Page?.media[i].nextAiringEpisode?.airingAt ? `<t:${data.Page.media[i].nextAiringEpisode.airingAt}:R>` : `${data.Page.media[i].endDate.day}-${data.Page.media[i].endDate.month}-${data.Page.media[i].endDate.year}`, inline: true
               },
               { name: 'Average Score', value: `${data.Page.media[i]?.averageScore}%` || "Unknown", inline: true },
-              { name: 'Status', value: data.Page.media[i]?.status.toString() || "Unknown", inline: true },
-              { name: 'Source', value: data.Page.media[i]?.source.toString() || "Unknown", inline: true },
+              { name: 'Status', value: data.Page.media[i]?.status?.toString() || "Unknown", inline: true },
+              { name: 'Source', value: data.Page.media[i]?.source?.toString() || "Unknown", inline: true },
               { name: 'Episodes', value: data.Page.media[i]?.episodes?.toString() || "Unknown", inline: true },
               { name: 'Media ID', value: data.Page.media[i]?.id?.toString() || "Unknown ID", inline: true },
               { name: 'Genres', value: data.Page.media[i]?.genres?.toString().replace(/,/g, ", ") || "Unknown Genres" },
             )
             .setFooter(`Requested by ${message.author.username}`);
           embeds.push(embed);
-        }
-
-        function betterTrim(str, max) {
-          if (str.length > max) {
-            str = `${str.slice(0, max)}...`;
-          }
-          return str;
         }
 
         paginationEmbed(paginationOpts(message, embeds))

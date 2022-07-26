@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
-const API = require('kasu.nhentaiapi.js');
-const api = new API();
+const nHentai = require('kasu.nhentaiapi.js');
+const api = new nHentai("start", "https://nhentai.net");
 
 module.exports = {
     name: 'random',
@@ -13,12 +13,8 @@ module.exports = {
             return
         }
 
-        let string = args.slice(0).join(" ");
-
-
-        api.IsDiscord = true;
+        let string = args?.slice(0).join(" ");
         await api.pRandSpecificTags("english " + string, data => {
-
 
             let hURL = data.url;
             let hTitle = data.title.translated;
@@ -44,6 +40,7 @@ module.exports = {
                 .setAuthor("Requested by " + message.author.username, message.author.avatarURL())
 
             message.channel.send({ embeds: [embed] });
+            api.connection.close();
 
         }).catch((error) => {
             message.channel.send("``" + error + "``");
